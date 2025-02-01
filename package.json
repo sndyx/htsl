@@ -1,0 +1,24 @@
+{
+  "name": "htsl",
+  "version": "1.0.0",
+  "description": "An htsl library including a compiler and other htsl related utilities.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "npx tsx watch src/index.ts",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/housingdevs/htsl.git"
+  },
+  "type": "module",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.4"
+  }
+}
