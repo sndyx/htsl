@@ -1,7 +1,7 @@
 {
   "name": "htsl",
   "version": "1.0.0",
-  "description": "An htsl library including a compiler and other htsl related utilities.",
+  "description": "HTSL compiler and decompiler",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
