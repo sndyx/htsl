@@ -165,8 +165,6 @@ export class Lexer {
 			return token("ident", span(lo, this.pos), { value });
 		}
 
-		if (c === "\n") return token("eol", singleSpan);
-
 		throw Diagnostic.error(`unknown token "${c}"`, span(lo, lo)); // Eventually turn this into a diagnostic
 	}
 

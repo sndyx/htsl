@@ -2,8 +2,10 @@ import { Lexer } from "./parse/lexer.js";
 import { Parser } from "./parse/parser.js";
 import { CompileCtx } from "./context.js";
 import type { Action } from "./action/action.js";
-import type { InlayHint } from "./types/hint.js";
+import type { InlayHint, SignatureHint } from "./types/editor.js";
 import type { Diagnostic } from "./types/diagnostic.js";
+import type { Span } from "./types/span.js";
+import { ACTION_NAMES } from "./helpers.js";
 
 export function getActions(src: string): Array<Action> {
 	const ctx = new CompileCtx();
@@ -43,6 +45,38 @@ export function getInlayHints(src: string): Array<InlayHint> {
 	return hints;
 }
 
-export function getSignatureHelp(src: string, pos: number) {
+export function getSignatureHelp(src: string, pos: number): SignatureHint | undefined {
+	const actions = getActions(src.substring(0, pos));
+	const action = actions[actions.length - 1];
 
+	if (!action) return undefined;
+
+	let index = 0;
+	let broken = false;
+	for (const key of Object.keys(action)) {
+		if (key === "type") continue;
+
+		// @ts-ignore
+		if (!action[key]) {
+			broken = true;
+			break;
+		}
+		// @ts-ignore
+		const span: Span = action[key].span;
+
+		if (span.hi > pos - 1) {
+			broken = true;
+			break;
+		}
+		index++;
+	}
+
+	if (!broken) return undefined;
+
+	return {
+		action: ACTION_NAMES[action.type]!,
+		parameters: Object.keys(action)
+			.filter(it => it !== "type"),
+		activeParameter: index
+	};
 }

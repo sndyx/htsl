@@ -161,6 +161,23 @@ export class Parser {
 			this.next();
 			return (this.prev as StrKind).value;
 		}
+		if (this.eatIdent("stat")) {
+			const name = this.parseStatName();
+			return `%stat.player/${name}%`;
+		}
+		if (this.eatIdent("globalstat")) {
+			const name = this.parseStatName();
+			return `%stat.global/${name}%`;
+		}
+		if (this.eatIdent("teamstat")) {
+			const name = this.parseStatName();
+
+			if (!this.check("ident") && !this.check("str")) {
+				throw Diagnostic.error("Expected team name", this.token.span);
+			}
+			const team = this.parseStatName();
+			return `%stat.team/${name} ${team}%`;
+		}
 		throw Diagnostic.error("expected amount", this.token.span);
 	}
 
@@ -213,8 +230,10 @@ export class Parser {
 
 	recover() {
 		while (true) {
-			if (this.check("eof")) return;
-			if (this.token.kind === "ident" && isAction(this.token.value)) break;
+			if (
+				this.check("eof")
+				|| (this.token.kind === "ident" && isAction(this.token.value))
+			) return;
 			this.next();
 		}
 	}

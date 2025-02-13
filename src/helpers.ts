@@ -14,3 +14,12 @@ export function isAction(name: string) {
 		"compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "stat",
 	].includes(name);
 }
+
+export const ACTION_NAMES: {
+	[key: string]: string
+} = {
+	"CHANGE_STAT": "stat",
+	"TITLE": "title",
+	"MESSAGE": "chat",
+	"CHANGE_HEALTH": "changeHealth",
+};
