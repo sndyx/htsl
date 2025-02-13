@@ -9,12 +9,8 @@
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/housingdevs/htsl.git"
-  },
   "type": "module",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.13.0",
     "tsx": "^4.19.2",
