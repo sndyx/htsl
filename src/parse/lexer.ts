@@ -1,6 +1,6 @@
+import { span } from "../types/span.js";
 import { token, type Token } from "./token.js";
-import { span } from "housing-common/src/types/Span.js";
-import { Diagnostic } from "housing-common/src/types/Diagnostic.js";
+import { Diagnostic } from "../types/diagnostic.js";
 
 export class Lexer {
 	src: string;

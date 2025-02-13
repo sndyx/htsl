@@ -1,5 +1,5 @@
-import type { Span } from "housing-common/src/types/Span.js";
-import { Diagnostic } from "housing-common/src/types/Diagnostic.js";
+import type { Span } from "../types/span.js";
+import { Diagnostic } from "../types/diagnostic.js";
 
 export type Token = TokenType & { span: Span };
 
