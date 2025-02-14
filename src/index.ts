@@ -28,7 +28,7 @@ export function getInlayHints(src: string): Array<InlayHint> {
 	const hints: Array<InlayHint> = [];
 
 	actions
-		.filter(action => !["CHANGE_STAT"].includes(action.type))
+		.filter(action => !["CHANGE_STAT", "CHANGE_GLOBAL_STAT", "CHANGE_TEAM_STAT"].includes(action.type))
 		.map(action => {
 			for (const key of Object.keys(action)) {
 				if (key === "type") continue;

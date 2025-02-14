@@ -10,11 +10,11 @@ export class Diagnostic extends Error {
         this.span = span;
     }
 
-    static bug<C>(message: string, span?: Span) {
+    static bug(message: string, span?: Span) {
         return new Diagnostic(message, "bug", span);
     }
 
-    static error<C>(message: string, span?: Span) {
+    static error(message: string, span?: Span) {
         return new Diagnostic(message, "error", span);
     }
 

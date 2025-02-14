@@ -22,4 +22,7 @@ export const ACTION_NAMES: {
 	"TITLE": "title",
 	"MESSAGE": "chat",
 	"CHANGE_HEALTH": "changeHealth",
+	"CHANGE_GLOBAL_STAT": "globalstat",
+	"CHANGE_TEAM_STAT": "teamstat",
+	"CONDITIONAL": "if"
 };

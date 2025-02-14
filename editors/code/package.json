@@ -1,0 +1,50 @@
+{
+  "name": "htsl-plus-plus",
+  "displayName": "HTSL++",
+  "description": "HTSL completions, diagnostics, hints, and more.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "vscode": "^1.97.2"
+  },
+  "scripts": {
+    "compile": "vite build",
+    "watch": "vite build --watch",
+    "build": "vite build --mode production",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "htsl": "file:../.."
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.97.0",
+    "@vscode/vsce": "^3.2.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
+  },
+  "main": "./dist/extension.cjs",
+  "activationEvents": [
+    "onLanguage:htsl"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "htsl",
+        "extensions": [
+          ".htsl"
+        ],
+        "aliases": [
+          "HTSL", "htsl"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "htsl",
+        "scopeName": "source.htsl",
+        "path": "./htsl.tmGrammar.json"
+      }
+    ]
+  }
+}

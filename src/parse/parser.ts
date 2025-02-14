@@ -1,6 +1,14 @@
 import type { CompileCtx } from "../context.js";
 import { isAction, partialEq } from "../helpers.js";
-import type { Action, ActionChangeHealth, ActionChangeStat, ActionMessage, ActionTitle } from "../action/action.js";
+import type {
+	Action,
+	ActionChangeGlobalStat,
+	ActionChangeHealth,
+	ActionChangeStat,
+	ActionChangeTeamStat, ActionConditional,
+	ActionMessage,
+	ActionTitle
+} from "../action/action.js";
 import type { Lexer } from "./lexer.js";
 import {
 	type Delimiter,
@@ -47,6 +55,12 @@ export class Parser {
 		if (this.eatIdent("stat")) {
 			return this.parseActionChangeStat();
 		}
+		if (this.eatIdent("globalstat")) {
+			return this.parseActionChangeGlobalStat();
+		}
+		if (this.eatIdent("teamstat")) {
+			return this.parseActionChangeTeamStat();
+		}
 		if (this.eatIdent("changeHealth")) {
 			return this.parseActionChangeHealth();
 		}
@@ -55,6 +69,9 @@ export class Parser {
 		}
 		if (this.eatIdent("chat")) {
 			return this.parseActionMessage();
+		}
+		if (this.eatIdent("if")) {
+			return this.parseActionConditional();
 		}
 
 		if (this.check("ident")) {
@@ -75,6 +92,29 @@ export class Parser {
 		});
 
 		return { type: "CHANGE_STAT", stat, mode, amount };
+	}
+
+	parseActionChangeGlobalStat(): ActionChangeGlobalStat {
+		let stat, mode, amount;
+		this.parseRecovering(() => {
+			stat = this.parseSpanned(() => this.parseStatName());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
+		});
+
+		return { type: "CHANGE_GLOBAL_STAT", stat, mode, amount };
+	}
+
+	parseActionChangeTeamStat(): ActionChangeTeamStat {
+		let stat, team, mode, amount;
+		this.parseRecovering(() => {
+			stat = this.parseSpanned(() => this.parseStatName());
+			team = this.parseSpanned(() => this.parseStatName());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
+		});
+
+		return { type: "CHANGE_TEAM_STAT", stat, team, mode, amount };
 	}
 
 	parseActionChangeHealth(): ActionChangeHealth {
@@ -108,6 +148,28 @@ export class Parser {
 		});
 
 		return { type: "MESSAGE", message };
+	}
+
+	parseActionConditional(): ActionConditional {
+		let mode, conditions, ifActions, elseActions;
+		this.parseRecovering(() => {
+			mode = this.parseSpanned(() => {
+				this.eatIdent("and");
+				return this.eatIdent("or");
+			});
+
+			conditions = this.parseSpanned(() => this.parseDelimitedCommaSeq("parenthesis", () => {
+				return "";
+			}));
+
+			ifActions = this.parseSpanned(() => this.parseBlock());
+
+			if (this.eatIdent("else")) {
+				elseActions = this.parseSpanned(() => this.parseBlock());
+			}
+		});
+
+		return { type: "CONDITIONAL", mode, conditions, ifActions, elseActions };
 	}
 
 	parseStatName(): string {
@@ -150,7 +212,7 @@ export class Parser {
 	}
 
 	parseStatAmount(): Amount {
-		if (this.check("i64")) {
+		if (this.check("i64") || this.check({ kind: "bin_op", op: "minus" })) {
 			return this.parseI64();
 		}
 		if (this.check("placeholder")) {
@@ -187,8 +249,11 @@ export class Parser {
 	}
 
 	parseI64(): bigint {
+		const negative = this.eat({ kind: "bin_op", op: "minus" });
+
 		this.expect("i64");
-		const value = BigInt((this.prev as I64Kind).value); // bigint constructor should never fail?
+		let value = BigInt((this.prev as I64Kind).value); // bigint constructor should never fail?
+		if (negative) value *= -1n;
 
 		if (
 			value < BigInt("-9223372036854775808") ||
@@ -228,14 +293,22 @@ export class Parser {
 		}
 	}
 
-	recover() {
+	parseBlock(): Array<Action> {
+		const actions = [];
+		this.expect({ kind: "open_delim", delim: "brace" });
 		while (true) {
-			if (
-				this.check("eof")
-				|| (this.token.kind === "ident" && isAction(this.token.value))
-			) return;
-			this.next();
+			if (this.check("eof")) throw Diagnostic.error("expected }");
+			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
+			try {
+				const action = this.parseAction();
+				if (!action) break;
+				actions.push(action);
+			} catch (e) {
+				if (e instanceof Diagnostic) this.ctx.emit(e);
+				this.recover();
+			}
 		}
+		return actions;
 	}
 
 	parseDelimitedCommaSeq<T>(delim: Delimiter, parser: () => T) {
@@ -269,6 +342,16 @@ export class Parser {
 
 	eatIdent(value: string): boolean {
 		return this.eat({ kind: "ident", value });
+	}
+
+	recover() {
+		while (true) {
+			if (
+				this.check("eof")
+				|| (this.token.kind === "ident" && isAction(this.token.value))
+			) return;
+			this.next();
+		}
 	}
 
 	expect(tok: Token["kind"] | Partial<Token>) {

@@ -3,8 +3,11 @@ import type { Spanned } from "../types/span.js";
 export type Action =
     | ActionChangeHealth
     | ActionChangeStat
+    | ActionChangeTeamStat
+    | ActionChangeGlobalStat
     | ActionTitle
-    | ActionMessage;
+    | ActionMessage
+    | ActionConditional;
 
 export type Mode = "increment" | "decrement" | "set" | "multiply" | "divide";
 export type Amount = bigint | string;
@@ -22,7 +25,22 @@ export type ActionChangeStat = {
     stat: Param<string>
     mode: Param<Mode>,
     amount: Param<Amount>
-}
+};
+
+export type ActionChangeGlobalStat = {
+    type: "CHANGE_GLOBAL_STAT",
+    stat: Param<string>
+    mode: Param<Mode>,
+    amount: Param<Amount>
+};
+
+export type ActionChangeTeamStat = {
+    type: "CHANGE_TEAM_STAT",
+    stat: Param<string>
+    team: Param<string>
+    mode: Param<Mode>,
+    amount: Param<Amount>
+};
 
 export type ActionTitle = {
     type: "TITLE",
@@ -31,9 +49,17 @@ export type ActionTitle = {
     fadein: Param<bigint>,
     stay: Param<bigint>,
     fadeout: Param<bigint>
-}
+};
 
 export type ActionMessage = {
     type: "MESSAGE",
     message: Param<string>,
+};
+
+export type ActionConditional = {
+    type: "CONDITIONAL",
+    mode: Param<boolean>,
+    conditions: Param<Array<string>>,
+    ifActions: Param<Array<Action>>,
+    elseActions: Param<Array<Action>>,
 }
