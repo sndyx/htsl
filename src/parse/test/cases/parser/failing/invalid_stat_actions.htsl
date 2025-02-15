@@ -1,0 +1,4 @@
+stat = 5
+stat x = notAValue
+stat x 5
+stat

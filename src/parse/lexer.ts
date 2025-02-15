@@ -139,16 +139,28 @@ export class Lexer {
 			return token("str", span(lo, this.pos), { value });
 		}
 
+		if (c === "%") {
+			let value = "";
+			while (this.hasNext()) {
+				const c = this.next();
+				if (c === "%") break;
+				value += c;
+			}
+
+			return token("placeholder", span(lo, this.pos), { value });
+		}
+
 		if (/[0-9]/.test(c)) {
 			let value = c;
 			while (this.hasNext()) {
-				if (!/[0-9]/.test(this.peek(0))) break;
+				if (!/[0-9]/.test(this.peek())) break;
 				value += this.next();
 			}
-			if (this.peek(0) === ".") {
+			if (this.peek() === ".") {
 				value += ".";
+				this.next();
 				while (this.hasNext()) {
-					if (!/[0-9]/.test(this.peek(0))) break;
+					if (!/[0-9]/.test(this.peek())) break;
 					value += this.next();
 				}
 				return token("f64", span(lo, this.pos), { value });
@@ -159,7 +171,7 @@ export class Lexer {
 		if (/[a-zA-Z_]/.test(c)) {
 			let value = c;
 			while (this.hasNext()) {
-				if (!/[a-zA-Z_]/.test(this.peek(0))) break;
+				if (!/[a-zA-Z_/]/.test(this.peek())) break;
 				value += this.next();
 			}
 			return token("ident", span(lo, this.pos), { value });

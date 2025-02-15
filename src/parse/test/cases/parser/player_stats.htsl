@@ -1,0 +1,3 @@
+stat x = 5
+stat y = stat x
+stat z = "%stat.player/y%

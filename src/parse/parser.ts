@@ -17,7 +17,7 @@ import {
 	type Token,
 	tokenToString,
 } from "./token.js";
-import { span, type Spanned } from "../types/span.js";
+import { type Span, span } from "../types/span.js";
 import { Diagnostic } from "../types/diagnostic.js";
 import type { Amount, Mode } from "../action/action.js";
 
@@ -184,6 +184,9 @@ export class Parser {
 			// we check this because of: ""
 			throw Diagnostic.error("Stat name cannot be empty", this.token.span);
 		}
+		if (value.includes(" ")) {
+			throw Diagnostic.error("Stat name cannot contain spaces", this.token.span);
+		}
 
 		this.next();
 		return value;
@@ -327,7 +330,7 @@ export class Parser {
 		return seq;
 	}
 
-	parseSpanned<T>(parser: () => T): Spanned<T> {
+	parseSpanned<T>(parser: () => T): { value: T, span: Span } {
 		const lo = this.token.span.lo;
 		const value = parser();
 		const hi = this.prev.span.hi;

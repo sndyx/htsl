@@ -1,0 +1,19 @@
+stat x = 5
+stat y = stat x // set y to x
+
+// now, we print y
+chat "%stat.player/y%"
+
+/*
+and we provide a complex explanation
+*/
+
+stat z = 10
+
+/*
+/*
+and we get some silly comment nesting going on!
+*/
+*/
+
+chat "%stat.player/z%"

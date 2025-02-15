@@ -39,6 +39,7 @@ export class SignatureHelpAdapter implements languages.SignatureHelpProvider {
         if (model.isDisposed()) return;
 
         const help = htsl.getSignatureHelp(model.getValue(), model.getOffsetAt(position));
+        console.log(help);
         if (!help) return;
 
         const parameters = help.parameters.map(param => `[${param}]`);

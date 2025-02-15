@@ -1,0 +1,234 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Parser > error invalid stat actions 1`] = `
+[
+  {
+    "level": "error",
+    "message": "Expected stat name",
+    "span": {
+      "hi": 5,
+      "lo": 5,
+    },
+  },
+  {
+    "level": "error",
+    "message": "expected amount",
+    "span": {
+      "hi": 28,
+      "lo": 19,
+    },
+  },
+  {
+    "level": "error",
+    "message": "Expected operation",
+    "span": {
+      "hi": 38,
+      "lo": 37,
+    },
+  },
+  {
+    "level": "error",
+    "message": "Expected stat name",
+    "span": {
+      "hi": 44,
+      "lo": 44,
+    },
+  },
+]
+`;
+
+exports[`Parser > error invalid stat names 1`] = `
+[
+  {
+    "level": "error",
+    "message": "Stat name exceeds 16-character limit",
+    "span": {
+      "hi": 23,
+      "lo": 5,
+    },
+  },
+  {
+    "level": "error",
+    "message": "Stat name cannot be empty",
+    "span": {
+      "hi": 36,
+      "lo": 34,
+    },
+  },
+  {
+    "level": "error",
+    "message": "Stat name cannot contain spaces",
+    "span": {
+      "hi": 60,
+      "lo": 48,
+    },
+  },
+]
+`;
+
+exports[`Parser > error number above integer limit 1`] = `
+[
+  {
+    "level": "error",
+    "message": "Number exceeds 64-bit integer limit",
+    "span": {
+      "hi": 40,
+      "lo": 9,
+    },
+  },
+]
+`;
+
+exports[`Parser > parse global stats 1`] = `
+[
+  {
+    "amount": {
+      "span": {
+        "hi": 16,
+        "lo": 15,
+      },
+      "value": 5n,
+    },
+    "mode": {
+      "span": {
+        "hi": 13,
+        "lo": 13,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 12,
+        "lo": 11,
+      },
+      "value": "x",
+    },
+    "type": "CHANGE_GLOBAL_STAT",
+  },
+  {
+    "amount": {
+      "span": {
+        "hi": 45,
+        "lo": 33,
+      },
+      "value": "%stat.global/x%",
+    },
+    "mode": {
+      "span": {
+        "hi": 31,
+        "lo": 31,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 30,
+        "lo": 29,
+      },
+      "value": "y",
+    },
+    "type": "CHANGE_GLOBAL_STAT",
+  },
+  {
+    "amount": {
+      "span": {
+        "hi": 78,
+        "lo": 62,
+      },
+      "value": "%stat.global/y%",
+    },
+    "mode": {
+      "span": {
+        "hi": 60,
+        "lo": 60,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 59,
+        "lo": 58,
+      },
+      "value": "z",
+    },
+    "type": "CHANGE_GLOBAL_STAT",
+  },
+]
+`;
+
+exports[`Parser > parse player stats 1`] = `
+[
+  {
+    "amount": {
+      "span": {
+        "hi": 10,
+        "lo": 9,
+      },
+      "value": 5n,
+    },
+    "mode": {
+      "span": {
+        "hi": 7,
+        "lo": 7,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 6,
+        "lo": 5,
+      },
+      "value": "x",
+    },
+    "type": "CHANGE_STAT",
+  },
+  {
+    "amount": {
+      "span": {
+        "hi": 27,
+        "lo": 21,
+      },
+      "value": "%stat.player/x%",
+    },
+    "mode": {
+      "span": {
+        "hi": 19,
+        "lo": 19,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 18,
+        "lo": 17,
+      },
+      "value": "y",
+    },
+    "type": "CHANGE_STAT",
+  },
+  {
+    "amount": {
+      "span": {
+        "hi": 54,
+        "lo": 38,
+      },
+      "value": "%stat.player/y%",
+    },
+    "mode": {
+      "span": {
+        "hi": 36,
+        "lo": 36,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 35,
+        "lo": 34,
+      },
+      "value": "z",
+    },
+    "type": "CHANGE_STAT",
+  },
+]
+`;

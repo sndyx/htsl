@@ -3,15 +3,24 @@ export type Span = {
     hi: number
 };
 
-export type Spanned<T> = {
-    value: T,
-    span: Span
-};
-
 export function span(lo: number, hi: number) {
     return { lo, hi };
 }
 
-export function spanned<T>(value: T, span: Span) {
-    return { value, span };
+export type Spanned<T> = {
+    [K in keyof T]: K extends "type" ? T[K] : { value: T[K], span: Span };
+};
+
+export function unspanned<T>(spanned: Spanned<T>): T {
+    const result: any = {};
+
+    for (const key in spanned) {
+        if (key === "type") {
+            result[key] = spanned[key];
+        } else {
+            result[key] = (spanned[key] as { value: any }).value;
+        }
+    }
+
+    return result as T;
 }

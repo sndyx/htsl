@@ -1,0 +1,5 @@
+stat myIdentifier = 5
+stat my/structured/identifier = 10
+
+stat myIdentifier /= stat my/structured/identifier
+stat now_with_underscores = 100

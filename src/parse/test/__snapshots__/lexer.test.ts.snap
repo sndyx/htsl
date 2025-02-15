@@ -1,0 +1,503 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Lexer > comments 1`] = `
+[
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 4,
+      "lo": 0,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 6,
+      "lo": 5,
+    },
+    "value": "x",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 7,
+      "lo": 7,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 10,
+      "lo": 9,
+    },
+    "value": "5",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 16,
+      "lo": 12,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 18,
+      "lo": 17,
+    },
+    "value": "y",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 19,
+      "lo": 19,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 25,
+      "lo": 21,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 27,
+      "lo": 26,
+    },
+    "value": "x",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 69,
+      "lo": 65,
+    },
+    "value": "chat",
+  },
+  {
+    "kind": "str",
+    "span": {
+      "hi": 87,
+      "lo": 70,
+    },
+    "value": "%stat.player/y%",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 143,
+      "lo": 139,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 145,
+      "lo": 144,
+    },
+    "value": "z",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 146,
+      "lo": 146,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 150,
+      "lo": 148,
+    },
+    "value": "10",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 225,
+      "lo": 221,
+    },
+    "value": "chat",
+  },
+  {
+    "kind": "str",
+    "span": {
+      "hi": 243,
+      "lo": 226,
+    },
+    "value": "%stat.player/z%",
+  },
+]
+`;
+
+exports[`Lexer > identifiers 1`] = `
+[
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 4,
+      "lo": 0,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 17,
+      "lo": 5,
+    },
+    "value": "myIdentifier",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 18,
+      "lo": 18,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 21,
+      "lo": 20,
+    },
+    "value": "5",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 27,
+      "lo": 23,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 52,
+      "lo": 28,
+    },
+    "value": "my/structured/identifier",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 53,
+      "lo": 53,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 57,
+      "lo": 55,
+    },
+    "value": "10",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 65,
+      "lo": 61,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 78,
+      "lo": 66,
+    },
+    "value": "myIdentifier",
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "slash",
+    "span": {
+      "hi": 81,
+      "lo": 79,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 86,
+      "lo": 82,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 111,
+      "lo": 87,
+    },
+    "value": "my/structured/identifier",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 117,
+      "lo": 113,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 138,
+      "lo": 118,
+    },
+    "value": "now_with_underscores",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 139,
+      "lo": 139,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 144,
+      "lo": 141,
+    },
+    "value": "100",
+  },
+]
+`;
+
+exports[`Lexer > tokens 1`] = `
+[
+  {
+    "kind": "comma",
+    "span": {
+      "hi": 0,
+      "lo": 0,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "plus",
+    "span": {
+      "hi": 3,
+      "lo": 3,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "minus",
+    "span": {
+      "hi": 6,
+      "lo": 6,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "star",
+    "span": {
+      "hi": 9,
+      "lo": 9,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "slash",
+    "span": {
+      "hi": 13,
+      "lo": 12,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "star_star",
+    "span": {
+      "hi": 16,
+      "lo": 15,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "plus",
+    "span": {
+      "hi": 20,
+      "lo": 19,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "minus",
+    "span": {
+      "hi": 24,
+      "lo": 23,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "star",
+    "span": {
+      "hi": 28,
+      "lo": 27,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "slash",
+    "span": {
+      "hi": 33,
+      "lo": 31,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "greater_than",
+    "span": {
+      "hi": 35,
+      "lo": 35,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "less_than",
+    "span": {
+      "hi": 38,
+      "lo": 38,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equal",
+    "span": {
+      "hi": 41,
+      "lo": 41,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "greater_than",
+    "span": {
+      "hi": 45,
+      "lo": 44,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "less_than",
+    "span": {
+      "hi": 49,
+      "lo": 48,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "equal",
+    "span": {
+      "hi": 53,
+      "lo": 52,
+    },
+  },
+  {
+    "delim": "parenthesis",
+    "kind": "open_delim",
+    "span": {
+      "hi": 56,
+      "lo": 56,
+    },
+  },
+  {
+    "delim": "brace",
+    "kind": "open_delim",
+    "span": {
+      "hi": 59,
+      "lo": 59,
+    },
+  },
+  {
+    "delim": "bracket",
+    "kind": "open_delim",
+    "span": {
+      "hi": 62,
+      "lo": 62,
+    },
+  },
+  {
+    "delim": "parenthesis",
+    "kind": "close_delim",
+    "span": {
+      "hi": 65,
+      "lo": 65,
+    },
+  },
+  {
+    "delim": "brace",
+    "kind": "close_delim",
+    "span": {
+      "hi": 68,
+      "lo": 68,
+    },
+  },
+  {
+    "delim": "bracket",
+    "kind": "close_delim",
+    "span": {
+      "hi": 71,
+      "lo": 71,
+    },
+  },
+  {
+    "kind": "str",
+    "span": {
+      "hi": 82,
+      "lo": 74,
+    },
+    "value": "string",
+  },
+  {
+    "kind": "placeholder",
+    "span": {
+      "hi": 97,
+      "lo": 84,
+    },
+    "value": "placeholder",
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "hi": 104,
+      "lo": 99,
+    },
+    "value": "12345",
+  },
+  {
+    "kind": "f64",
+    "span": {
+      "hi": 112,
+      "lo": 106,
+    },
+    "value": "1.2345",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "hi": 124,
+      "lo": 114,
+    },
+    "value": "identifier",
+  },
+]
+`;
