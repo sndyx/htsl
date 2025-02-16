@@ -1,14 +1,7 @@
 import type { CompileCtx } from "../context.js";
 import { isAction, partialEq } from "../helpers.js";
-import type {
-	Action,
-	ActionChangeGlobalStat,
-	ActionChangeHealth,
-	ActionChangeStat,
-	ActionChangeTeamStat, ActionConditional,
-	ActionMessage,
-	ActionTitle
-} from "../action/action.js";
+import type { Action } from "housing-common/src/actions/actions.js";
+import type { Mode, Amount } from "housing-common/src/actions/types.js";
 import type { Lexer } from "./lexer.js";
 import {
 	type Delimiter,
@@ -17,9 +10,8 @@ import {
 	type Token,
 	tokenToString,
 } from "./token.js";
-import { type Span, span } from "../types/span.js";
-import { Diagnostic } from "../types/diagnostic.js";
-import type { Amount, Mode } from "../action/action.js";
+import { type Span, span } from "./span.js";
+import { Diagnostic } from "./diagnostic.js";
 
 export class Parser {
 	ctx: CompileCtx;
@@ -83,7 +75,7 @@ export class Parser {
 		return undefined;
 	}
 
-	parseActionChangeStat(): ActionChangeStat {
+	parseActionChangeStat(): Action {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
 			stat = this.parseSpanned(() => this.parseStatName());
@@ -94,7 +86,7 @@ export class Parser {
 		return { type: "CHANGE_STAT", stat, mode, amount };
 	}
 
-	parseActionChangeGlobalStat(): ActionChangeGlobalStat {
+	parseActionChangeGlobalStat(): Action {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
 			stat = this.parseSpanned(() => this.parseStatName());
@@ -105,7 +97,7 @@ export class Parser {
 		return { type: "CHANGE_GLOBAL_STAT", stat, mode, amount };
 	}
 
-	parseActionChangeTeamStat(): ActionChangeTeamStat {
+	parseActionChangeTeamStat(): Action {
 		let stat, team, mode, amount;
 		this.parseRecovering(() => {
 			stat = this.parseSpanned(() => this.parseStatName());
@@ -117,7 +109,7 @@ export class Parser {
 		return { type: "CHANGE_TEAM_STAT", stat, team, mode, amount };
 	}
 
-	parseActionChangeHealth(): ActionChangeHealth {
+	parseActionChangeHealth(): Action {
 		let mode, health;
 		this.parseRecovering(() => {
 			mode = this.parseSpanned(() => this.parseStatMode());
@@ -127,7 +119,7 @@ export class Parser {
 		return { type: "CHANGE_HEALTH", mode, health };
 	}
 
-	parseActionTitle(): ActionTitle {
+	parseActionTitle(): Action {
 		let title, subtitle, fadein, stay, fadeout;
 		this.parseRecovering(() => {
 			title = this.parseSpanned(() => this.parseStr());
@@ -141,7 +133,7 @@ export class Parser {
 		return { type: "TITLE", title, subtitle, fadein, stay, fadeout };
 	}
 
-	parseActionMessage(): ActionMessage {
+	parseActionMessage(): Action {
 		let message;
 		this.parseRecovering(() => {
 			message = this.parseSpanned(() => this.parseStr());
@@ -150,10 +142,10 @@ export class Parser {
 		return { type: "MESSAGE", message };
 	}
 
-	parseActionConditional(): ActionConditional {
-		let mode, conditions, ifActions, elseActions;
+	parseActionConditional(): Action {
+		let matchAny, conditions, ifActions, elseActions;
 		this.parseRecovering(() => {
-			mode = this.parseSpanned(() => {
+			matchAny = this.parseSpanned(() => {
 				this.eatIdent("and");
 				return this.eatIdent("or");
 			});
@@ -169,7 +161,7 @@ export class Parser {
 			}
 		});
 
-		return { type: "CONDITIONAL", mode, conditions, ifActions, elseActions };
+		return { type: "CONDITIONAL", matchAny, ifActions, elseActions };
 	}
 
 	parseStatName(): string {

@@ -1,5 +1,5 @@
-import type { Span } from "../types/span.js";
-import { Diagnostic } from "../types/diagnostic.js";
+import type { Span } from "./span.js";
+import { Diagnostic } from "./diagnostic.js";
 
 export type Token = TokenType & { span: Span };
 

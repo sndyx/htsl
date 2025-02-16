@@ -9,8 +9,6 @@
     "vscode": "^1.97.2"
   },
   "scripts": {
-    "compile": "vite build",
-    "watch": "vite build --watch",
     "build": "vite build --mode production",
     "package": "vsce package"
   },

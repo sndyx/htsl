@@ -12,7 +12,6 @@
 
     /* Strictness */
     "strict": true,
-    "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
     /* If transpiling with TypeScript: */

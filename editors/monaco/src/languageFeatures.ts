@@ -155,6 +155,25 @@ export class DiagnosticsAdapter {
     }
 }
 
+// --- completions ---
+
+export class CompletionItemAdapter implements languages.CompletionItemProvider {
+
+    triggerCharacters = [" "];
+
+    provideCompletionItems(
+        model: editor.ITextModel,
+        position: Position,
+        // context: languages.CompletionContext,
+        // token: CancellationToken
+    ): languages.ProviderResult<languages.CompletionList> {
+        model.getValue();
+
+        return undefined;
+    }
+
+}
+
 // --- hover ---
 
 // --- rename ---

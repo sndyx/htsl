@@ -1,10 +1,9 @@
 import { Lexer } from "./parse/lexer.js";
 import { Parser } from "./parse/parser.js";
 import { CompileCtx } from "./context.js";
-import type { Action } from "./action/action.js";
+import type { Action } from "housing-common/src/actions/actions.js";
 import type { InlayHint, SignatureHint } from "./types/editor.js";
-import type { Diagnostic } from "./types/diagnostic.js";
-import type { Span } from "./types/span.js";
+import type { Diagnostic, Span } from "./parse/index.js";
 import { ACTION_NAMES } from "./helpers.js";
 
 export function getActions(src: string): Array<Action> {

@@ -11,6 +11,9 @@
   },
   "type": "module",
   "license": "MIT",
+  "dependencies": {
+    "housing-common": "file:../housing-common"
+  },
   "devDependencies": {
     "@types/node": "^22.13.0",
     "tsx": "^4.19.2",
