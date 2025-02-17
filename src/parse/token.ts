@@ -1,4 +1,4 @@
-import type { Span } from "./span.js";
+import type { Span } from "./meta.js";
 import { Diagnostic } from "./diagnostic.js";
 
 export type Token = TokenType & { span: Span };

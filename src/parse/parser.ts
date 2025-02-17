@@ -10,7 +10,7 @@ import {
 	type Token,
 	tokenToString,
 } from "./token.js";
-import { type Span, span } from "./span.js";
+import { type SemanticType, type Span, span } from "./meta.js";
 import { Diagnostic } from "./diagnostic.js";
 
 export class Parser {
@@ -78,9 +78,9 @@ export class Parser {
 	parseActionChangeStat(): Action {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
+			stat = this.parseMeta("stat_name", () => this.parseStatName());
+			mode = this.parseMeta("mode", () => this.parseStatMode());
+			amount = this.parseMeta("amount", () => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_STAT", stat, mode, amount };
@@ -89,9 +89,9 @@ export class Parser {
 	parseActionChangeGlobalStat(): Action {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
+			stat = this.parseMeta("global_stat_name", () => this.parseStatName());
+			mode = this.parseMeta("mode", () => this.parseStatMode());
+			amount = this.parseMeta("amount", () => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_GLOBAL_STAT", stat, mode, amount };
@@ -100,34 +100,34 @@ export class Parser {
 	parseActionChangeTeamStat(): Action {
 		let stat, team, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			team = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
+			stat = this.parseMeta("team_stat_name", () => this.parseStatName());
+			team = this.parseMeta("team_name", () => this.parseStatName());
+			mode = this.parseMeta("mode", () => this.parseStatMode());
+			amount = this.parseMeta("amount", () => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_TEAM_STAT", stat, team, mode, amount };
 	}
 
 	parseActionChangeHealth(): Action {
-		let mode, health;
+		let mode, amount;
 		this.parseRecovering(() => {
-			mode = this.parseSpanned(() => this.parseStatMode());
-			health = this.parseSpanned(() => this.parseStatAmount());
+			mode = this.parseMeta("mode", () => this.parseStatMode());
+			amount = this.parseMeta("amount", () => this.parseStatAmount());
 		});
 
-		return { type: "CHANGE_HEALTH", mode, health };
+		return { type: "CHANGE_HEALTH", mode, amount };
 	}
 
 	parseActionTitle(): Action {
 		let title, subtitle, fadein, stay, fadeout;
 		this.parseRecovering(() => {
-			title = this.parseSpanned(() => this.parseStr());
-			subtitle = this.parseSpanned(() => this.parseStr());
+			title = this.parseMeta("string", () => this.parseStr());
+			subtitle = this.parseMeta("string", () => this.parseStr());
 
-			fadein = this.parseSpanned(() => this.parseI64());
-			stay = this.parseSpanned(() => this.parseI64());
-			fadeout = this.parseSpanned(() => this.parseI64());
+			fadein = this.parseMeta("amount", () => this.parseI64());
+			stay = this.parseMeta("amount", () => this.parseI64());
+			fadeout = this.parseMeta("amount", () => this.parseI64());
 		});
 
 		return { type: "TITLE", title, subtitle, fadein, stay, fadeout };
@@ -136,7 +136,7 @@ export class Parser {
 	parseActionMessage(): Action {
 		let message;
 		this.parseRecovering(() => {
-			message = this.parseSpanned(() => this.parseStr());
+			message = this.parseMeta("string", () => this.parseStr());
 		});
 
 		return { type: "MESSAGE", message };
@@ -145,19 +145,19 @@ export class Parser {
 	parseActionConditional(): Action {
 		let matchAny, conditions, ifActions, elseActions;
 		this.parseRecovering(() => {
-			matchAny = this.parseSpanned(() => {
+			matchAny = this.parseMeta("keyword", () => {
 				this.eatIdent("and");
 				return this.eatIdent("or");
 			});
 
-			conditions = this.parseSpanned(() => this.parseDelimitedCommaSeq("parenthesis", () => {
+			conditions = this.parseMeta("conditions", () => this.parseDelimitedCommaSeq("parenthesis", () => {
 				return "";
 			}));
 
-			ifActions = this.parseSpanned(() => this.parseBlock());
+			ifActions = this.parseMeta("block", () => this.parseBlock());
 
 			if (this.eatIdent("else")) {
-				elseActions = this.parseSpanned(() => this.parseBlock());
+				elseActions = this.parseMeta("block", () => this.parseBlock());
 			}
 		});
 
@@ -322,12 +322,14 @@ export class Parser {
 		return seq;
 	}
 
-	parseSpanned<T>(parser: () => T): { value: T, span: Span } {
+	parseMeta<T>(
+		type: SemanticType, parser: () => T
+	): { value: T, span: Span, type: SemanticType } {
 		const lo = this.token.span.lo;
 		const value = parser();
 		const hi = this.prev.span.hi;
 
-		return { value, span: span(lo, hi) };
+		return { value, span: span(lo, hi), type };
 	}
 
 	eatOption(value: string): boolean {

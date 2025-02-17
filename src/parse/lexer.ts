@@ -1,4 +1,4 @@
-import { span } from "./span.js";
+import { span } from "./meta.js";
 import { token, type Token } from "./token.js";
 import { Diagnostic } from "./diagnostic.js";
 

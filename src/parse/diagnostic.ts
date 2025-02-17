@@ -1,4 +1,4 @@
-import type { Span } from "./span.js";
+import type { Span } from "./meta.js";
 
 export class Diagnostic extends Error {
     level: Level;
