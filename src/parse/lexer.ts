@@ -1,4 +1,4 @@
-import { span } from "./meta.js";
+import { span } from "./span.js";
 import { token, type Token } from "./token.js";
 import { Diagnostic } from "./diagnostic.js";
 
@@ -13,7 +13,7 @@ export class Lexer {
 
 	advanceToken(): Token {
 		// eat whitespace
-		while (this.hasNext() && /^\s+$/.test(this.peek())) {
+		while (this.hasNext() && /^\s+$/.test(this.peek()) && this.peek() != "\n") {
 			this.next();
 		}
 		if (!this.hasNext()) return token("eof", span(this.pos, this.pos));
@@ -112,10 +112,8 @@ export class Lexer {
 		}
 
 		// delimiters
-		if (c === "(")
-			return token("open_delim", singleSpan, { delim: "parenthesis" });
-		if (c === ")")
-			return token("close_delim", singleSpan, { delim: "parenthesis" });
+		if (c === "(") return token("open_delim", singleSpan, { delim: "parenthesis" });
+		if (c === ")") return token("close_delim", singleSpan, { delim: "parenthesis" });
 		if (c === "{") return token("open_delim", singleSpan, { delim: "brace" });
 		if (c === "}") return token("close_delim", singleSpan, { delim: "brace" });
 		if (c === "[") return token("open_delim", singleSpan, { delim: "bracket" });
@@ -176,6 +174,8 @@ export class Lexer {
 			}
 			return token("ident", span(lo, this.pos), { value });
 		}
+
+		if (c === "\n") return token("eol", span(lo, lo));
 
 		throw Diagnostic.error(`unknown token "${c}"`, span(lo, lo)); // Eventually turn this into a diagnostic
 	}

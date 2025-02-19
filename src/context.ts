@@ -1,4 +1,4 @@
-import type { Diagnostic } from "./types/diagnostic.js";
+import type { Diagnostic } from "./parse/index.js";
 
 export class CompileCtx {
 

@@ -39,7 +39,6 @@ export class SignatureHelpAdapter implements languages.SignatureHelpProvider {
         if (model.isDisposed()) return;
 
         const help = htsl.getSignatureHelp(model.getValue(), model.getOffsetAt(position));
-        console.log(help);
         if (!help) return;
 
         const parameters = help.parameters.map(param => `[${param}]`);
@@ -158,8 +157,7 @@ export class DiagnosticsAdapter {
 // --- completions ---
 
 export class CompletionItemAdapter implements languages.CompletionItemProvider {
-
-    triggerCharacters = [" "];
+    triggerCharacters = [" "]
 
     provideCompletionItems(
         model: editor.ITextModel,
@@ -167,11 +165,29 @@ export class CompletionItemAdapter implements languages.CompletionItemProvider {
         // context: languages.CompletionContext,
         // token: CancellationToken
     ): languages.ProviderResult<languages.CompletionList> {
-        model.getValue();
+        const completions = htsl.getCompletions(model.getValue(), model.getOffsetAt(position));
+        console.log(completions);
+        if (!completions) return;
 
-        return undefined;
+        return {
+            suggestions: completions.map(it => {
+                const start = model.getPositionAt(it.span.lo);
+                const end = model.getPositionAt(it.span.hi);
+                return {
+                    label: it.label,
+                    kind: languages.CompletionItemKind.Text,
+                    insertText: it.label,
+                    range: {
+                        startColumn: start.column,
+                        startLineNumber: start.lineNumber,
+                        endColumn: end.column,
+                        endLineNumber: end.lineNumber
+                    }
+                }
+            }),
+            dispose() {}
+        };
     }
-
 }
 
 // --- hover ---

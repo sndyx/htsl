@@ -1,6 +1,5 @@
 import type { CompileCtx } from "../context.js";
 import { isAction, partialEq } from "../helpers.js";
-import type { Action } from "housing-common/src/actions/actions.js";
 import type { Mode, Amount } from "housing-common/src/actions/types.js";
 import type { Lexer } from "./lexer.js";
 import {
@@ -10,8 +9,9 @@ import {
 	type Token,
 	tokenToString,
 } from "./token.js";
-import { type SemanticType, type Span, span } from "./meta.js";
+import { type Span, span } from "./span.js";
 import { Diagnostic } from "./diagnostic.js";
+import type { IrAction, UnspannedIrAction } from "./ir.js";
 
 export class Parser {
 	ctx: CompileCtx;
@@ -28,12 +28,18 @@ export class Parser {
 		this.next();
 	}
 
-	parseCompletely(): Array<Action> {
+	parseCompletely(): Array<IrAction> {
 		const actions = [];
 		while (true) {
 			try {
+				this.eatNewlines();
 				const action = this.parseAction();
 				if (!action) break;
+				if (!this.eat("eol") && !this.eat("eof")) {
+					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
+				} else {
+					action.span.hi = this.prev.span.hi;
+				}
 				actions.push(action);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);
@@ -43,7 +49,15 @@ export class Parser {
 		return actions;
 	}
 
-	parseAction(): Action | undefined {
+	parseAction(): IrAction | undefined {
+		const lo = this.token.span.lo;
+		const action = this.parseActionUnspanned();
+		if (!action) return;
+
+		return { span: span(lo, this.prev.span.hi), ...action };
+	}
+
+	parseActionUnspanned(): UnspannedIrAction | undefined {
 		if (this.eatIdent("stat")) {
 			return this.parseActionChangeStat();
 		}
@@ -75,89 +89,89 @@ export class Parser {
 		return undefined;
 	}
 
-	parseActionChangeStat(): Action {
+	parseActionChangeStat(): UnspannedIrAction {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseMeta("stat_name", () => this.parseStatName());
-			mode = this.parseMeta("mode", () => this.parseStatMode());
-			amount = this.parseMeta("amount", () => this.parseStatAmount());
+			stat = this.parseSpanned(() => this.parseStatName());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_STAT", stat, mode, amount };
 	}
 
-	parseActionChangeGlobalStat(): Action {
+	parseActionChangeGlobalStat(): UnspannedIrAction {
 		let stat, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseMeta("global_stat_name", () => this.parseStatName());
-			mode = this.parseMeta("mode", () => this.parseStatMode());
-			amount = this.parseMeta("amount", () => this.parseStatAmount());
+			stat = this.parseSpanned(() => this.parseStatName());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_GLOBAL_STAT", stat, mode, amount };
 	}
 
-	parseActionChangeTeamStat(): Action {
+	parseActionChangeTeamStat(): UnspannedIrAction {
 		let stat, team, mode, amount;
 		this.parseRecovering(() => {
-			stat = this.parseMeta("team_stat_name", () => this.parseStatName());
-			team = this.parseMeta("team_name", () => this.parseStatName());
-			mode = this.parseMeta("mode", () => this.parseStatMode());
-			amount = this.parseMeta("amount", () => this.parseStatAmount());
+			stat = this.parseSpanned(() => this.parseStatName());
+			team = this.parseSpanned(() => this.parseStatName());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_TEAM_STAT", stat, team, mode, amount };
 	}
 
-	parseActionChangeHealth(): Action {
+	parseActionChangeHealth(): UnspannedIrAction {
 		let mode, amount;
 		this.parseRecovering(() => {
-			mode = this.parseMeta("mode", () => this.parseStatMode());
-			amount = this.parseMeta("amount", () => this.parseStatAmount());
+			mode = this.parseSpanned(() => this.parseStatMode());
+			amount = this.parseSpanned(() => this.parseStatAmount());
 		});
 
 		return { type: "CHANGE_HEALTH", mode, amount };
 	}
 
-	parseActionTitle(): Action {
+	parseActionTitle(): UnspannedIrAction {
 		let title, subtitle, fadein, stay, fadeout;
 		this.parseRecovering(() => {
-			title = this.parseMeta("string", () => this.parseStr());
-			subtitle = this.parseMeta("string", () => this.parseStr());
+			title = this.parseSpanned(() => this.parseStr());
+			subtitle = this.parseSpanned(() => this.parseStr());
 
-			fadein = this.parseMeta("amount", () => this.parseI64());
-			stay = this.parseMeta("amount", () => this.parseI64());
-			fadeout = this.parseMeta("amount", () => this.parseI64());
+			fadein = this.parseSpanned(() => this.parseI64());
+			stay = this.parseSpanned(() => this.parseI64());
+			fadeout = this.parseSpanned(() => this.parseI64());
 		});
 
 		return { type: "TITLE", title, subtitle, fadein, stay, fadeout };
 	}
 
-	parseActionMessage(): Action {
+	parseActionMessage(): UnspannedIrAction {
 		let message;
 		this.parseRecovering(() => {
-			message = this.parseMeta("string", () => this.parseStr());
+			message = this.parseSpanned(() => this.parseStr());
 		});
 
 		return { type: "MESSAGE", message };
 	}
 
-	parseActionConditional(): Action {
+	parseActionConditional(): UnspannedIrAction {
 		let matchAny, conditions, ifActions, elseActions;
 		this.parseRecovering(() => {
-			matchAny = this.parseMeta("keyword", () => {
+			matchAny = this.parseSpanned(() => {
 				this.eatIdent("and");
 				return this.eatIdent("or");
 			});
 
-			conditions = this.parseMeta("conditions", () => this.parseDelimitedCommaSeq("parenthesis", () => {
+			conditions = this.parseSpanned(() => this.parseDelimitedCommaSeq("parenthesis", () => {
 				return "";
 			}));
 
-			ifActions = this.parseMeta("block", () => this.parseBlock());
+			ifActions = this.parseSpanned(() => this.parseBlock());
 
 			if (this.eatIdent("else")) {
-				elseActions = this.parseMeta("block", () => this.parseBlock());
+				elseActions = this.parseSpanned(() => this.parseBlock());
 			}
 		});
 
@@ -203,7 +217,8 @@ export class Parser {
 		if (this.check("str") || this.check("ident")) {
 			throw Diagnostic.error("Expected operation (increment, decrement, multiply, divide, set)", this.token.span);
 		}
-		throw Diagnostic.error("Expected operation", this.token.span);
+		this.ctx.emit(Diagnostic.error("Expected operation", this.token.span));
+		return "set";
 	}
 
 	parseStatAmount(): Amount {
@@ -288,15 +303,19 @@ export class Parser {
 		}
 	}
 
-	parseBlock(): Array<Action> {
+	parseBlock(): Array<IrAction> {
 		const actions = [];
 		this.expect({ kind: "open_delim", delim: "brace" });
 		while (true) {
 			if (this.check("eof")) throw Diagnostic.error("expected }");
 			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
 			try {
+				this.eatNewlines();
 				const action = this.parseAction();
 				if (!action) break;
+				if (!this.eat("eol") && !this.check({ kind: "close_delim", delim: "brace" })) {
+					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
+				}
 				actions.push(action);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);
@@ -322,14 +341,12 @@ export class Parser {
 		return seq;
 	}
 
-	parseMeta<T>(
-		type: SemanticType, parser: () => T
-	): { value: T, span: Span, type: SemanticType } {
+	parseSpanned<T>(parser: () => T): { value: T, span: Span } {
 		const lo = this.token.span.lo;
 		const value = parser();
 		const hi = this.prev.span.hi;
 
-		return { value, span: span(lo, hi), type };
+		return { value, span: span(lo, hi) };
 	}
 
 	eatOption(value: string): boolean {
@@ -341,12 +358,13 @@ export class Parser {
 		return this.eat({ kind: "ident", value });
 	}
 
+	eatNewlines() {
+		while (this.eat("eol")) { /* Ignore */ }
+	}
+
 	recover() {
 		while (true) {
-			if (
-				this.check("eof")
-				|| (this.token.kind === "ident" && isAction(this.token.value))
-			) return;
+			if (this.check("eol") || this.check("eof")) return;
 			this.next();
 		}
 	}
