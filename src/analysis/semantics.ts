@@ -25,7 +25,7 @@ export const SEMANTIC_DESCRIPTORS: {
         ifActions: "block",
         elseActions: "block"
     },
-    CHANGE_GROUP: {
+    SET_GROUP: {
         group: "string",
         demotionProtection: "boolean"
     },

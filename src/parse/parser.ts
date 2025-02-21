@@ -1,5 +1,5 @@
 import type { CompileCtx } from "../context.js";
-import { isAction, partialEq } from "../helpers.js";
+import { partialEq } from "../helpers.js";
 import type { Mode, Amount } from "housing-common/src/actions/types.js";
 import type { Lexer } from "./lexer.js";
 import {
@@ -11,7 +11,8 @@ import {
 } from "./token.js";
 import { type Span, span } from "./span.js";
 import { Diagnostic } from "./diagnostic.js";
-import type { IrAction, UnspannedIrAction } from "./ir.js";
+import type { IrAction } from "./ir.js";
+import { parseAction } from "./actions.js";
 
 export class Parser {
 	ctx: CompileCtx;
@@ -33,12 +34,10 @@ export class Parser {
 		while (true) {
 			try {
 				this.eatNewlines();
-				const action = this.parseAction();
+				const action = parseAction(this);
 				if (!action) break;
 				if (!this.eat("eol") && !this.eat("eof")) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
-				} else {
-					action.span.hi = this.prev.span.hi;
 				}
 				actions.push(action);
 			} catch (e) {
@@ -47,135 +46,6 @@ export class Parser {
 			}
 		}
 		return actions;
-	}
-
-	parseAction(): IrAction | undefined {
-		const lo = this.token.span.lo;
-		const action = this.parseActionUnspanned();
-		if (!action) return;
-
-		return { span: span(lo, this.prev.span.hi), ...action };
-	}
-
-	parseActionUnspanned(): UnspannedIrAction | undefined {
-		if (this.eatIdent("stat")) {
-			return this.parseActionChangeStat();
-		}
-		if (this.eatIdent("globalstat")) {
-			return this.parseActionChangeGlobalStat();
-		}
-		if (this.eatIdent("teamstat")) {
-			return this.parseActionChangeTeamStat();
-		}
-		if (this.eatIdent("changeHealth")) {
-			return this.parseActionChangeHealth();
-		}
-		if (this.eatIdent("title")) {
-			return this.parseActionTitle();
-		}
-		if (this.eatIdent("chat")) {
-			return this.parseActionMessage();
-		}
-		if (this.eatIdent("if")) {
-			return this.parseActionConditional();
-		}
-
-		if (this.check("ident")) {
-			throw Diagnostic.error("Unknown action", this.token.span);
-		}
-		if (!this.check("eof")) {
-			throw Diagnostic.error("Expected action", this.token.span);
-		}
-		return undefined;
-	}
-
-	parseActionChangeStat(): UnspannedIrAction {
-		let stat, mode, amount;
-		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
-		});
-
-		return { type: "CHANGE_STAT", stat, mode, amount };
-	}
-
-	parseActionChangeGlobalStat(): UnspannedIrAction {
-		let stat, mode, amount;
-		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
-		});
-
-		return { type: "CHANGE_GLOBAL_STAT", stat, mode, amount };
-	}
-
-	parseActionChangeTeamStat(): UnspannedIrAction {
-		let stat, team, mode, amount;
-		this.parseRecovering(() => {
-			stat = this.parseSpanned(() => this.parseStatName());
-			team = this.parseSpanned(() => this.parseStatName());
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
-		});
-
-		return { type: "CHANGE_TEAM_STAT", stat, team, mode, amount };
-	}
-
-	parseActionChangeHealth(): UnspannedIrAction {
-		let mode, amount;
-		this.parseRecovering(() => {
-			mode = this.parseSpanned(() => this.parseStatMode());
-			amount = this.parseSpanned(() => this.parseStatAmount());
-		});
-
-		return { type: "CHANGE_HEALTH", mode, amount };
-	}
-
-	parseActionTitle(): UnspannedIrAction {
-		let title, subtitle, fadein, stay, fadeout;
-		this.parseRecovering(() => {
-			title = this.parseSpanned(() => this.parseStr());
-			subtitle = this.parseSpanned(() => this.parseStr());
-
-			fadein = this.parseSpanned(() => this.parseI64());
-			stay = this.parseSpanned(() => this.parseI64());
-			fadeout = this.parseSpanned(() => this.parseI64());
-		});
-
-		return { type: "TITLE", title, subtitle, fadein, stay, fadeout };
-	}
-
-	parseActionMessage(): UnspannedIrAction {
-		let message;
-		this.parseRecovering(() => {
-			message = this.parseSpanned(() => this.parseStr());
-		});
-
-		return { type: "MESSAGE", message };
-	}
-
-	parseActionConditional(): UnspannedIrAction {
-		let matchAny, conditions, ifActions, elseActions;
-		this.parseRecovering(() => {
-			matchAny = this.parseSpanned(() => {
-				this.eatIdent("and");
-				return this.eatIdent("or");
-			});
-
-			conditions = this.parseSpanned(() => this.parseDelimitedCommaSeq("parenthesis", () => {
-				return "";
-			}));
-
-			ifActions = this.parseSpanned(() => this.parseBlock());
-
-			if (this.eatIdent("else")) {
-				elseActions = this.parseSpanned(() => this.parseBlock());
-			}
-		});
-
-		return { type: "CONDITIONAL", matchAny, ifActions, elseActions };
 	}
 
 	parseStatName(): string {
@@ -253,6 +123,14 @@ export class Parser {
 		throw Diagnostic.error("expected amount", this.token.span);
 	}
 
+	parseBoolean(): boolean {
+		let value;
+		if (this.eatIdent("true")) value = true;
+		if (this.eatIdent("false")) value = false;
+		if (!value) throw Diagnostic.error("expected true/false value", this.token.span);
+		return value;
+	}
+
 	parseStr(): string {
 		this.expect("str");
 		return (this.prev as StrKind).value;
@@ -311,7 +189,7 @@ export class Parser {
 			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
 			try {
 				this.eatNewlines();
-				const action = this.parseAction();
+				const action = parseAction(this);
 				if (!action) break;
 				if (!this.eat("eol") && !this.check({ kind: "close_delim", delim: "brace" })) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
