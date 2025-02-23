@@ -21,7 +21,7 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
         "maxHealth", "changePlayerGroup", "clearEffects", "closeMenu", "actionBar", "displayMenu",
         "title", "enchant", "exit", "failParkour", "fullHeal", "xpLevel", "giveItem", "houseSpawn",
         "kill", "parkCheck", "pause", "sound", "removeItem", "resetInventory", "chat", "lobby",
-        "compassTarget", "gamemode", "setTeam", "tp", "consumeItem"
+        "compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "setVelocity"
     ],
 
     conditions: [

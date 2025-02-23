@@ -1,6 +1,6 @@
 import type { CompileCtx } from "../context.js";
 import { partialEq } from "../helpers.js";
-import type { Mode, Amount } from "housing-common/src/actions/types.js";
+import type { Mode, Amount, Location } from "housing-common/src/actions/types.js";
 import type { Lexer } from "./lexer.js";
 import {
 	type Delimiter,
@@ -46,6 +46,20 @@ export class Parser {
 			}
 		}
 		return actions;
+	}
+
+	parseLocation(): Location {
+		if (
+			this.eatIdent("custom_location") || this.eat({ kind: "str", value: "custom_location" })
+		) {
+			return { type: "LOCATION_CUSTOM" };
+		}
+
+		if (this.eatIdent("house_spawn") || this.eat({ kind: "str", value: "house_spawn" })) {
+			return { type: "LOCATION_SPAWN" };
+		}
+
+		throw Diagnostic.error("Invalid location", this.token.span);
 	}
 
 	parseStatName(): string {
@@ -189,12 +203,16 @@ export class Parser {
 			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
 			try {
 				this.eatNewlines();
-				const action = parseAction(this);
-				if (!action) break;
+				const action = this.parseSpanned(() => parseAction(this));
+				if (!action.value) break;
 				if (!this.eat("eol") && !this.check({ kind: "close_delim", delim: "brace" })) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
 				}
-				actions.push(action);
+
+				if (action.value.type === "CONDITIONAL") this.ctx.emit(Diagnostic.error("Nested conditional", action.span));
+				if (action.value.type === "RANDOM") this.ctx.emit(Diagnostic.error("Nested random action"));
+
+				actions.push(action.value);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);
 				this.recover();

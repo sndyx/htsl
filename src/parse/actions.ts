@@ -27,6 +27,12 @@ export function parseAction(p: Parser): IrAction | undefined {
         return parseActionChangeTeamStat(p);
     } else if (p.eatIdent("chat")) {
         return parseActionMessage(p);
+    } else if (p.eatIdent("random")) {
+        return parseActionRandom(p);
+    } else if (p.eatIdent("setVelocity")) {
+        return parseActionSetVelocity(p);
+    } else if (p.eatIdent("tp")) {
+        return parseActionTeleport(p);
     }
 
     if (p.check("ident")) {
@@ -138,4 +144,30 @@ function parseActionMessage(p: Parser): IrAction {
         message = p.parseSpanned(() => p.parseStr());
     })
     return { type: "MESSAGE", message };
+}
+
+function parseActionRandom(p: Parser): IrAction {
+    let actions;
+    p.parseRecovering(() => {
+        actions = p.parseSpanned(() => p.parseBlock());
+    });
+    return { type: "RANDOM", actions };
+}
+
+function parseActionSetVelocity(p: Parser): IrAction {
+    let x, y, z;
+    p.parseRecovering(() => {
+        x = p.parseSpanned(() => p.parseStatAmount());
+        y = p.parseSpanned(() => p.parseStatAmount());
+        z = p.parseSpanned(() => p.parseStatAmount());
+    });
+    return { type: "SET_VELOCITY", x, y, z };
+}
+
+function parseActionTeleport(p: Parser): IrAction {
+    let location;
+    p.parseRecovering(() => {
+        location = p.parseSpanned(() => p.parseLocation());
+    });
+    return { type: "TELEPORT", location };
 }

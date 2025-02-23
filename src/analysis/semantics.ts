@@ -69,6 +69,14 @@ export const SEMANTIC_DESCRIPTORS: {
     },
     MESSAGE: {
         message: "string"
+    },
+    RANDOM: {
+        actions: "block"
+    },
+    SET_VELOCITY: {
+        x: "number",
+        y: "number",
+        z: "number"
     }
 }
 
