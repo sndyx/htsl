@@ -92,9 +92,9 @@ export class Lexer {
 		if (c === "=") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("cmp_op_eq", span(lo, lo + 1), { op: "equal" });
+				return token("cmp_op_eq", span(lo, lo + 1), { op: "equals" });
 			}
-			return token("cmp_op", singleSpan, { op: "equal" });
+			return token("cmp_op", singleSpan, { op: "equals" });
 		}
 		if (c === "<") {
 			if (this.peek(0) === "=") {

@@ -1,4 +1,4 @@
-import { editor, IDisposable, languages, MarkerSeverity, Position } from "monaco-editor";
+import { CancellationToken, editor, IDisposable, languages, MarkerSeverity } from "monaco-editor";
 import * as htsl from "htsl/src";
 
 // --- inlay hints ---
@@ -21,42 +21,6 @@ export class InlayHintsAdapter implements languages.InlayHintsProvider {
         });
 
         return { hints, dispose: () => {} };
-    }
-}
-
-// --- signature help ---
-
-export class SignatureHelpAdapter implements languages.SignatureHelpProvider {
-    signatureHelpRetriggerCharacters = [" "];
-    signatureHelpTriggerCharacters = [" "];
-
-    public provideSignatureHelp(
-        model: editor.ITextModel,
-        position: Position,
-        // token: CancellationToken,
-        // context: languages.SignatureHelpContext
-    ): languages.ProviderResult<languages.SignatureHelpResult> {
-        if (model.isDisposed()) return;
-
-        const help = htsl.getSignatureHelp(model.getValue(), model.getOffsetAt(position));
-        if (!help) return;
-
-        const parameters = help.parameters.map(param => `[${param}]`);
-        const label = `${help.action} ${parameters.join(" ")}`;
-        return {
-            value: {
-                signatures: [
-                    {
-                        label,
-                        documentation: "",
-                        parameters: parameters.map(label => { return { label }})
-                    },
-                ],
-                activeSignature: 0,
-                activeParameter: help.activeParameter,
-            },
-            dispose: () => {},
-        };
     }
 }
 
@@ -153,45 +117,3 @@ export class DiagnosticsAdapter {
         return MarkerSeverity.Error;
     }
 }
-
-// --- completions ---
-
-export class CompletionItemAdapter implements languages.CompletionItemProvider {
-    triggerCharacters = [" "]
-
-    provideCompletionItems(
-        model: editor.ITextModel,
-        position: Position,
-        // context: languages.CompletionContext,
-        // token: CancellationToken
-    ): languages.ProviderResult<languages.CompletionList> {
-        const completions = htsl.getCompletions(model.getValue(), model.getOffsetAt(position));
-        console.log(completions);
-        if (!completions) return;
-
-        return {
-            suggestions: completions.map(it => {
-                const start = model.getPositionAt(it.span.lo);
-                const end = model.getPositionAt(it.span.hi);
-                return {
-                    label: it.label,
-                    kind: languages.CompletionItemKind.Text,
-                    insertText: it.label,
-                    range: {
-                        startColumn: start.column,
-                        startLineNumber: start.lineNumber,
-                        endColumn: end.column,
-                        endLineNumber: end.lineNumber
-                    }
-                }
-            }),
-            dispose() {}
-        };
-    }
-}
-
-// --- hover ---
-
-// --- rename ---
-
-// --- references ---

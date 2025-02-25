@@ -1,4 +1,5 @@
 import type { Action } from "housing-common/src/actions/actions.js";
+import type { Condition } from "housing-common/src/actions/conditions.js";
 import { ACTIONS } from "../helpers.js";
 
 export type SemanticKind =
@@ -7,21 +8,40 @@ export type SemanticKind =
     | "team_stat_name"
     | "team_name"
     | "amount"
-    | "mode"
+    | "operator"
+    | "comparison"
     | "string"
     | "boolean"
     | "number"
     | "conditional_mode"
     | "conditions"
-    | "block";
+    | "block"
+    | "location"
+    | "gamemode";
 
-export const SEMANTIC_DESCRIPTORS: {
+const CONDITION_SEMANTIC_DESCRIPTORS: {
+    [K in Condition["type"]]: {
+        [key in keyof Omit<Extract<Condition, { type: K }>, "type">]-?: SemanticKind
+    }
+} = {
+    COMPARE_STAT: {
+        stat: "stat_name",
+        op: "comparison",
+        amount: "amount"
+    },
+    REQUIRED_GAMEMODE: {
+        gamemode: "gamemode"
+    }
+}
+
+const ACTION_SEMANTIC_DESCRIPTORS: {
     [K in Action["type"]]: {
         [key in keyof Omit<Extract<Action, { type: K }>, "type">]-?: SemanticKind
     }
 } = {
     CONDITIONAL: {
         matchAny: "conditional_mode",
+        conditions: "conditions",
         ifActions: "block",
         elseActions: "block"
     },
@@ -43,28 +63,28 @@ export const SEMANTIC_DESCRIPTORS: {
     },
     RESET_INVENTORY: {},
     CHANGE_MAX_HEALTH: {
-        mode: "mode",
+        op: "operator",
         amount: "amount",
         heal: "boolean"
     },
     CHANGE_STAT: {
         stat: "stat_name",
-        mode: "mode",
+        op: "operator",
         amount: "amount"
     },
     CHANGE_GLOBAL_STAT: {
         stat: "global_stat_name",
-        mode: "mode",
+        op: "operator",
         amount: "amount"
     },
     CHANGE_TEAM_STAT: {
         stat: "team_stat_name",
         team: "team_name",
-        mode: "mode",
+        op: "operator",
         amount: "amount"
     },
     CHANGE_HEALTH: {
-        mode: "mode",
+        op: "operator",
         amount: "amount"
     },
     MESSAGE: {
@@ -77,8 +97,16 @@ export const SEMANTIC_DESCRIPTORS: {
         x: "number",
         y: "number",
         z: "number"
+    },
+    TELEPORT: {
+        location: "location"
     }
 }
+
+export const SEMANTIC_DESCRIPTORS = {
+    ...ACTION_SEMANTIC_DESCRIPTORS,
+    ...CONDITION_SEMANTIC_DESCRIPTORS
+};
 
 export const SEMANTIC_KIND_OPTIONS: {
     [key: string]: string[]

@@ -1,6 +1,6 @@
 import type { CompileCtx } from "../context.js";
 import { partialEq } from "../helpers.js";
-import type { Mode, Amount, Location } from "housing-common/src/actions/types.js";
+import type { Operation, Amount, Location, Comparison, Gamemode } from "housing-common/src/actions/types.js";
 import type { Lexer } from "./lexer.js";
 import {
 	type Delimiter,
@@ -36,13 +36,13 @@ export class Parser {
 				this.eatNewlines();
 				const action = parseAction(this);
 				if (!action) break;
-				if (!this.eat("eol") && !this.eat("eof")) {
+				if (!this.eat("eol") && !this.check("eof")) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
 				}
 				actions.push(action);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);
-				this.recover();
+				this.recover(["eol"]);
 			}
 		}
 		return actions;
@@ -60,6 +60,71 @@ export class Parser {
 		}
 
 		throw Diagnostic.error("Invalid location", this.token.span);
+	}
+
+	parseGamemode(): Gamemode {
+		if (this.eatOption("survival")) {
+			return "survival";
+		}
+		if (this.eatOption("adventure")) {
+			return "adventure";
+		}
+		if (this.eatOption("creative")) {
+			return "creative";
+		}
+
+		if (this.check("str") || this.check("ident")) {
+			this.ctx.emit(Diagnostic.error("Expected gamemode (survival, adventure, creative)", this.token.span));
+		} else {
+			this.ctx.emit(Diagnostic.error("Expected gamemode", this.token.span));
+		}
+		this.next();
+		return "survival";
+	}
+
+	parseComparison(): Comparison {
+		if (
+			this.eatOption("equals")
+			|| this.eatOption("equal")
+			|| this.eat({ kind: "cmp_op", op: "equals" })
+			|| this.eat({ kind: "cmp_op_eq", op: "equals" })
+		) {
+			return "equals";
+		}
+		if (
+			this.eatOption("less than")
+			|| this.eat({ kind: "cmp_op", op: "less_than" })
+		) {
+			return "less_than";
+		}
+		if (
+			this.eatOption("less than or equals")
+			|| this.eatOption("less than or equal")
+			|| this.eat({ kind: "cmp_op_eq", op: "less_than" })
+		) {
+			return "less_than_or_equals";
+		}
+		if (
+			this.eatOption("greater than")
+			|| this.eat({ kind: "cmp_op", op: "greater_than" })
+		) {
+			return "greater_than";
+		}
+		if (
+			this.eatOption("greater than or equals")
+			|| this.eatOption("greater than or equal")
+			|| this.eat({ kind: "cmp_op_eq", op: "greater_than" })
+		) {
+			return "greater_than_or_equals";
+		}
+
+		if (this.check("str") || this.check("ident")) {
+			this.ctx.emit(Diagnostic.error("Expected comparison (less than, less than or equals, equals, greater than, greater than or equals)", this.token.span));
+		} else {
+			this.ctx.emit(Diagnostic.error("Expected comparison", this.token.span));
+		}
+		this.next();
+		return "equals";
 	}
 
 	parseStatName(): string {
@@ -82,30 +147,51 @@ export class Parser {
 		return value;
 	}
 
-	parseStatMode(): Mode {
-		if (this.eatOption("increment") || this.eatOption("inc") || this.eat({ kind: "bin_op_eq", op: "plus" })) {
+	parseOperation(): Operation {
+		if (
+			this.eatOption("increment")
+			|| this.eatOption("inc")
+			|| this.eat({ kind: "bin_op_eq", op: "plus" })) {
 			return "increment";
 		}
-		if (this.eatOption("decrement") || this.eatOption("dec") || this.eat({ kind: "bin_op_eq", op: "minus" })) {
+		if (
+			this.eatOption("decrement")
+			|| this.eatOption("dec")
+			|| this.eat({ kind: "bin_op_eq", op: "minus" })
+		) {
 			return "decrement";
 		}
-		if (this.eatOption("multiply") || this.eatOption("mul") || this.eat({ kind: "bin_op_eq", op: "star" })) {
+		if (
+			this.eatOption("multiply")
+			|| this.eatOption("mul")
+			|| this.eat({ kind: "bin_op_eq", op: "star" })
+		) {
 			return "multiply";
 		}
-		if (this.eatOption("divide") || this.eatOption("div") || this.eat({ kind: "bin_op_eq", op: "slash" })) {
+		if (
+			this.eatOption("divide")
+			|| this.eatOption("div")
+			|| this.eat({ kind: "bin_op_eq", op: "slash" })
+		) {
 			return "divide";
 		}
-		if (this.eatOption("set") || this.eat({ kind: "cmp_op", op: "equal" })) {
+		if (
+			this.eatOption("set")
+			|| this.eat({ kind: "cmp_op", op: "equals" })
+		) {
 			return "set";
 		}
+
 		if (this.check("str") || this.check("ident")) {
-			throw Diagnostic.error("Expected operation (increment, decrement, multiply, divide, set)", this.token.span);
+			this.ctx.emit(Diagnostic.error("Expected operation (increment, decrement, set, multiply, divide)", this.token.span));
+		} else {
+			this.ctx.emit(Diagnostic.error("Expected operation", this.token.span));
 		}
-		this.ctx.emit(Diagnostic.error("Expected operation", this.token.span));
+		this.next();
 		return "set";
 	}
 
-	parseStatAmount(): Amount {
+	parseAmount(): Amount {
 		if (this.check("i64") || this.check({ kind: "bin_op", op: "minus" })) {
 			return this.parseI64();
 		}
@@ -175,7 +261,10 @@ export class Parser {
 		return Number.parseFloat(this.token.value);
 	}
 
-	parseRecovering(parser: () => void) {
+	parseRecovering<T>(
+		recoveryTokens: Array<Token["kind"] | Partial<Token>>,
+		parser: () => T
+	): T | undefined {
 		try {
 			return parser();
 		} catch (e) {
@@ -188,8 +277,7 @@ export class Parser {
 				}
 				 */
 				this.ctx.emit(e);
-				this.recover();
-
+				this.recover(recoveryTokens);
 			}
 			else throw e;
 		}
@@ -199,23 +287,24 @@ export class Parser {
 		const actions = [];
 		this.expect({ kind: "open_delim", delim: "brace" });
 		while (true) {
-			if (this.check("eof")) throw Diagnostic.error("expected }");
+			this.eatNewlines();
+			if (this.check("eof")) throw Diagnostic.error("expected }", this.token.span);
 			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
 			try {
-				this.eatNewlines();
-				const action = this.parseSpanned(() => parseAction(this));
-				if (!action.value) break;
-				if (!this.eat("eol") && !this.check({ kind: "close_delim", delim: "brace" })) {
+				const identSpan = this.token.span;
+				const action = parseAction(this);
+				if (!action) break;
+				if (!this.eat("eol") && !this.check("eof") && !this.check({ kind: "close_delim", delim: "brace" })) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
 				}
 
-				if (action.value.type === "CONDITIONAL") this.ctx.emit(Diagnostic.error("Nested conditional", action.span));
-				if (action.value.type === "RANDOM") this.ctx.emit(Diagnostic.error("Nested random action"));
+				if (action.type === "CONDITIONAL") this.ctx.emit(Diagnostic.error("Conditionals cannot be nested", identSpan));
+				if (action.type === "RANDOM") this.ctx.emit(Diagnostic.error("Random actions cannot be nested", identSpan));
 
-				actions.push(action.value);
+				actions.push(action);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);
-				this.recover();
+				this.recover(["eol"]);
 			}
 		}
 		return actions;
@@ -225,14 +314,20 @@ export class Parser {
 		this.expect({ kind: "open_delim", delim });
 
 		const seq: Array<T> = [];
-		while (!this.check({ kind: "close_delim", delim })) {
+		this.eatNewlines();
+		while (!this.eat({ kind: "close_delim", delim })) {
 			if (this.token.kind === "eof") break; // will catch the below `expect` and error gracefully
 
 			seq.push(parser());
 
-			if (!this.eat("comma")) break;
+			this.eatNewlines();
+			if (!this.eat("comma")) {
+				if (!this.eat({ kind: "close_delim", delim })) {
+					this.ctx.emit(Diagnostic.error("expected ,", this.token.span));
+				} else break;
+			}
+			this.eatNewlines();
 		}
-		this.expect({ kind: "close_delim", delim });
 
 		return seq;
 	}
@@ -246,8 +341,12 @@ export class Parser {
 	}
 
 	eatOption(value: string): boolean {
-		if (this.eatIdent(value)) return true;
-		return this.eat({ kind: "str", value });
+		if (this.token.kind !== "str" && this.token.kind !== "ident") return false;
+		if (this.token.value.toLowerCase() == value.toLowerCase()) {
+			this.next();
+			return true;
+		}
+		return false;
 	}
 
 	eatIdent(value: string): boolean {
@@ -258,9 +357,14 @@ export class Parser {
 		while (this.eat("eol")) { /* Ignore */ }
 	}
 
-	recover() {
+	recover(recoveryTokens: Array<Token["kind"] | Partial<Token>>) {
 		while (true) {
-			if (this.check("eol") || this.check("eof")) return;
+			if (
+				recoveryTokens.find(token => this.check(token))
+				|| this.check("eof")
+			) {
+				return;
+			}
 			this.next();
 		}
 	}

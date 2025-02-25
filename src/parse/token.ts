@@ -44,7 +44,7 @@ export type Delimiter = "parenthesis" | "brace" | "bracket";
 
 export type BinOp = "plus" | "minus" | "star" | "slash" | "star_star";
 
-export type CmpOp = "greater_than" | "less_than" | "equal";
+export type CmpOp = "greater_than" | "less_than" | "equals";
 
 export function token<K extends Token["kind"]>(
 	kind: K,
@@ -96,7 +96,7 @@ const CMP_OP_SYMBOLS: {
 } = {
 	greater_than: ">",
 	less_than: "<",
-	equal: "=",
+	equals: "=",
 };
 
 export function tokenToString(tok: Token["kind"] | Partial<Token>) {
