@@ -34,6 +34,8 @@ export function parseAction(p: Parser): IrAction | undefined {
         return parseActionSetVelocity(p);
     } else if (p.eatIdent("tp")) {
         return parseActionTeleport(p);
+    } else if (p.eatIdent("exit")) {
+        return { type: "EXIT" };
     }
 
     if (p.check("ident")) {

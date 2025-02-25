@@ -34,11 +34,15 @@ export class Parser {
 		while (true) {
 			try {
 				this.eatNewlines();
+				const identSpan = this.token.span;
 				const action = parseAction(this);
 				if (!action) break;
 				if (!this.eat("eol") && !this.check("eof")) {
 					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
 				}
+
+				if (action.type === "EXIT") this.ctx.emit(Diagnostic.error("Exit action can only be used in conditionals", identSpan));
+				
 				actions.push(action);
 			} catch (e) {
 				if (e instanceof Diagnostic) this.ctx.emit(e);

@@ -100,7 +100,8 @@ const ACTION_SEMANTIC_DESCRIPTORS: {
     },
     TELEPORT: {
         location: "location"
-    }
+    },
+    EXIT: {}
 }
 
 export const SEMANTIC_DESCRIPTORS = {

@@ -3,7 +3,7 @@ import IMonarchLanguage = languages.IMonarchLanguage;
 
 export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
     keywords: [
-        "goto", "loop", "if", "else", "and", "or", "\"and\"", "\"or\"", "function", "random"
+        "goto", "loop", "if", "else", "and", "or", "function", "random", "exit"
     ],
 
     typeKeywords: [
@@ -19,8 +19,8 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
     actions: [
         "applyLayout", "applyPotion", "balanceTeam", "cancelEvent", "changeHealth", "hungerLevel",
         "maxHealth", "changePlayerGroup", "clearEffects", "closeMenu", "actionBar", "displayMenu",
-        "title", "enchant", "exit", "failParkour", "fullHeal", "xpLevel", "giveItem", "houseSpawn",
-        "kill", "parkCheck", "pause", "sound", "removeItem", "resetInventory", "chat", "lobby",
+        "title", "enchant", "failParkour", "fullHeal", "xpLevel", "giveItem", "houseSpawn", "kill",
+        "parkCheck", "pause", "sound", "removeItem", "resetInventory", "chat", "lobby",
         "compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "setVelocity"
     ],
 
