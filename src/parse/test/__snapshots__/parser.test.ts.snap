@@ -28,6 +28,14 @@ exports[`Parser > error invalid stat actions 1`] = `
   },
   {
     "level": "error",
+    "message": "expected amount",
+    "span": {
+      "hi": 39,
+      "lo": 39,
+    },
+  },
+  {
+    "level": "error",
     "message": "Expected stat name",
     "span": {
       "hi": 44,
@@ -66,6 +74,19 @@ exports[`Parser > error invalid stat names 1`] = `
 ]
 `;
 
+exports[`Parser > error nested conditionals 1`] = `
+[
+  {
+    "level": "error",
+    "message": "Conditionals cannot be nested",
+    "span": {
+      "hi": 15,
+      "lo": 13,
+    },
+  },
+]
+`;
+
 exports[`Parser > error number above integer limit 1`] = `
 [
   {
@@ -75,6 +96,215 @@ exports[`Parser > error number above integer limit 1`] = `
       "hi": 40,
       "lo": 9,
     },
+  },
+]
+`;
+
+exports[`Parser > parse conditionals 1`] = `
+[
+  {
+    "conditions": {
+      "span": {
+        "hi": 4,
+        "lo": 3,
+      },
+      "value": [],
+    },
+    "elseActions": undefined,
+    "ifActions": {
+      "span": {
+        "hi": 26,
+        "lo": 6,
+      },
+      "value": [
+        {
+          "message": {
+            "span": {
+              "hi": 24,
+              "lo": 18,
+            },
+            "value": "true",
+          },
+          "type": "MESSAGE",
+        },
+      ],
+    },
+    "matchAny": undefined,
+    "type": "CONDITIONAL",
+  },
+  {
+    "amount": {
+      "span": {
+        "hi": 42,
+        "lo": 40,
+      },
+      "value": 10n,
+    },
+    "op": {
+      "span": {
+        "hi": 38,
+        "lo": 38,
+      },
+      "value": "set",
+    },
+    "stat": {
+      "span": {
+        "hi": 37,
+        "lo": 36,
+      },
+      "value": "x",
+    },
+    "type": "CHANGE_STAT",
+  },
+  {
+    "conditions": {
+      "span": {
+        "hi": 64,
+        "lo": 53,
+      },
+      "value": [
+        {
+          "amount": {
+            "span": {
+              "hi": 64,
+              "lo": 63,
+            },
+            "value": 5n,
+          },
+          "op": {
+            "span": {
+              "hi": 61,
+              "lo": 61,
+            },
+            "value": "greater_than",
+          },
+          "stat": {
+            "span": {
+              "hi": 60,
+              "lo": 59,
+            },
+            "value": "x",
+          },
+          "type": "COMPARE_STAT",
+        },
+      ],
+    },
+    "elseActions": {
+      "span": {
+        "hi": 114,
+        "lo": 93,
+      },
+      "value": [
+        {
+          "message": {
+            "span": {
+              "hi": 112,
+              "lo": 105,
+            },
+            "value": "false",
+          },
+          "type": "MESSAGE",
+        },
+      ],
+    },
+    "ifActions": {
+      "span": {
+        "hi": 86,
+        "lo": 66,
+      },
+      "value": [
+        {
+          "message": {
+            "span": {
+              "hi": 84,
+              "lo": 78,
+            },
+            "value": "true",
+          },
+          "type": "MESSAGE",
+        },
+      ],
+    },
+    "matchAny": {
+      "span": {
+        "hi": 52,
+        "lo": 49,
+      },
+      "value": undefined,
+    },
+    "type": "CONDITIONAL",
+  },
+  {
+    "conditions": {
+      "span": {
+        "hi": 133,
+        "lo": 122,
+      },
+      "value": [
+        {
+          "amount": {
+            "span": {
+              "hi": 133,
+              "lo": 132,
+            },
+            "value": 5n,
+          },
+          "op": {
+            "span": {
+              "hi": 130,
+              "lo": 130,
+            },
+            "value": "less_than",
+          },
+          "stat": {
+            "span": {
+              "hi": 129,
+              "lo": 128,
+            },
+            "value": "x",
+          },
+          "type": "COMPARE_STAT",
+        },
+      ],
+    },
+    "elseActions": {
+      "span": {
+        "hi": 171,
+        "lo": 156,
+      },
+      "value": [
+        {
+          "message": {
+            "span": {
+              "hi": 170,
+              "lo": 163,
+            },
+            "value": "false",
+          },
+          "type": "MESSAGE",
+        },
+      ],
+    },
+    "ifActions": {
+      "span": {
+        "hi": 149,
+        "lo": 135,
+      },
+      "value": [
+        {
+          "message": {
+            "span": {
+              "hi": 148,
+              "lo": 142,
+            },
+            "value": "true",
+          },
+          "type": "MESSAGE",
+        },
+      ],
+    },
+    "matchAny": undefined,
+    "type": "CONDITIONAL",
   },
 ]
 `;
@@ -89,7 +319,7 @@ exports[`Parser > parse global stats 1`] = `
       },
       "value": 5n,
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 13,
         "lo": 13,
@@ -113,7 +343,7 @@ exports[`Parser > parse global stats 1`] = `
       },
       "value": "%stat.global/x%",
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 31,
         "lo": 31,
@@ -137,7 +367,7 @@ exports[`Parser > parse global stats 1`] = `
       },
       "value": "%stat.global/y%",
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 60,
         "lo": 60,
@@ -166,7 +396,7 @@ exports[`Parser > parse player stats 1`] = `
       },
       "value": 5n,
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 7,
         "lo": 7,
@@ -190,7 +420,7 @@ exports[`Parser > parse player stats 1`] = `
       },
       "value": "%stat.player/x%",
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 19,
         "lo": 19,
@@ -214,7 +444,7 @@ exports[`Parser > parse player stats 1`] = `
       },
       "value": "%stat.player/y%",
     },
-    "mode": {
+    "op": {
       "span": {
         "hi": 36,
         "lo": 36,

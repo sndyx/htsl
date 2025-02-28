@@ -1,0 +1,13 @@
+if () {
+    chat "true"
+}
+
+stat x = 10
+
+if and (stat x > 5) {
+    chat "true"
+} else {
+    chat "false"
+}
+
+if (stat x < 5) { chat "true" } else { chat "false" }
