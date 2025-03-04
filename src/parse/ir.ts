@@ -17,7 +17,8 @@ type WrapArray<U> = U extends Action ? IrAction[] :
 
 type Transform<T extends Action | Condition | ActionHolder> = {
     type: T["type"],
-    kwSpan: Span;
+    kwSpan: Span,
+    span: Span,
 } & {
     [K in keyof Omit<T, "type">]?: Wrap<T[K]>;
 };
@@ -38,3 +39,39 @@ export type ParseResult = {
     holders: IrActionHolder[],
     diagnostics: Diagnostic[],
 };
+
+function unwrapValue(value: any): any {
+    // Handle null/undefined and arrays.
+    if (value === null || value === undefined) return value;
+    if (Array.isArray(value)) {
+        return value.map(unwrapValue);
+    }
+    // If the value is a wrapped field, it should have { value, span }
+    if (typeof value === "object") {
+        if ("value" in value && "span" in value) {
+            return unwrapValue(value.value);
+        }
+        // If it's an IR object, it has "type" and "kwSpan"
+        if ("type" in value && "kwSpan" in value && "span" in value) {
+            return unwrapTransform(value);
+        }
+    }
+    // Otherwise, return as is.
+    return value;
+}
+
+function unwrapTransform(ir: any): any {
+    // Create the new object with the required "type" field.
+    const result: any = { type: ir.type };
+    // Process every other key except "type" and "kwSpan".
+    for (const key in ir) {
+        if (key === "type" || key === "kwSpan" || key === "span") continue;
+        // Each additional field is wrapped; unwrap its content.
+        result[key] = unwrapValue(ir[key]);
+    }
+    return result;
+}
+
+export function unwrap(holder: IrActionHolder): ActionHolder {
+    return unwrapTransform(holder);
+}

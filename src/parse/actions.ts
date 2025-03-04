@@ -2,6 +2,7 @@ import type { Parser } from "./parser.js";
 import type { IrAction } from "./ir.js";
 import { error } from "./diagnostic.js";
 import { parseCondition } from "./conditions.js";
+import { span } from "./span";
 
 export function parseAction(p: Parser): IrAction {
     if (p.eatIdent("if")) {
@@ -9,15 +10,15 @@ export function parseAction(p: Parser): IrAction {
     } else if (p.eatIdent("changeGroup")) {
         return parseActionChangeGroup(p);
     } else if (p.eatIdent("kill")) {
-        return { type: "KILL", kwSpan: p.prev.span };
+        return { type: "KILL", kwSpan: p.prev.span, span: p.prev.span };
     } else if (p.eatIdent("heal")) {
-        return { type: "HEAL", kwSpan: p.prev.span };
+        return { type: "HEAL", kwSpan: p.prev.span, span: p.prev.span };
     } else if (p.eatIdent("title")) {
         return parseActionTitle(p);
     } else if (p.eatIdent("actionBar")) {
         return parseActionActionBar(p);
     } else if (p.eatIdent("resetInventory")) {
-        return { type: "RESET_INVENTORY", kwSpan: p.prev.span };
+        return { type: "RESET_INVENTORY", kwSpan: p.prev.span, span: p.prev.span };
     } else if (p.eatIdent("changeMaxHealth")) {
         return parseActionChangeMaxHealth(p);
     } else if (p.eatIdent("stat")) {
@@ -35,9 +36,9 @@ export function parseAction(p: Parser): IrAction {
     } else if (p.eatIdent("tp")) {
         return parseActionTeleport(p);
     } else if (p.eatIdent("exit")) {
-        return { type: "EXIT", kwSpan: p.prev.span };
+        return { type: "EXIT", kwSpan: p.prev.span, span: p.prev.span };
     } else if (p.eatIdent("cancelEvent")) {
-        return { type: "CANCEL_EVENT", kwSpan: p.prev.span };
+        return { type: "CANCEL_EVENT", kwSpan: p.prev.span, span: p.prev.span };
     }
 
     if (p.check("ident")) {
@@ -53,10 +54,12 @@ function parseStructuredAction<T extends IrAction["type"]>(
     type: T,
     parser: (action: IrAction & { type: T }) => void
 ): IrAction & { type: T } {
+    const start = p.prev.span.start;
     const action = { type, kwSpan: p.prev.span } as IrAction & { type: T };
     p.parseRecovering(["eol"], () => {
         parser(action);
     });
+    action.span = span(start, p.prev.span.end);
     return action;
 }
 

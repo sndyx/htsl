@@ -38,11 +38,12 @@ export class Parser {
 	parseCompletely(): ParseResult {
 		const defaultActions = this.parseSpanned(this.parseActions);
 		this.result.holders.push({
-			type: "UNKNOWN", kwSpan: { start: 0, end: 0 },
+			type: "UNKNOWN", kwSpan: { start: 0, end: 0 }, span: span(0, 0),
 			actions: defaultActions
 		});
 
 		while (true) {
+			const start = this.token.span.start;
 			if (!this.eatIdent("goto")) break;
 
 			const kwSpan = this.token.span;
@@ -50,7 +51,10 @@ export class Parser {
 				const name = this.parseSpanned(this.parseString);
 				const actions = this.parseSpanned(this.parseActions);
 
-				this.result.holders.push({ type: "FUNCTION", kwSpan, name, actions });
+				this.result.holders.push({
+					type: "FUNCTION", kwSpan, span: span(start, this.prev.span.end),
+					name, actions
+				});
 			} else {
 				this.addDiagnostic(error("Expected action holder (function, event)", kwSpan));
 			}

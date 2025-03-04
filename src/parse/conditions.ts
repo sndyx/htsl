@@ -1,6 +1,7 @@
 import type { Parser } from "./parser.js";
 import type { IrCondition } from "./ir.js";
 import { error } from "./diagnostic.js";
+import { span } from "./span";
 
 export function parseCondition(p: Parser): IrCondition {
     if (p.eatIdent("stat")) {
@@ -21,10 +22,12 @@ function parseStructuredCondition<T extends IrCondition["type"]>(
     type: T,
     parser: (condition: IrCondition & { type: T }) => void
 ): IrCondition & { type: T } {
+    const start = p.prev.span.start;
     const condition = { type, kwSpan: p.prev.span } as IrCondition & { type: T };
     p.parseRecovering(["comma", { kind: "close_delim", delim: "parenthesis" }], () => {
         parser(condition);
     });
+    condition.span = span(start, p.prev.span.end);
     return condition;
 }
 
