@@ -1,5 +1,4 @@
 import type { Span } from "./span.js";
-import { Diagnostic } from "./diagnostic.js";
 
 export type Token = TokenType & { span: Span };
 
@@ -124,7 +123,7 @@ export function tokenToString(tok: Token["kind"] | Partial<Token>) {
 				? DELIMITER_SYMBOLS[tok.delim].charAt(1)
 				: TOKEN_KIND_NAMES[tok.kind];
 		case undefined:
-			throw Diagnostic.bug("undefined token kind");
+			throw Error("undefined token kind");
 		default:
 			return TOKEN_KIND_NAMES[tok.kind];
 	}

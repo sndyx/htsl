@@ -16,6 +16,10 @@ function setupMode() {
             languages.registerInlayHintsProvider("htsl", new languageFeatures.InlayHintsAdapter())
         );
 
+        providers.push(
+            languages.registerRenameProvider("htsl", new languageFeatures.RenameAdapter())
+        );
+
         /*
         providers.push(
             languages.registerSignatureHelpProvider("htsl", new languageFeatures.SignatureHelpAdapter())

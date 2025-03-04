@@ -1,5 +1,4 @@
-import type { Action } from "housing-common/src/actions/actions.js";
-import type { Condition } from "housing-common/src/actions/conditions.js";
+import type { Action, Condition } from "housing-common/src/types/";
 import { ACTIONS } from "../helpers.js";
 
 export type SemanticKind =
@@ -17,7 +16,10 @@ export type SemanticKind =
     | "conditions"
     | "block"
     | "location"
-    | "gamemode";
+    | "gamemode"
+    | "item"
+    | "potion"
+    | "lobby";
 
 const CONDITION_SEMANTIC_DESCRIPTORS: {
     [K in Condition["type"]]: {
@@ -31,6 +33,10 @@ const CONDITION_SEMANTIC_DESCRIPTORS: {
     },
     REQUIRED_GAMEMODE: {
         gamemode: "gamemode"
+    },
+    COMPARE_DAMAGE: {
+        op: "comparison",
+        amount: "amount"
     }
 }
 
@@ -101,7 +107,34 @@ const ACTION_SEMANTIC_DESCRIPTORS: {
     TELEPORT: {
         location: "location"
     },
-    EXIT: {}
+    EXIT: {},
+    CANCEL_EVENT: {},
+    GIVE_ITEM: {
+        replace: "boolean",
+        item: "item",
+        allowMultiple: "boolean",
+        slot: "number"
+    },
+    REMOVE_ITEM: {
+        item: "item"
+    },
+    APPLY_POTION_EFFECT: {
+        effect: "potion",
+        duration: "number",
+        level: "number",
+        override: "boolean",
+        showIcon: "boolean"
+    },
+    CLEAR_POTION_EFFECTS: {},
+    GIVE_EXPERIENCE_LEVELS: {
+        amount: "amount"
+    },
+    SEND_TO_LOBBY: {
+        lobby: "lobby"
+    },
+    FAIL_PARKOUR: {
+        message: "string"
+    }
 }
 
 export const SEMANTIC_DESCRIPTORS = {

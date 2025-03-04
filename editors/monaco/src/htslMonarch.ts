@@ -3,7 +3,7 @@ import IMonarchLanguage = languages.IMonarchLanguage;
 
 export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
     keywords: [
-        "goto", "loop", "if", "else", "and", "or", "function", "random", "exit"
+        "goto", "loop", "if", "else", "and", "or", "function", "random", "exit", "define"
     ],
 
     typeKeywords: [

@@ -1,4 +1,4 @@
-import { CancellationToken, editor, IDisposable, languages, MarkerSeverity } from "monaco-editor";
+import { editor, IDisposable, languages, MarkerSeverity, Position } from "monaco-editor";
 import * as htsl from "htsl/src";
 
 // --- inlay hints ---
@@ -15,12 +15,74 @@ export class InlayHintsAdapter implements languages.InlayHintsProvider {
         const hints: languages.InlayHint[] = htslHints.map(hint => {
             return {
                 kind: languages.InlayHintKind.Parameter,
-                position: model.getPositionAt(hint.span.lo),
+                position: model.getPositionAt(hint.span.start),
                 label: hint.label
             };
         });
 
         return { hints, dispose: () => {} };
+    }
+}
+
+// --- rename ---
+
+export class RenameAdapter implements languages.RenameProvider {
+    public resolveRenameLocation(
+        model: editor.ITextModel,
+        position: Position,
+        // token: CancellationToken
+    ): languages.ProviderResult<languages.RenameLocation> {
+        if (model.isDisposed()) return null;
+
+        const location = htsl.resolveRename(model.getValue(), model.getOffsetAt(position));
+
+        if (!location) return;
+
+        const start = model.getPositionAt(location.span.start);
+        const end = model.getPositionAt(location.span.end);
+
+        return {
+            range: {
+                startLineNumber: start.lineNumber,
+                startColumn: start.column,
+                endLineNumber: end.lineNumber,
+                endColumn: end.column
+            },
+            text: location.text
+        }
+    }
+
+    provideRenameEdits(
+        model: editor.ITextModel,
+        position: Position,
+        newName: string,
+        // token: CancellationToken
+    ): languages.ProviderResult<languages.WorkspaceEdit> {
+        const htslEdits = htsl.getRenameLocations(model.getValue(), model.getOffsetAt(position), newName);
+        if (!htslEdits) return;
+
+        const edits = htslEdits.map(edit => {
+            const start = model.getPositionAt(edit.span.start);
+            const end = model.getPositionAt(edit.span.end);
+
+            return {
+                resource: model.uri,
+                textEdit: {
+                    range: {
+                        startLineNumber: start.lineNumber,
+                        startColumn: start.column,
+                        endLineNumber: end.lineNumber,
+                        endColumn: end.column
+                    },
+                    text: edit.text
+                },
+                versionId: model.getVersionId()
+            };
+        });
+
+        return {
+            edits
+        };
     }
 }
 
@@ -96,8 +158,8 @@ export class DiagnosticsAdapter {
         const htslDiagnostics = htsl.getDiagnostics(model.getValue());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = model.getPositionAt(diagnostic.span!!.lo);
-            const end = model.getPositionAt(diagnostic.span!!.hi)
+            const start = model.getPositionAt(diagnostic.span.start);
+            const end = model.getPositionAt(diagnostic.span.end)
 
             return {
                 message: diagnostic.message,

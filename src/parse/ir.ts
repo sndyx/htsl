@@ -1,11 +1,40 @@
-import type { ActionInput } from "housing-common/src/actions/actions.js";
+import type { Action, ActionHolder, Condition } from "housing-common/src/types";
 import type { Span } from "./span.js";
-import type { ConditionInput } from "../../../housing-common/src/actions/conditions.js";
+import type { Diagnostic } from "./diagnostic.js";
 
-export type WithMeta<T> = {
-    [K in keyof T]: K extends "type" ? T[K] : { value: T[K], span: Span };
+type Wrap<T> = {
+    value: T extends Action ? IrAction :
+        T extends Condition ? IrCondition :
+        T extends (infer U)[] ? WrapArray<U> :
+        T;
+    span: Span;
 };
 
-export type IrAction = WithMeta<ActionInput>;
+type WrapArray<U> = U extends Action ? IrAction[] :
+    U extends Condition ? IrCondition[] :
+        U extends (infer V)[] ? WrapArray<V>[] :
+            U[];
 
-export type IrCondition = WithMeta<ConditionInput>;
+type Transform<T extends Action | Condition | ActionHolder> = {
+    type: T["type"],
+    kwSpan: Span;
+} & {
+    [K in keyof Omit<T, "type">]?: Wrap<T[K]>;
+};
+
+export type IrAction = {
+    [K in Action["type"]]: Transform<Extract<Action, { type: K }>>;
+}[Action["type"]];
+
+export type IrCondition = {
+    [K in Condition["type"]]: Transform<Extract<Condition, { type: K }>>;
+}[Condition["type"]];
+
+export type IrActionHolder = {
+    [K in ActionHolder["type"]]: Transform<Extract<ActionHolder, { type: K }>>;
+}[ActionHolder["type"]];
+
+export type ParseResult = {
+    holders: IrActionHolder[],
+    diagnostics: Diagnostic[],
+};

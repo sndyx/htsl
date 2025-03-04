@@ -1,23 +1,23 @@
 import type { Parser } from "./parser.js";
 import type { IrAction } from "./ir.js";
-import { Diagnostic } from "./diagnostic.js";
+import { error } from "./diagnostic.js";
 import { parseCondition } from "./conditions.js";
 
-export function parseAction(p: Parser): IrAction | undefined {
+export function parseAction(p: Parser): IrAction {
     if (p.eatIdent("if")) {
         return parseActionConditional(p);
     } else if (p.eatIdent("changeGroup")) {
         return parseActionChangeGroup(p);
     } else if (p.eatIdent("kill")) {
-        return { type: "KILL" };
+        return { type: "KILL", kwSpan: p.prev.span };
     } else if (p.eatIdent("heal")) {
-        return { type: "HEAL" };
+        return { type: "HEAL", kwSpan: p.prev.span };
     } else if (p.eatIdent("title")) {
         return parseActionTitle(p);
     } else if (p.eatIdent("actionBar")) {
         return parseActionActionBar(p);
     } else if (p.eatIdent("resetInventory")) {
-        return { type: "RESET_INVENTORY" };
+        return { type: "RESET_INVENTORY", kwSpan: p.prev.span };
     } else if (p.eatIdent("changeMaxHealth")) {
         return parseActionChangeMaxHealth(p);
     } else if (p.eatIdent("stat")) {
@@ -35,30 +35,42 @@ export function parseAction(p: Parser): IrAction | undefined {
     } else if (p.eatIdent("tp")) {
         return parseActionTeleport(p);
     } else if (p.eatIdent("exit")) {
-        return { type: "EXIT" };
+        return { type: "EXIT", kwSpan: p.prev.span };
+    } else if (p.eatIdent("cancelEvent")) {
+        return { type: "CANCEL_EVENT", kwSpan: p.prev.span };
     }
 
     if (p.check("ident")) {
-        throw Diagnostic.error("Unknown action", p.token.span);
-    } else if (!p.check("eof")) {
-        throw Diagnostic.error("Expected action", p.token.span);
+        throw error("Unknown action", p.token.span);
     }
 
-    return undefined;
+    p.next();
+    throw error("Expected action", p.token.span);
 }
 
-export function parseActionConditional(p: Parser): IrAction {
-    let matchAny, conditions, ifActions, elseActions;
+function parseStructuredAction<T extends IrAction["type"]>(
+    p: Parser,
+    type: T,
+    parser: (action: IrAction & { type: T }) => void
+): IrAction & { type: T } {
+    const action = { type, kwSpan: p.prev.span } as IrAction & { type: T };
     p.parseRecovering(["eol"], () => {
+        parser(action);
+    });
+    return action;
+}
+
+function parseActionConditional(p: Parser): IrAction {
+    return parseStructuredAction(p, "CONDITIONAL", (action) => {
         if (p.check("ident")) {
-            matchAny = p.parseSpanned(() => {
-                if (p.eatIdent("and")) matchAny = true;
-                else if (p.eatIdent("or")) matchAny = false;
-                else throw Diagnostic.error("expected conditional mode", p.token.span);
+            action.matchAny = p.parseSpanned(() => {
+                if (p.eatIdent("and")) return true;
+                else if (p.eatIdent("or")) return false;
+                else throw error("expected conditional mode", p.token.span);
             });
         }
 
-        conditions = p.parseSpanned(() => {
+        action.conditions = p.parseSpanned(() => {
             return p.parseDelimitedCommaSeq("parenthesis", () => {
                 return p.parseRecovering(
                     ["comma", { kind: "close_delim", delim: "parenthesis" }],
@@ -67,115 +79,91 @@ export function parseActionConditional(p: Parser): IrAction {
             }).filter(it => it !== undefined);
         });
 
-        ifActions = p.parseSpanned(() => p.parseBlock());
-
+        action.ifActions = p.parseSpanned(p.parseBlock);
         if (p.eatIdent("else")) {
-            elseActions = p.parseSpanned(() => p.parseBlock());
+            action.elseActions = p.parseSpanned(p.parseBlock);
         }
     });
-    return { type: "CONDITIONAL", matchAny, conditions, ifActions, elseActions };
 }
 
 function parseActionChangeGroup(p: Parser): IrAction {
-    let group, demotionProtection;
-    p.parseRecovering(["eol"], () => {
-        group = p.parseStr();
-        demotionProtection = p.parseBoolean();
+    return parseStructuredAction(p, "SET_GROUP", (action) => {
+        action.group = p.parseSpanned(p.parseString);
+        action.demotionProtection = p.parseSpanned(p.parseBoolean);
     });
-    return { type: "SET_GROUP", group, demotionProtection };
 }
 
 function parseActionTitle(p: Parser): IrAction {
-    let title, subtitle, fadein, stay, fadeout;
-    p.parseRecovering(["eol"], () => {
-        title = p.parseSpanned(() => p.parseStr());
-        subtitle = p.parseSpanned(() => p.parseStr());
+    return parseStructuredAction(p, "TITLE", (action) => {
+        action.title = p.parseSpanned(p.parseString);
+        action.subtitle = p.parseSpanned(p.parseString);
 
-        fadein = p.parseSpanned(() => p.parseI64());
-        stay = p.parseSpanned(() => p.parseI64());
-        fadeout = p.parseSpanned(() => p.parseI64());
+        action.fadein = p.parseSpanned(() => p.parseBoundedNumber(1, 5));
+        action.stay = p.parseSpanned(() => p.parseBoundedNumber(1, 10));
+        action.fadeout = p.parseSpanned(() => p.parseBoundedNumber(1, 5));
     });
-    return { type: "TITLE", title, subtitle, fadein, stay, fadeout };
 }
 
 function parseActionActionBar(p: Parser): IrAction {
-    let message;
-    p.parseRecovering(["eol"], () => {
-        message = p.parseSpanned(() => p.parseStr());
-    })
-    return { type: "ACTION_BAR", message };
+    return parseStructuredAction(p, "ACTION_BAR", (action) => {
+        action.message = p.parseSpanned(p.parseString);
+    });
 }
 
 function parseActionChangeMaxHealth(p: Parser): IrAction {
-    let op, amount;
-    p.parseRecovering(["eol"], () => {
-        op = p.parseSpanned(() => p.parseOperation());
-        amount = p.parseSpanned(() => p.parseAmount());
+    return parseStructuredAction(p, "CHANGE_HEALTH", (action) => {
+        action.op = p.parseSpanned(p.parseOperation);
+        action.amount = p.parseSpanned(p.parseAmount);
     });
-    return { type: "CHANGE_MAX_HEALTH", op, amount };
 }
 
 function parseActionChangeStat(p: Parser): IrAction {
-    let stat, op, amount;
-    p.parseRecovering(["eol"], () => {
-        stat = p.parseSpanned(() => p.parseStatName());
-        op = p.parseSpanned(() => p.parseOperation());
-        amount = p.parseSpanned(() => p.parseAmount());
+    return parseStructuredAction(p, "CHANGE_STAT", (action) => {
+        action.stat = p.parseSpanned(p.parseStatName);
+        action.op = p.parseSpanned(p.parseOperation);
+        action.amount = p.parseSpanned(p.parseAmount);
     });
-    return { type: "CHANGE_STAT", stat, op, amount };
 }
 
 function parseActionChangeGlobalStat(p: Parser): IrAction {
-    let stat, op, amount;
-    p.parseRecovering(["eol"], () => {
-        stat = p.parseSpanned(() => p.parseStatName());
-        op = p.parseSpanned(() => p.parseOperation());
-        amount = p.parseSpanned(() => p.parseAmount());
+    return parseStructuredAction(p, "CHANGE_GLOBAL_STAT", (action) => {
+        action.stat = p.parseSpanned(p.parseStatName);
+        action.op = p.parseSpanned(p.parseOperation);
+        action.amount = p.parseSpanned(p.parseAmount);
     });
-    return { type: "CHANGE_GLOBAL_STAT", stat, op, amount };
 }
 
 function parseActionChangeTeamStat(p: Parser): IrAction {
-    let stat, team, op, amount;
-    p.parseRecovering(["eol"], () => {
-        stat = p.parseSpanned(() => p.parseStatName());
-        team = p.parseSpanned(() => p.parseStatName());
-        op = p.parseSpanned(() => p.parseOperation());
-        amount = p.parseSpanned(() => p.parseAmount());
+    return parseStructuredAction(p, "CHANGE_TEAM_STAT", (action) => {
+        action.stat = p.parseSpanned(p.parseStatName);
+        action.team = p.parseSpanned(p.parseStatName);
+        action.op = p.parseSpanned(p.parseOperation);
+        action.amount = p.parseSpanned(p.parseAmount);
     });
-    return { type: "CHANGE_TEAM_STAT", stat, team, op, amount };
 }
 
 function parseActionMessage(p: Parser): IrAction {
-    let message;
-    p.parseRecovering(["eol"], () => {
-        message = p.parseSpanned(() => p.parseStr());
-    })
-    return { type: "MESSAGE", message };
+    return parseStructuredAction(p, "MESSAGE", (action) => {
+        action.message = p.parseSpanned(p.parseString);
+    });
 }
 
 function parseActionRandom(p: Parser): IrAction {
-    let actions;
-    p.parseRecovering(["eol"], () => {
-        actions = p.parseSpanned(() => p.parseBlock());
+    return parseStructuredAction(p, "RANDOM", (action) => {
+        action.actions = p.parseSpanned(p.parseBlock);
     });
-    return { type: "RANDOM", actions };
 }
 
 function parseActionSetVelocity(p: Parser): IrAction {
-    let x, y, z;
-    p.parseRecovering(["eol"], () => {
-        x = p.parseSpanned(() => p.parseAmount());
-        y = p.parseSpanned(() => p.parseAmount());
-        z = p.parseSpanned(() => p.parseAmount());
+    return parseStructuredAction(p, "SET_VELOCITY", (action) => {
+        action.x = p.parseSpanned(p.parseAmount);
+        action.y = p.parseSpanned(p.parseAmount);
+        action.z = p.parseSpanned(p.parseAmount);
     });
-    return { type: "SET_VELOCITY", x, y, z };
 }
 
 function parseActionTeleport(p: Parser): IrAction {
-    let location;
-    p.parseRecovering(["eol"], () => {
-        location = p.parseSpanned(() => p.parseLocation());
+    return parseStructuredAction(p, "TELEPORT", (action) => {
+        action.location = p.parseSpanned(p.parseLocation);
     });
-    return { type: "TELEPORT", location };
 }

@@ -14,38 +14,10 @@ export class InlayHintsAdapter implements vscode.InlayHintsProvider {
         return htslHints.map(hint => {
             return {
                 kind: vscode.InlayHintKind.Parameter,
-                position: document.positionAt(hint.span.lo),
+                position: document.positionAt(hint.span.start),
                 label: hint.label
             };
         });
-    }
-}
-
-// --- signature help ---
-
-export class SignatureHelpAdapter implements vscode.SignatureHelpProvider {
-    public provideSignatureHelp(
-        document: vscode.TextDocument,
-        position: vscode.Position,
-        // token: vscode.CancellationToken,
-        // context: vscode.SignatureHelpContext
-    ): vscode.ProviderResult<vscode.SignatureHelp> {
-        const help = htsl.getSignatureHelp(document.getText(), document.offsetAt(position));
-        if (!help) return;
-
-        const parameters = help.parameters.map(param => `[${param}]`);
-        const label = `${help.action} ${parameters.join(" ")}`;
-        return {
-            signatures: [
-                {
-                    label,
-                    documentation: "",
-                    parameters: parameters.map(label => ({ label }))
-                },
-            ],
-            activeSignature: 0,
-            activeParameter: help.activeParameter,
-        };
     }
 }
 
@@ -116,8 +88,8 @@ export class DiagnosticsAdapter {
         const htslDiagnostics = htsl.getDiagnostics(document.getText());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = document.positionAt(diagnostic.span!!.lo);
-            const end = document.positionAt(diagnostic.span!!.hi);
+            const start = document.positionAt(diagnostic.span!!.start);
+            const end = document.positionAt(diagnostic.span!!.end);
 
             return new vscode.Diagnostic(
                 new vscode.Range(start, end),

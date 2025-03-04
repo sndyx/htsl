@@ -1,69 +1,136 @@
-import type { CompileCtx } from "../context.js";
 import { partialEq } from "../helpers.js";
-import type { Operation, Amount, Location, Comparison, Gamemode } from "housing-common/src/actions/types.js";
+import type { Operation, Amount, Location, Comparison, Gamemode } from "housing-common/src/types/";
 import type { Lexer } from "./lexer.js";
 import {
 	type Delimiter,
-	type I64Kind, type PlaceholderKind,
+	type I64Kind, type IdentKind,
+	type PlaceholderKind,
 	type StrKind,
 	type Token,
 	tokenToString,
 } from "./token.js";
 import { type Span, span } from "./span.js";
-import { Diagnostic } from "./diagnostic.js";
-import type { IrAction } from "./ir.js";
+import { type Diagnostic, error } from "./diagnostic.js";
+import type { IrAction, ParseResult } from "./ir.js";
 import { parseAction } from "./actions.js";
+import { parseNumericalPlaceholder } from "./placeholders";
 
 export class Parser {
-	ctx: CompileCtx;
-	lexer: Lexer;
+	readonly result: ParseResult;
+	readonly lexer: Lexer;
 
+	tokenQueue: Token[];
 	token: Token;
 	prev: Token;
 
-	constructor(ctx: CompileCtx, lexer: Lexer) {
-		this.ctx = ctx;
+	private readonly shortcuts: Map<string, Token[]>;
+
+	constructor(lexer: Lexer) {
+		this.result = { holders: [], diagnostics: [] };
 		this.lexer = lexer;
+		this.tokenQueue = [];
 		this.token = { kind: "eof", span: span(0, 0) };
 		this.prev = this.token;
+		this.shortcuts = new Map();
 		this.next();
 	}
 
-	parseCompletely(): Array<IrAction> {
-		const actions = [];
+	parseCompletely(): ParseResult {
+		const defaultActions = this.parseSpanned(this.parseActions);
+		this.result.holders.push({
+			type: "UNKNOWN", kwSpan: { start: 0, end: 0 },
+			actions: defaultActions
+		});
+
 		while (true) {
+			if (!this.eatIdent("goto")) break;
+
+			const kwSpan = this.token.span;
+			if (this.eatIdent("function")) {
+				const name = this.parseSpanned(this.parseString);
+				const actions = this.parseSpanned(this.parseActions);
+
+				this.result.holders.push({ type: "FUNCTION", kwSpan, name, actions });
+			} else {
+				this.addDiagnostic(error("Expected action holder (function, event)", kwSpan));
+			}
+		}
+
+		return this.result;
+	}
+
+	parseActions(): IrAction[] {
+		const actions: IrAction[] = [];
+		while (true) {
+			this.eatNewlines();
+			if (this.check({ kind: "ident", value: "goto" }) || this.check("eof")) break;
+			if (this.eat({ kind: "ident", value: "define" })) {
+				this.parseShortcut();
+				continue;
+			}
+			const action = this.parseRecovering(["eol"], () => parseAction(this));
+			if (!this.eat("eol") && !this.check("eof")) {
+				this.addDiagnostic(error("Expected end of line", this.token.span));
+			}
+			if (action === undefined) continue;
+			actions.push(action);
+		}
+		return actions;
+	}
+
+	parseBlock(): Array<IrAction> {
+		const actions = [];
+		this.expect({ kind: "open_delim", delim: "brace" });
+		while (true) {
+			this.eatNewlines();
+			if (this.check("eof")) throw error("expected }", this.token.span);
+			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
 			try {
-				this.eatNewlines();
-				const identSpan = this.token.span;
 				const action = parseAction(this);
 				if (!action) break;
-				if (!this.eat("eol") && !this.check("eof")) {
-					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
+				if (
+					!this.eat("eol") &&
+					!this.check("eof") &&
+					!this.check({ kind: "close_delim", delim: "brace" })
+				) {
+					this.addDiagnostic(error("Expected end of line", this.token.span));
 				}
 
-				if (action.type === "EXIT") this.ctx.emit(Diagnostic.error("Exit action can only be used in conditionals", identSpan));
-				
 				actions.push(action);
 			} catch (e) {
-				if (e instanceof Diagnostic) this.ctx.emit(e);
+				this.addDiagnostic(e as Diagnostic);
 				this.recover(["eol"]);
 			}
 		}
 		return actions;
 	}
 
+	parseShortcut() {
+		const name = this.parseIdent();
+		const tokens: Token[] = [];
+
+		while (!this.check("eol") && !this.check("eof")) {
+			tokens.push(this.token);
+			this.next();
+		}
+
+		this.shortcuts.set(name, tokens);
+	}
+
 	parseLocation(): Location {
 		if (
-			this.eatIdent("custom_location") || this.eat({ kind: "str", value: "custom_location" })
+			this.eatIdent("custom_location") ||
+			this.eat({ kind: "str", value: "custom_location" })
 		) {
 			return { type: "LOCATION_CUSTOM" };
 		}
-
-		if (this.eatIdent("house_spawn") || this.eat({ kind: "str", value: "house_spawn" })) {
+		if (
+			this.eatIdent("house_spawn") ||
+			this.eat({ kind: "str", value: "house_spawn" })
+		) {
 			return { type: "LOCATION_SPAWN" };
 		}
-
-		throw Diagnostic.error("Invalid location", this.token.span);
+		throw error("Invalid location", this.token.span);
 	}
 
 	parseGamemode(): Gamemode {
@@ -76,11 +143,10 @@ export class Parser {
 		if (this.eatOption("creative")) {
 			return "creative";
 		}
-
 		if (this.check("str") || this.check("ident")) {
-			this.ctx.emit(Diagnostic.error("Expected gamemode (survival, adventure, creative)", this.token.span));
+			this.addDiagnostic(error("Expected gamemode (survival, adventure, creative)", this.token.span));
 		} else {
-			this.ctx.emit(Diagnostic.error("Expected gamemode", this.token.span));
+			this.addDiagnostic(error("Expected gamemode", this.token.span));
 		}
 		this.next();
 		return "survival";
@@ -88,44 +154,42 @@ export class Parser {
 
 	parseComparison(): Comparison {
 		if (
-			this.eatOption("equals")
-			|| this.eatOption("equal")
-			|| this.eat({ kind: "cmp_op", op: "equals" })
-			|| this.eat({ kind: "cmp_op_eq", op: "equals" })
+			this.eatOption("equals") ||
+			this.eatOption("equal") ||
+			this.eat({ kind: "cmp_op", op: "equals" }) ||
+			this.eat({ kind: "cmp_op_eq", op: "equals" })
 		) {
 			return "equals";
 		}
-		if (
-			this.eatOption("less than")
-			|| this.eat({ kind: "cmp_op", op: "less_than" })
-		) {
+		if (this.eatOption("less than") || this.eat({ kind: "cmp_op", op: "less_than" })) {
 			return "less_than";
 		}
 		if (
-			this.eatOption("less than or equals")
-			|| this.eatOption("less than or equal")
-			|| this.eat({ kind: "cmp_op_eq", op: "less_than" })
+			this.eatOption("less than or equals") ||
+			this.eatOption("less than or equal") ||
+			this.eat({ kind: "cmp_op_eq", op: "less_than" })
 		) {
 			return "less_than_or_equals";
 		}
-		if (
-			this.eatOption("greater than")
-			|| this.eat({ kind: "cmp_op", op: "greater_than" })
-		) {
+		if (this.eatOption("greater than") || this.eat({ kind: "cmp_op", op: "greater_than" })) {
 			return "greater_than";
 		}
 		if (
-			this.eatOption("greater than or equals")
-			|| this.eatOption("greater than or equal")
-			|| this.eat({ kind: "cmp_op_eq", op: "greater_than" })
+			this.eatOption("greater than or equals") ||
+			this.eatOption("greater than or equal") ||
+			this.eat({ kind: "cmp_op_eq", op: "greater_than" })
 		) {
 			return "greater_than_or_equals";
 		}
-
 		if (this.check("str") || this.check("ident")) {
-			this.ctx.emit(Diagnostic.error("Expected comparison (less than, less than or equals, equals, greater than, greater than or equals)", this.token.span));
+			this.addDiagnostic(
+				error(
+					"Expected comparison (less than, less than or equals, equals, greater than, greater than or equals)",
+					this.token.span
+				)
+			);
 		} else {
-			this.ctx.emit(Diagnostic.error("Expected comparison", this.token.span));
+			this.addDiagnostic(error("Expected comparison", this.token.span));
 		}
 		this.next();
 		return "equals";
@@ -133,63 +197,63 @@ export class Parser {
 
 	parseStatName(): string {
 		if (this.token.kind !== "ident" && this.token.kind !== "str") {
-			throw Diagnostic.error("Expected stat name", this.token.span);
+			throw error("Expected stat name", this.token.span);
 		}
 		const value = this.token.value;
 		if (value.length > 16) {
-			throw Diagnostic.error("Stat name exceeds 16-character limit", this.token.span);
+			throw error("Stat name exceeds 16-character limit", this.token.span);
 		}
 		if (value.length < 1) {
-			// we check this because of: ""
-			throw Diagnostic.error("Stat name cannot be empty", this.token.span);
+			throw error("Stat name cannot be empty", this.token.span);
 		}
 		if (value.includes(" ")) {
-			throw Diagnostic.error("Stat name cannot contain spaces", this.token.span);
+			throw error("Stat name cannot contain spaces", this.token.span);
 		}
-
 		this.next();
 		return value;
 	}
 
 	parseOperation(): Operation {
 		if (
-			this.eatOption("increment")
-			|| this.eatOption("inc")
-			|| this.eat({ kind: "bin_op_eq", op: "plus" })) {
+			this.eatOption("increment") ||
+			this.eatOption("inc") ||
+			this.eat({ kind: "bin_op_eq", op: "plus" })
+		) {
 			return "increment";
 		}
 		if (
-			this.eatOption("decrement")
-			|| this.eatOption("dec")
-			|| this.eat({ kind: "bin_op_eq", op: "minus" })
+			this.eatOption("decrement") ||
+			this.eatOption("dec") ||
+			this.eat({ kind: "bin_op_eq", op: "minus" })
 		) {
 			return "decrement";
 		}
 		if (
-			this.eatOption("multiply")
-			|| this.eatOption("mul")
-			|| this.eat({ kind: "bin_op_eq", op: "star" })
+			this.eatOption("multiply") ||
+			this.eatOption("mul") ||
+			this.eat({ kind: "bin_op_eq", op: "star" })
 		) {
 			return "multiply";
 		}
 		if (
-			this.eatOption("divide")
-			|| this.eatOption("div")
-			|| this.eat({ kind: "bin_op_eq", op: "slash" })
+			this.eatOption("divide") ||
+			this.eatOption("div") ||
+			this.eat({ kind: "bin_op_eq", op: "slash" })
 		) {
 			return "divide";
 		}
 		if (
-			this.eatOption("set")
-			|| this.eat({ kind: "cmp_op", op: "equals" })
+			this.eatOption("set") ||
+			this.eat({ kind: "cmp_op", op: "equals" })
 		) {
 			return "set";
 		}
-
 		if (this.check("str") || this.check("ident")) {
-			this.ctx.emit(Diagnostic.error("Expected operation (increment, decrement, set, multiply, divide)", this.token.span));
+			this.addDiagnostic(
+				error("Expected operation (increment, decrement, set, multiply, divide)", this.token.span)
+			);
 		} else {
-			this.ctx.emit(Diagnostic.error("Expected operation", this.token.span));
+			this.addDiagnostic(error("Expected operation", this.token.span));
 		}
 		this.next();
 		return "set";
@@ -197,15 +261,14 @@ export class Parser {
 
 	parseAmount(): Amount {
 		if (this.check("i64") || this.check({ kind: "bin_op", op: "minus" })) {
-			return this.parseI64();
+			return this.parseNumber();
 		}
 		if (this.check("placeholder")) {
 			this.next();
 			return (this.prev as PlaceholderKind).value;
 		}
 		if (this.check("str")) {
-			this.next();
-			return (this.prev as StrKind).value;
+			return parseNumericalPlaceholder(this);
 		}
 		if (this.eatIdent("stat")) {
 			const name = this.parseStatName();
@@ -217,52 +280,80 @@ export class Parser {
 		}
 		if (this.eatIdent("teamstat")) {
 			const name = this.parseStatName();
-
 			if (!this.check("ident") && !this.check("str")) {
-				throw Diagnostic.error("Expected team name", this.token.span);
+				throw error("Expected team name", this.token.span);
 			}
 			const team = this.parseStatName();
 			return `%stat.team/${name} ${team}%`;
 		}
-		throw Diagnostic.error("expected amount", this.token.span);
+		throw error("expected amount", this.token.span);
 	}
 
 	parseBoolean(): boolean {
 		let value;
 		if (this.eatIdent("true")) value = true;
 		if (this.eatIdent("false")) value = false;
-		if (!value) throw Diagnostic.error("expected true/false value", this.token.span);
+		if (!value) throw error("expected true/false value", this.token.span);
 		return value;
 	}
 
-	parseStr(): string {
+	parseIdent(): string {
+		this.expect("ident");
+		return (this.prev as IdentKind).value;
+	}
+
+	parseString(): string {
 		this.expect("str");
 		return (this.prev as StrKind).value;
 	}
 
-	parseI64(): bigint {
+	parseBoundedNumber(min: number, max: number): number {
+		const { value, span } = this.parseSpanned(this.parseNumber);
+		if (value < min) {
+			this.addDiagnostic(error(`Value must be greater than or equal to ${min}`, span));
+		}
+		if (value > max) {
+			this.addDiagnostic(error(`Value must be less than or equal to ${max}`, span));
+		}
+		return Number(value);
+	}
+
+	parseNumber(): bigint {
 		const negative = this.eat({ kind: "bin_op", op: "minus" });
-
 		this.expect("i64");
-		let value = BigInt((this.prev as I64Kind).value); // bigint constructor should never fail?
+		let value = BigInt((this.prev as I64Kind).value);
 		if (negative) value *= -1n;
-
-		if (
-			value < BigInt("-9223372036854775808") ||
-			value > BigInt("9223372036854775807")
-		) {
-			throw Diagnostic.error("Number exceeds 64-bit integer limit", this.prev.span);
+		if (value < BigInt("-9223372036854775808") || value > BigInt("9223372036854775807")) {
+			throw error("Number exceeds 64-bit integer limit", this.prev.span);
 		}
 		return value;
 	}
 
-	parseF64(): number {
+	parseFloat(): number {
 		if (this.token.kind !== "i64" && this.token.kind !== "f64") {
-			throw Diagnostic.error("Expected number", this.token.span);
+			throw error("Expected number", this.token.span);
 		}
 		this.next();
-
 		return Number.parseFloat(this.token.value);
+	}
+
+	parseDelimitedCommaSeq<T>(delim: Delimiter, parser: () => T) {
+		parser.bind(this);
+		this.expect({ kind: "open_delim", delim });
+		const seq: Array<T> = [];
+		this.eatNewlines();
+		while (!this.eat({ kind: "close_delim", delim })) {
+			if (this.token.kind === "eof") break;
+			seq.push(parser());
+			this.eatNewlines();
+			if (!this.eat("comma")) {
+				if (!this.eat({ kind: "close_delim", delim })) {
+					this.addDiagnostic(error("expected ,", this.token.span));
+				} else break;
+			}
+			this.eatNewlines();
+		}
+		return seq;
 	}
 
 	parseRecovering<T>(
@@ -270,77 +361,17 @@ export class Parser {
 		parser: () => T
 	): T | undefined {
 		try {
-			return parser();
+			return parser.call(this);
 		} catch (e) {
-			if (e instanceof Diagnostic) {
-				// cursed span creation? maybe I will do this one day
-				/*
-				if (this.token.kind === "ident" && isAction(this.token.value)) {
-					const endPos = this.prev.span.hi;
-					e.span = span(endPos, endPos);
-				}
-				 */
-				this.ctx.emit(e);
-				this.recover(recoveryTokens);
-			}
-			else throw e;
+			this.addDiagnostic(e as Diagnostic);
+			this.recover(recoveryTokens);
 		}
 	}
 
-	parseBlock(): Array<IrAction> {
-		const actions = [];
-		this.expect({ kind: "open_delim", delim: "brace" });
-		while (true) {
-			this.eatNewlines();
-			if (this.check("eof")) throw Diagnostic.error("expected }", this.token.span);
-			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
-			try {
-				const identSpan = this.token.span;
-				const action = parseAction(this);
-				if (!action) break;
-				if (!this.eat("eol") && !this.check("eof") && !this.check({ kind: "close_delim", delim: "brace" })) {
-					this.ctx.emit(Diagnostic.error("Expected end of line", this.token.span));
-				}
-
-				if (action.type === "CONDITIONAL") this.ctx.emit(Diagnostic.error("Conditionals cannot be nested", identSpan));
-				if (action.type === "RANDOM") this.ctx.emit(Diagnostic.error("Random actions cannot be nested", identSpan));
-
-				actions.push(action);
-			} catch (e) {
-				if (e instanceof Diagnostic) this.ctx.emit(e);
-				this.recover(["eol"]);
-			}
-		}
-		return actions;
-	}
-
-	parseDelimitedCommaSeq<T>(delim: Delimiter, parser: () => T) {
-		this.expect({ kind: "open_delim", delim });
-
-		const seq: Array<T> = [];
-		this.eatNewlines();
-		while (!this.eat({ kind: "close_delim", delim })) {
-			if (this.token.kind === "eof") break; // will catch the below `expect` and error gracefully
-
-			seq.push(parser());
-
-			this.eatNewlines();
-			if (!this.eat("comma")) {
-				if (!this.eat({ kind: "close_delim", delim })) {
-					this.ctx.emit(Diagnostic.error("expected ,", this.token.span));
-				} else break;
-			}
-			this.eatNewlines();
-		}
-
-		return seq;
-	}
-
-	parseSpanned<T>(parser: () => T): { value: T, span: Span } {
-		const lo = this.token.span.lo;
-		const value = parser();
-		const hi = this.prev.span.hi;
-
+	parseSpanned<T>(parser: () => T): { value: T; span: Span } {
+		const lo = this.token.span.start;
+		const value = parser.call(this);
+		const hi = this.prev.span.end;
 		return { value, span: span(lo, hi) };
 	}
 
@@ -358,15 +389,12 @@ export class Parser {
 	}
 
 	eatNewlines() {
-		while (this.eat("eol")) { /* Ignore */ }
+		while (this.eat("eol")) { }
 	}
 
 	recover(recoveryTokens: Array<Token["kind"] | Partial<Token>>) {
 		while (true) {
-			if (
-				recoveryTokens.find(token => this.check(token))
-				|| this.check("eof")
-			) {
+			if (recoveryTokens.find(token => this.check(token)) || this.check("eof")) {
 				return;
 			}
 			this.next();
@@ -375,7 +403,7 @@ export class Parser {
 
 	expect(tok: Token["kind"] | Partial<Token>) {
 		if (!this.eat(tok)) {
-			throw Diagnostic.error(`Expected ${tokenToString(tok)}`, this.token.span);
+			throw error(`Expected ${tokenToString(tok)}`, this.token.span);
 		}
 	}
 
@@ -387,12 +415,43 @@ export class Parser {
 
 	check(tok: Token["kind"] | Partial<Token>): boolean {
 		return typeof tok === "string"
-			? this.token.kind === tok // match just kind
-			: partialEq(this.token, tok); // match partial token
+			? this.token.kind === tok
+			: partialEq(this.token, tok);
 	}
 
 	next() {
 		this.prev = this.token;
-		this.token = this.lexer.advanceToken();
+
+		let token;
+		while (!token) {
+			try {
+				token = this.tokenQueue.length === 0 ? this.lexer.advanceToken() : this.tokenQueue.shift()!;
+			} catch (e) {
+				this.addDiagnostic(e as Diagnostic);
+			}
+		}
+
+		if (token.kind === "ident") {
+			const value = (token as IdentKind).value;
+
+			if (this.shortcuts.has(value)) {
+				const tokens = this.shortcuts.get(value)!;
+				for (const innerToken of tokens) {
+					innerToken.span = token.span;
+				}
+				this.tokenQueue.unshift(...tokens);
+			} else {
+				this.token = token;
+				return;
+			}
+
+			this.next();
+		} else {
+			this.token = token;
+		}
+	}
+
+	addDiagnostic(diagnostic: Diagnostic) {
+		this.result.diagnostics.push(diagnostic);
 	}
 }

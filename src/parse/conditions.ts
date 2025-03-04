@@ -1,6 +1,6 @@
 import type { Parser } from "./parser.js";
 import type { IrCondition } from "./ir.js";
-import { Diagnostic } from "./diagnostic.js";
+import { error } from "./diagnostic.js";
 
 export function parseCondition(p: Parser): IrCondition {
     if (p.eatIdent("stat")) {
@@ -10,26 +10,34 @@ export function parseCondition(p: Parser): IrCondition {
     }
 
     if (p.check("ident")) {
-        throw Diagnostic.error("Unknown condition", p.token.span);
+        throw error("Unknown condition", p.token.span);
     } else {
-        throw Diagnostic.error("Expected condition", p.token.span);
+        throw error("Expected condition", p.token.span);
     }
 }
 
-function parseConditionCompareStat(p: Parser): IrCondition {
-    let stat, op, amount;
+function parseStructuredCondition<T extends IrCondition["type"]>(
+    p: Parser,
+    type: T,
+    parser: (condition: IrCondition & { type: T }) => void
+): IrCondition & { type: T } {
+    const condition = { type, kwSpan: p.prev.span } as IrCondition & { type: T };
     p.parseRecovering(["comma", { kind: "close_delim", delim: "parenthesis" }], () => {
-        stat = p.parseSpanned(() => p.parseStatName());
-        op = p.parseSpanned(() => p.parseComparison());
-        amount = p.parseSpanned(() => p.parseAmount());
+        parser(condition);
     });
-    return { type: "COMPARE_STAT", stat, op, amount };
+    return condition;
+}
+
+function parseConditionCompareStat(p: Parser): IrCondition {
+    return parseStructuredCondition(p, "COMPARE_STAT", (condition) => {
+        condition.stat = p.parseSpanned(p.parseStatName);
+        condition.op = p.parseSpanned(p.parseComparison);
+        condition.amount = p.parseSpanned(p.parseAmount);
+    });
 }
 
 function parseConditionRequiredGamemode(p: Parser): IrCondition {
-    let gamemode;
-    p.parseRecovering(["comma", { kind: "close_delim", delim: "parenthesis" }], () => {
-        gamemode = p.parseSpanned(() => p.parseGamemode());
+    return parseStructuredCondition(p, "REQUIRED_GAMEMODE", (condition) => {
+        condition.gamemode = p.parseSpanned(p.parseGamemode);
     });
-    return { type: "REQUIRED_GAMEMODE", gamemode };
 }

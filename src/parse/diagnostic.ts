@@ -1,27 +1,21 @@
 import type { Span } from "./span.js";
 
-export class Diagnostic extends Error {
-    level: Level;
-    span?: Span;
+type Level = "bug" | "error" | "warning" | "info";
 
-    constructor(message: string, level: Level, span?: Span) {
-        super(message);
-        this.level = level;
-        this.span = span;
-    }
+export type Diagnostic = {
+    message: string,
+    level: Level,
+    span: Span,
+};
 
-    static bug(message: string, span?: Span) {
-        return new Diagnostic(message, "bug", span);
-    }
-
-    static error(message: string, span?: Span) {
-        return new Diagnostic(message, "error", span);
-    }
-
-    withSpan(span: Span): Diagnostic {
-        this.span = span;
-        return this;
-    }
+export function error(
+    message: string, span: Span
+): Diagnostic {
+    return { message, level: "error", span };
 }
 
-export type Level = "bug" | "error" | "warning" | "info";
+export function warn(
+    message: string, span: Span
+): Diagnostic {
+    return { message, level: "warning", span };
+}

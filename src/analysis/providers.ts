@@ -1,21 +1,22 @@
-import { type Diagnostic, type IrAction, type IrCondition, Lexer, Parser } from "../parse/index.js";
-import { CompileCtx } from "../context.js";
-import type { InlayHint, SemanticToken } from "./entities.js";
+import { type Diagnostic, type IrAction, type IrCondition, parse } from "../parse/";
+import type { InlayHint, RenameLocation, SemanticToken, TextEdit } from "./entities.js";
 import { SEMANTIC_DESCRIPTORS, type SemanticKind } from "./semantics.js";
 
-export function getActionMetadata(src: string): Array<IrAction> {
-    const ctx = new CompileCtx();
-    const lexer = new Lexer(src);
-    const parser = new Parser(ctx, lexer);
-    return parser.parseCompletely();
+export function getIntermediateActions(src: string): Array<IrAction> {
+    const result = parse(src);
+
+    const actions: IrAction[] = [];
+    for (const holder of result.holders) {
+        if (!holder.actions) continue;
+        actions.push(...holder.actions.value);
+    }
+
+    return actions;
 }
 
 export function getDiagnostics(src: string): Array<Diagnostic> {
-    const ctx = new CompileCtx();
-    const lexer = new Lexer(src);
-    const parser = new Parser(ctx, lexer);
-    parser.parseCompletely();
-    return ctx.diagnostics;
+    const result = parse(src);
+    return result.diagnostics;
 }
 
 export function getTokens(src: string): SemanticToken[] {
@@ -23,6 +24,7 @@ export function getTokens(src: string): SemanticToken[] {
         const tokens: SemanticToken[] = [];
         for (const key of Object.keys(entity)) {
             if (key === "type") continue;
+            if (key === "kwSpan") continue;
 
             // @ts-ignore
             const value = entity[key];
@@ -45,15 +47,17 @@ export function getTokens(src: string): SemanticToken[] {
 
             tokens.push({
                 action: entity.type,
+                kwSpan: entity.kwSpan,
                 name: key,
                 kind,
-                span: value.span
+                span: value.span,
+                value: value.value
             });
         }
         return tokens;
     }
 
-    return getActionMetadata(src).flatMap(action => {
+    return getIntermediateActions(src).flatMap(action => {
         return getSemanticTokens(action);
     });
 }
@@ -61,7 +65,15 @@ export function getTokens(src: string): SemanticToken[] {
 export function getInlayHints(src: string): InlayHint[] {
     const tokens = getTokens(src);
 
+    const count = new Map<number, number>();
+
+    tokens.forEach(token => {
+        count.set(token.span.start, (count.get(token.span.start) || 0) + 1);
+    });
+
     return tokens
+        .filter(token => count.get(token.span.start) === 1)
+        .filter(token => token.kwSpan.start !== token.span.start)
         .filter(token => ![
             "CHANGE_STAT", "CHANGE_GLOBAL_STAT", "CHANGE_TEAM_STAT",
             "COMPARE_STAT",
@@ -72,4 +84,41 @@ export function getInlayHints(src: string): InlayHint[] {
         .map(token => {
             return { label: token.name + ":", span: token.span }
         });
+}
+
+export function resolveRename(src: string, pos: number): RenameLocation | undefined {
+    const tokens = getTokens(src);
+
+    for (const token of tokens) {
+        if (["stat_name", "global_stat_name", "team_stat_name"].includes(token.kind)) {
+            if (token.span.start <= pos && token.span.end >= pos) {
+                return {
+                    span: token.span,
+                    text: token.value
+                }
+            }
+        }
+    }
+}
+
+export function getRenameLocations(src: string, pos: number, newName: string): TextEdit[] | undefined {
+    const tokens = getTokens(src);
+
+    const location = resolveRename(src, pos);
+    if (!location) return;
+
+    const edits: TextEdit[] = [];
+
+    for (const token of tokens) {
+        if (["stat_name", "global_stat_name", "team_stat_name"].includes(token.kind)) {
+            if (token.value === location.text) {
+                edits.push({
+                    span: token.span,
+                    text: newName
+                });
+            }
+        }
+    }
+
+    return edits;
 }

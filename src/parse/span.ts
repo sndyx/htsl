@@ -1,8 +1,8 @@
 export type Span = {
-    lo: number,
-    hi: number
+    start: number,
+    end: number
 };
 
-export function span(lo: number, hi: number) {
-    return { lo, hi };
+export function span(start: number, end: number) {
+    return { start, end };
 }

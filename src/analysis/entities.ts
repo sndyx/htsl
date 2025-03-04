@@ -1,12 +1,14 @@
 import type { Span } from "../parse/span.js";
 import type { SemanticKind } from "./semantics.js";
-import type { Action } from "housing-common/src/actions/actions.js";
+import type { IrAction } from "../parse";
 
 export type SemanticToken = {
-    action: Action["type"],
+    action: IrAction["type"],
+    kwSpan: Span,
     name: string,
     kind: SemanticKind,
     span: Span,
+    value: any,
 }
 
 export type InlayHint = {
@@ -23,4 +25,14 @@ export type SignatureHint = {
 export type Completion = {
     label: string,
     span: Span,
+};
+
+export type RenameLocation = {
+    span: Span,
+    text: string,
+};
+
+export type TextEdit = {
+    span: Span,
+    text: string,
 };
