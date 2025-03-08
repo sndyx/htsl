@@ -1,7 +1,7 @@
 import { Lexer } from "./lexer.js";
 import { Parser } from "./parser.js";
 import type { ParseResult } from "./ir.js";
-import { checkContext, checkLimits, checkNesting } from "../passes";
+import { checkContext, checkLimits, checkNesting } from "../lower";
 
 export * from "./ir.js";
 export * from "./diagnostic.js";

@@ -1,4 +1,4 @@
-import type { IrAction } from "./parse";
+import type { Action, Condition, Operation } from "housing-common/src/types";
 
 export const ACTIONS = [
 	"applyLayout", "applyPotion", "balanceTeam", "cancelEvent", "changeHealth", "hungerLevel",
@@ -8,18 +8,12 @@ export const ACTIONS = [
 	"compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "stat", "globalstat", "teamstat"
 ];
 
-export function partialEq(src: any, target: any): boolean {
-	return Object.keys(target).every((key) => {
-		return target[key] === src[key];
-	});
-}
-
-export function isAction(name: string) {
-	return ACTIONS.includes(name);
-}
+export const CONDITIONS = [
+	"stat", "globalstat", "teamstat", "gamemode", "damageAmount"
+];
 
 export const ACTION_KWS: {
-	[key in IrAction["type"]]: string
+	[key in Action["type"]]: string
 } = {
 	APPLY_POTION_EFFECT: "applyPotion",
 	CLEAR_POTION_EFFECTS: "clearEffects",
@@ -47,3 +41,32 @@ export const ACTION_KWS: {
 	EXIT: "exit",
 	CANCEL_EVENT: "cancelEvent"
 };
+
+export const CONDITION_KWS: {
+	[key in Condition["type"]]: string
+} = {
+	COMPARE_STAT: "stat",
+	REQUIRED_GAMEMODE: "gamemode",
+	COMPARE_DAMAGE: "damageAmount"
+}
+
+export const OPERATION_SYMBOLS: {
+	[key in Operation]: string
+} = {
+	increment: "+=",
+	decrement: "-=",
+	set: "=",
+	multiply: "*=",
+	divide: "/="
+}
+
+export function partialEq(src: any, target: any): boolean {
+	return Object.keys(target).every((key) => {
+		return target[key] === src[key];
+	});
+}
+
+export function irKeys(value: any) {
+	return Object.keys(value)
+		.filter(it => !["type", "kwSpan", "span"].includes(it));
+}

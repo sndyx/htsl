@@ -46,17 +46,21 @@ export class Parser {
 			const start = this.token.span.start;
 			if (!this.eatIdent("goto")) break;
 
-			const kwSpan = this.token.span;
 			if (this.eatIdent("function")) {
 				const name = this.parseSpanned(this.parseString);
+				this.expect("eol");
+				const end = this.prev.span.end;
+
 				const actions = this.parseSpanned(this.parseActions);
 
 				this.result.holders.push({
-					type: "FUNCTION", kwSpan, span: span(start, this.prev.span.end),
+					type: "FUNCTION",
+					kwSpan: span(start, end),
+					span: span(start, this.prev.span.end),
 					name, actions
 				});
 			} else {
-				this.addDiagnostic(error("Expected action holder (function, event)", kwSpan));
+				this.addDiagnostic(error("Expected action holder (function, event)", this.token.span));
 			}
 		}
 

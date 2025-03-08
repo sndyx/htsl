@@ -1,26 +1,25 @@
-import type { IrAction } from "../parse";
-import type { Action } from "housing-common/src/types";
+import type { Element, IrElement } from "../parse";
 
-export type Edit = EditInsert | EditDelete | EditModify;
+export type Diff<T extends Element> = DiffInsert<T> | DiffDelete<T> | DiffModify<T>;
 
-type EditInsert = {
+type DiffInsert<T extends Element> = {
     type: "insert",
-    newAction: Action
+    to: T
 }
 
-type EditDelete = {
+type DiffDelete<T extends Element> = {
     type: "delete",
-    oldAction: IrAction
+    from: IrElement<T>
 }
 
-type EditModify = {
+type DiffModify<T extends Element> = {
     type: "modify",
-    oldAction: IrAction,
-    newAction: Action
+    from: IrElement<T>,
+    to: T
 };
 
-export function diff(a: IrAction[], b: Action[]): Edit[] {
-    const seq: Edit[] = [];
+export function diff<T extends Element>(a: IrElement<T>[], b: T[]): Diff<T>[] {
+    const seq: Diff<T>[] = [];
     const { trace, offset } = shortestEdit(a, b);
     let x = a.length;
     let y = b.length;
@@ -41,8 +40,8 @@ export function diff(a: IrAction[], b: Action[]): Edit[] {
         while (x > prevX && y > prevY) {
             seq.unshift({
                 type: "modify",
-                oldAction: a[x - 1],
-                newAction: b[y - 1],
+                from: a[x - 1],
+                to: b[y - 1],
             });
             x--;
             y--;
@@ -50,9 +49,9 @@ export function diff(a: IrAction[], b: Action[]): Edit[] {
 
         if (d > 0) {
             if (x === prevX) {
-                seq.unshift({ type: "insert", newAction: b[prevY] });
+                seq.unshift({ type: "insert", to: b[prevY] });
             } else {
-                seq.unshift({ type: "delete", oldAction: a[prevX] });
+                seq.unshift({ type: "delete", from: a[prevX] });
             }
         }
 
@@ -63,7 +62,7 @@ export function diff(a: IrAction[], b: Action[]): Edit[] {
     return seq;
 }
 
-function shortestEdit(a: IrAction[], b: Action[]): { trace: number[][]; offset: number } {
+function shortestEdit<T extends Element>(a: IrElement<T>[], b: T[]): { trace: number[][]; offset: number } {
     const n = a.length;
     const m = b.length;
     const max = n + m;

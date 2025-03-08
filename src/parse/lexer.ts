@@ -19,7 +19,7 @@ export class Lexer {
 		if (!this.hasNext()) return token("eof", span(this.pos, this.pos));
 
 		const lo = this.pos;
-		const singleSpan = span(lo, lo);
+		const singleSpan = span(lo, lo + 1);
 		const c = this.next();
 
 		if (c === "/" && this.peek() === "/") {
@@ -57,25 +57,25 @@ export class Lexer {
 		if (c === "+") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("bin_op_eq", span(lo, lo + 1), { op: "plus" });
+				return token("bin_op_eq", span(lo, lo + 2), { op: "plus" });
 			}
 			return token("bin_op", singleSpan, { op: "plus" });
 		}
 		if (c === "-") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("bin_op_eq", span(lo, lo + 1), { op: "minus" });
+				return token("bin_op_eq", span(lo, lo + 2), { op: "minus" });
 			}
 			return token("bin_op", singleSpan, { op: "minus" });
 		}
 		if (c === "*") {
 			if (this.peek(0) === "*") {
 				this.next();
-				return token("bin_op", span(lo, lo + 1), { op: "star_star" });
+				return token("bin_op", span(lo, lo + 2), { op: "star_star" });
 			}
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("bin_op_eq", span(lo, lo + 1), { op: "star" });
+				return token("bin_op_eq", span(lo, lo + 2), { op: "star" });
 			}
 			return token("bin_op", singleSpan, { op: "star" });
 		}
@@ -92,21 +92,21 @@ export class Lexer {
 		if (c === "=") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("cmp_op_eq", span(lo, lo + 1), { op: "equals" });
+				return token("cmp_op_eq", span(lo, lo + 2), { op: "equals" });
 			}
 			return token("cmp_op", singleSpan, { op: "equals" });
 		}
 		if (c === "<") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("cmp_op_eq", span(lo, lo + 1), { op: "less_than" });
+				return token("cmp_op_eq", span(lo, lo + 2), { op: "less_than" });
 			}
 			return token("cmp_op", singleSpan, { op: "less_than" });
 		}
 		if (c === ">") {
 			if (this.peek(0) === "=") {
 				this.next();
-				return token("cmp_op_eq", span(lo, lo + 1), { op: "greater_than" });
+				return token("cmp_op_eq", span(lo, lo + 2), { op: "greater_than" });
 			}
 			return token("cmp_op", singleSpan, { op: "greater_than" });
 		}
@@ -175,9 +175,9 @@ export class Lexer {
 			return token("ident", span(lo, this.pos), { value });
 		}
 
-		if (c === "\n") return token("eol", span(lo, lo));
+		if (c === "\n") return token("eol", singleSpan);
 
-		throw error(`unknown token "${c}"`, span(lo, lo)); // Eventually turn this into a diagnostic
+		throw error(`unknown token "${c}"`, singleSpan); // Eventually turn this into a diagnostic
 	}
 
 	hasNext(): boolean {

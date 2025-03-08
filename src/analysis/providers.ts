@@ -34,7 +34,7 @@ export function getTokens(src: string): SemanticToken[] {
             // @ts-ignore
             const kind: SemanticKind = SEMANTIC_DESCRIPTORS[entity.type][key];
 
-            if (kind === "block") {
+            if (kind === "actions") {
                 value.value.forEach((subAction: IrAction) => {
                     tokens.push(...getSemanticTokens(subAction));
                 });

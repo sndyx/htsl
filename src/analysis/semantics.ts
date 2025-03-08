@@ -7,14 +7,14 @@ export type SemanticKind =
     | "team_stat_name"
     | "team_name"
     | "amount"
-    | "operator"
+    | "operation"
     | "comparison"
     | "string"
     | "boolean"
     | "number"
     | "conditional_mode"
     | "conditions"
-    | "block"
+    | "actions"
     | "location"
     | "gamemode"
     | "item"
@@ -48,8 +48,8 @@ const ACTION_SEMANTIC_DESCRIPTORS: {
     CONDITIONAL: {
         matchAny: "conditional_mode",
         conditions: "conditions",
-        ifActions: "block",
-        elseActions: "block"
+        ifActions: "actions",
+        elseActions: "actions"
     },
     SET_GROUP: {
         group: "string",
@@ -69,35 +69,35 @@ const ACTION_SEMANTIC_DESCRIPTORS: {
     },
     RESET_INVENTORY: {},
     CHANGE_MAX_HEALTH: {
-        op: "operator",
+        op: "operation",
         amount: "amount",
         heal: "boolean"
     },
     CHANGE_STAT: {
         stat: "stat_name",
-        op: "operator",
+        op: "operation",
         amount: "amount"
     },
     CHANGE_GLOBAL_STAT: {
         stat: "global_stat_name",
-        op: "operator",
+        op: "operation",
         amount: "amount"
     },
     CHANGE_TEAM_STAT: {
         stat: "team_stat_name",
         team: "team_name",
-        op: "operator",
+        op: "operation",
         amount: "amount"
     },
     CHANGE_HEALTH: {
-        op: "operator",
+        op: "operation",
         amount: "amount"
     },
     MESSAGE: {
         message: "string"
     },
     RANDOM: {
-        actions: "block"
+        actions: "actions"
     },
     SET_VELOCITY: {
         x: "number",

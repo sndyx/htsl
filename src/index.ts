@@ -1,5 +1,4 @@
 import { parse, unwrap } from "./parse";
-import { print } from "./roundtrip/printer";
 
 export * from "./analysis/providers.js";
 
@@ -17,5 +16,3 @@ chat "Goodbye"
 `).holders;
 
 const holders = result.map(it => unwrap(it));
-
-console.log(print(holders));

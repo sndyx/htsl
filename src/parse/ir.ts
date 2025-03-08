@@ -15,7 +15,9 @@ type WrapArray<U> = U extends Action ? IrAction[] :
         U extends (infer V)[] ? WrapArray<V>[] :
             U[];
 
-type Transform<T extends Action | Condition | ActionHolder> = {
+export type Element = { type: any };
+
+export type IrElement<T extends Element> = {
     type: T["type"],
     kwSpan: Span,
     span: Span,
@@ -24,15 +26,15 @@ type Transform<T extends Action | Condition | ActionHolder> = {
 };
 
 export type IrAction = {
-    [K in Action["type"]]: Transform<Extract<Action, { type: K }>>;
+    [K in Action["type"]]: IrElement<Extract<Action, { type: K }>>;
 }[Action["type"]];
 
 export type IrCondition = {
-    [K in Condition["type"]]: Transform<Extract<Condition, { type: K }>>;
+    [K in Condition["type"]]: IrElement<Extract<Condition, { type: K }>>;
 }[Condition["type"]];
 
 export type IrActionHolder = {
-    [K in ActionHolder["type"]]: Transform<Extract<ActionHolder, { type: K }>>;
+    [K in ActionHolder["type"]]: IrElement<Extract<ActionHolder, { type: K }>>;
 }[ActionHolder["type"]];
 
 export type ParseResult = {

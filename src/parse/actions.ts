@@ -65,10 +65,11 @@ function parseStructuredAction<T extends IrAction["type"]>(
 
 function parseActionConditional(p: Parser): IrAction {
     return parseStructuredAction(p, "CONDITIONAL", (action) => {
+        action.matchAny = p.parseSpanned(() => false); // placeholder
         if (p.check("ident")) {
             action.matchAny = p.parseSpanned(() => {
-                if (p.eatIdent("and")) return true;
-                else if (p.eatIdent("or")) return false;
+                if (p.eatIdent("and")) return false;
+                else if (p.eatIdent("or")) return true;
                 else throw error("expected conditional mode", p.token.span);
             });
         }
@@ -83,6 +84,7 @@ function parseActionConditional(p: Parser): IrAction {
         });
 
         action.ifActions = p.parseSpanned(p.parseBlock);
+        action.elseActions = p.parseSpanned(() => []); // placeholder
         if (p.eatIdent("else")) {
             action.elseActions = p.parseSpanned(p.parseBlock);
         }
