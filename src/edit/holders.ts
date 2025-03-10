@@ -3,7 +3,7 @@ import { span, type Span } from "../parse/span";
 import { edit, type TextEdit } from "./edit";
 import type { IrActionHolder } from "../parse";
 import type { CodeStyle } from "./style";
-import { createAction, modifyActions } from "./actions";
+import { insertAction, insertActions, modifyActions } from "./actions";
 import { diff } from "./diff";
 
 export function modifyHolders(
@@ -17,7 +17,7 @@ export function modifyHolders(
     let pos = 0;
     for (const diff of diffs) {
         if (diff.type === "insert") {
-            edits.push(...createHolder(diff.to, span(pos, pos), style));
+            edits.push(...insertHolder(diff.to, pos, style));
             edits.push(edit(span(pos, pos), "\n"));
         } else if (diff.type === "delete") {
             pos = diff.from.span.end;
@@ -31,27 +31,26 @@ export function modifyHolders(
     return edits;
 }
 
-export function createHolder(
-    holder: ActionHolder, span: Span,
+export function insertHolder(
+    holder: ActionHolder, pos: number,
     style: CodeStyle
 ): TextEdit[] {
     const edits: TextEdit[] = [];
+    const sp = span(pos, pos);
 
     switch (holder.type) {
         case "UNKNOWN":
             // add no goto
             break;
         case "FUNCTION":
-            edits.push(edit(span, `goto function "${holder.name}"\n`));
+            edits.push(edit(sp, `goto function "${holder.name}"\n`));
             break;
         case "EVENT":
-            edits.push(edit(span, `goto event "${holder.event}"\n`));
+            edits.push(edit(sp, `goto event "${holder.event}"\n`));
             break;
     }
 
-    for (const action of holder.actions) {
-        edits.push(...createAction(action, span, style));
-    }
+    edits.push(...insertActions(holder.actions, pos, false, style));
 
     return edits;
 }

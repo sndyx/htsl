@@ -256,15 +256,12 @@ export class Parser {
 		) {
 			return "set";
 		}
+
 		if (this.check("str") || this.check("ident")) {
-			this.addDiagnostic(
-				error("Expected operation (increment, decrement, set, multiply, divide)", this.token.span)
-			);
+			throw error("Expected operation (increment, decrement, set, multiply, divide)", this.token.span);
 		} else {
-			this.addDiagnostic(error("Expected operation", this.token.span));
+			throw error("Expected operation", this.token.span);
 		}
-		this.next();
-		return "set";
 	}
 
 	parseAmount(): Amount {

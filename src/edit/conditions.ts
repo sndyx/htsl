@@ -4,7 +4,7 @@ import type { TextEdit } from "./edit";
 import type { IrCondition } from "../parse";
 import type { Condition } from "housing-common/src/types";
 
-export function createConditions(
+export function insertConditions(
     conditions: Condition[],
     startPos: number,
     style: CodeStyle

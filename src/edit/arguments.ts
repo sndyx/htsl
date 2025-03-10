@@ -1,11 +1,11 @@
-import type { Span } from "../parse/span";
+import { span, type Span } from "../parse/span";
 import type { CodeStyle, WrittenStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
 import type { SemanticKind } from "../analysis/semantics";
 import type { Action, Condition, Operation } from "housing-common/src/types";
 import type { IrAction, IrCondition } from "../parse";
-import { createActions, modifyActions } from "./actions";
-import { createConditions, modifyConditions } from "./conditions";
+import { insertActions, modifyActions } from "./actions";
+import { insertConditions, modifyConditions } from "./conditions";
 import { OPERATION_SYMBOLS } from "../helpers";
 
 export function modifyArgument(
@@ -29,26 +29,31 @@ export function modifyArgument(
             return modifyConditions(fromConditions, toConditions, from.span.start, style);
 
         default:
-            return createArgument(to, from.span, kind, style);
+            const edits: TextEdit[] = [];
+            edits.push(edit(from.span, "")); // coerce to 1 position
+            edits.push(...insertArgument(to, from.span.end, kind, style));
+            return edits;
     }
 }
 
-export function createArgument(
-    argument: any, span: Span,
+export function insertArgument(
+    argument: any, pos: number,
     kind: SemanticKind,
     style: CodeStyle,
 ): TextEdit[] {
+    const sp = span(pos, pos);
+
     switch (kind) {
         case "string":
-            return [edit(span, `"${argument}"`)];
+            return [edit(sp, `"${argument}"`)];
 
         case "actions": {
             const edits: TextEdit[] = [];
 
             const actions = argument as Action[];
-            edits.push(edit(span, "{\n"));
-            edits.push(...createActions(actions, span.start, true, style)); // not sure if this is good
-            edits.push(edit(span, "}"));
+            edits.push(edit(sp, "{\n"));
+            edits.push(...insertActions(actions, pos, true, style)); // not sure if this is good
+            edits.push(edit(sp, "}"));
 
             return edits;
         }
@@ -56,18 +61,18 @@ export function createArgument(
             const edits: TextEdit[] = [];
 
             const conditions = argument as Condition[];
-            edits.push(edit(span, "{\n"));
-            edits.push(...createConditions(conditions, span.start, style)); // not sure if this is good
-            edits.push(edit(span, "}"));
+            edits.push(edit(sp, "{\n"));
+            edits.push(...insertConditions(conditions, pos, style)); // not sure if this is good
+            edits.push(edit(sp, "}"));
 
             return edits;
         }
         case "operation":
             let operation: Operation = argument;
             if (style.binOpStyle === "symbolic") {
-                 return [edit(span, OPERATION_SYMBOLS[operation])];
+                 return [edit(sp, OPERATION_SYMBOLS[operation])];
             } else {
-                return [edit(span, operation)];
+                return [edit(sp, operation)];
             }
 
         case "conditional_mode":
@@ -77,10 +82,10 @@ export function createArgument(
             if (!(!style.explicitConditionalAnd && !matchAny)) {
                 text = matchAny ? "or" : "and";
             }
-            return [edit(span, text)];
+            return [edit(sp, text)];
 
         default:
-            return [edit(span, argument.toString())];
+            return [edit(sp, argument.toString())];
     }
 }
 

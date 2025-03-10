@@ -1,5 +1,5 @@
 import type { ActionHolder } from "housing-common/src/types";
-import { parse, unwrap } from "../parse";
+import { parse, unwrapIr } from "../parse";
 import { modifyHolders } from "./holders";
 import { DEFAULT_CODE_STYLE } from "./style";
 import { applyEdits } from "./edit";
@@ -12,33 +12,28 @@ export function roundtrip(
 
     const edits = modifyHolders(hint.holders, holders, DEFAULT_CODE_STYLE);
 
+    console.log(edits);
+
     return applyEdits(hintSrc ?? "", edits);
 }
 
 const actions = parse(`
 stat z = "%stat.player/x%"
-
-if and () {
-    stat y = 10
-    
-    chat "Hello world!"
-}
-chat "Hello guys"
-
-chat "Goodbye, now :("
-
-if () { chat "cya" }
-`).holders.map(unwrap);
+`).holders.map(it => unwrapIr<ActionHolder>(it));
 
 const hintText = `
-stat z = /* comment */ 10
-
-chat      "Goodbye, now :("
-
-if () { chat "bye bye" }
-`;
+st
+`.replace("\r", "");
 
 const result = roundtrip(actions, hintText);
 
+console.log("===");
+console.log(hintText);
+console.log("===")
+
+console.log("")
+
+console.log("===");
 console.log(result);
+console.log("===")
 

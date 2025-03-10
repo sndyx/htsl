@@ -74,6 +74,6 @@ function unwrapTransform(ir: any): any {
     return result;
 }
 
-export function unwrap(holder: IrActionHolder): ActionHolder {
-    return unwrapTransform(holder);
+export function unwrapIr<T extends Element>(element: IrElement<T>): T {
+    return unwrapTransform(element);
 }
