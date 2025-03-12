@@ -1,4 +1,5 @@
-import { error, type IrAction, type ParseResult } from "../parse";
+import { error } from "../parse";
+import type { IrAction, ParseResult } from "../ir";
 
 export function checkNesting(
     result: ParseResult

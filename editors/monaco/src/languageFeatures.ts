@@ -3,10 +3,11 @@ import * as htsl from "htsl/src";
 
 // --- inlay hints ---
 
+/*
 export class InlayHintsAdapter implements languages.InlayHintsProvider {
     public provideInlayHints(
         model: editor.ITextModel,
-        // range: Range,
+        // range: Span,
         // token: CancellationToken
     ): languages.ProviderResult<languages.InlayHintList> {
         if (model.isDisposed()) return null;
@@ -23,9 +24,11 @@ export class InlayHintsAdapter implements languages.InlayHintsProvider {
         return { hints, dispose: () => {} };
     }
 }
+*/
 
 // --- rename ---
 
+/*
 export class RenameAdapter implements languages.RenameProvider {
     public resolveRenameLocation(
         model: editor.ITextModel,
@@ -85,6 +88,7 @@ export class RenameAdapter implements languages.RenameProvider {
         };
     }
 }
+*/
 
 // --- diagnostics ---
 
@@ -158,8 +162,8 @@ export class DiagnosticsAdapter {
         const htslDiagnostics = htsl.getDiagnostics(model.getValue());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = model.getPositionAt(diagnostic.span.start);
-            const end = model.getPositionAt(diagnostic.span.end)
+            const start = model.getPositionAt(diagnostic.range.start);
+            const end = model.getPositionAt(diagnostic.range.end)
 
             return {
                 message: diagnostic.message,

@@ -3,10 +3,11 @@ import * as htsl from "htsl/src";
 
 // --- inlay hints ---
 
+/*
 export class InlayHintsAdapter implements vscode.InlayHintsProvider {
     public provideInlayHints(
         document: vscode.TextDocument,
-        // range: vscode.Range,
+        // range: vscode.Span,
         // token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.InlayHint[]> {
         const htslHints = htsl.getInlayHints(document.getText());
@@ -20,6 +21,7 @@ export class InlayHintsAdapter implements vscode.InlayHintsProvider {
         });
     }
 }
+*/
 
 // --- diagnostics ---
 
@@ -88,8 +90,8 @@ export class DiagnosticsAdapter {
         const htslDiagnostics = htsl.getDiagnostics(document.getText());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = document.positionAt(diagnostic.span!!.start);
-            const end = document.positionAt(diagnostic.span!!.end);
+            const start = document.positionAt(diagnostic.range!!.start);
+            const end = document.positionAt(diagnostic.range!!.end);
 
             return new vscode.Diagnostic(
                 new vscode.Range(start, end),

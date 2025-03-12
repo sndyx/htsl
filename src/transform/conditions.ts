@@ -1,7 +1,7 @@
-import type { Span } from "../parse/span";
+import type { Span } from "../span";
 import type { CodeStyle } from "./style";
 import type { TextEdit } from "./edit";
-import type { IrCondition } from "../parse";
+import type { IrCondition } from "../ir";
 import type { Condition } from "housing-common/src/types";
 
 export function insertConditions(

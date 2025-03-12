@@ -1,5 +1,5 @@
 import type { Action, Condition } from "housing-common/src/types/";
-import { ACTIONS } from "../helpers.js";
+import { ACTIONS } from "./helpers.js";
 
 export type SemanticKind =
     | "stat_name"

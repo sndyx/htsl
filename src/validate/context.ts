@@ -1,4 +1,5 @@
-import { error, type IrAction, type IrActionHolder, type IrCondition, type ParseResult } from "../parse";
+import { error } from "../parse";
+import type { IrAction, IrActionHolder, IrCondition, ParseResult } from "../ir";
 
 export function checkContext(
     result: ParseResult

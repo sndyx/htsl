@@ -1,12 +1,12 @@
 import type { Action, ActionConditional, ActionRandom } from "housing-common/src/types";
-import { span, type Span } from "../parse/span";
+import { span, type Span } from "../span";
 import type { CodeStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
-import type { IrAction } from "../parse";
+import type { IrAction } from "../ir";
 import { ACTION_KWS, irKeys } from "../helpers";
 import { createCondition } from "./conditions";
 import { diff } from "./diff";
-import { SEMANTIC_DESCRIPTORS } from "../analysis/semantics";
+import { SEMANTIC_DESCRIPTORS } from "../semantics";
 import { insertArgument, modifyArgument } from "./arguments";
 
 export function insertActions(

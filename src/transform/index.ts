@@ -1,10 +1,11 @@
 import type { ActionHolder } from "housing-common/src/types";
-import { parse, unwrapIr } from "../parse";
+import { parse } from "../parse";
 import { modifyHolders } from "./holders";
 import { DEFAULT_CODE_STYLE } from "./style";
 import { applyEdits } from "./edit";
+import { unwrapIr } from "../ir";
 
-export function roundtrip(
+export function transform(
     holders: ActionHolder[],
     hintSrc?: string,
 ): string {
@@ -12,28 +13,39 @@ export function roundtrip(
 
     const edits = modifyHolders(hint.holders, holders, DEFAULT_CODE_STYLE);
 
-    console.log(edits);
-
     return applyEdits(hintSrc ?? "", edits);
+}
+
+export function generate(
+    holders: ActionHolder[],
+): string {
+    return transform(holders, undefined);
 }
 
 const actions = parse(`
 stat z = "%stat.player/x%"
-`).holders.map(it => unwrapIr<ActionHolder>(it));
+
+if and () {
+    stat y = 10
+    
+    chat "Hello world!"
+}
+chat "Hello guys"
+
+chat "Goodbye, now :("
+
+if () { chat "cya" }
+`).holders.map(unwrapIr) as ActionHolder[];
 
 const hintText = `
-st
-`.replace("\r", "");
+stat z = /* comment */ 10
 
-const result = roundtrip(actions, hintText);
+chat      "Goodbye, now :("
 
-console.log("===");
-console.log(hintText);
-console.log("===")
+if () { chat "bye bye" }
+`;
 
-console.log("")
+const result = transform(actions, hintText);
 
-console.log("===");
 console.log(result);
-console.log("===")
 

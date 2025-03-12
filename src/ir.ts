@@ -1,6 +1,6 @@
 import type { Action, ActionHolder, Condition } from "housing-common/src/types";
-import type { Span } from "./span.js";
-import type { Diagnostic } from "./diagnostic.js";
+import type { Span } from "./span";
+import type { Diagnostic } from "./parse";
 
 type Wrap<T> = {
     value: T extends Action ? IrAction :

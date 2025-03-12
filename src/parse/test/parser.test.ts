@@ -20,7 +20,7 @@ describe("Parser", () => {
                 return {
                     level: it.level,
                     message: it.message,
-                    span: it.span,
+                    span: it.range,
                 }
             });
 

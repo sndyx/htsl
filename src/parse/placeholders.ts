@@ -4,21 +4,26 @@ import { error } from "./diagnostic";
 export function parseNumericalPlaceholder(
     p: Parser
 ): string {
-    if (!p.check("str")) throw error("Expected placeholder", p.token.span);
-
-    const span = p.token.span;
-    const value = p.parseString();
-
-    if (!(value.startsWith("%") && value.endsWith("%"))) {
-        p.addDiagnostic(error("Expected placeholder", p.prev.span));
-        return "";
+    if (p.token.kind !== "str" && p.token.kind !== "placeholder") {
+        throw error("Expected placeholder", p.token.span);
     }
 
-    const stripped = value.substring(1, value.length - 1);
+    let value = p.token.value;
+    const span = p.token.span;
+    p.next();
 
-    const index = stripped.indexOf("/");
-    const name = stripped.substring(0, index == -1 ? stripped.length : index);
-    const args = index == -1 ? [] : stripped.substring(index + 1).split(" ");
+    if (p.prev.kind === "str") {
+        if (!(value.startsWith("%") && value.endsWith("%"))) {
+            p.addDiagnostic(error("Expected placeholder", p.prev.span));
+            return "";
+        }
+
+        value = value.substring(1, value.length - 1);
+    }
+
+    const index = value.indexOf("/");
+    const name = value.substring(0, index == -1 ? value.length : index);
+    const args = index == -1 ? [] : value.substring(index + 1).split(" ");
 
     function addIssueInvalidPlaceholder() {
         p.addDiagnostic(error("Invalid placeholder", span));

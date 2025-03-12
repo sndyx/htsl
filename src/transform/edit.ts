@@ -1,4 +1,4 @@
-import type { Span } from "../parse/span";
+import type { Span } from "../span";
 
 export type TextEdit = {
     span: Span,

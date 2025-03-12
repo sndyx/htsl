@@ -12,6 +12,7 @@ function setupMode() {
     function registerProviders() {
         disposeAll(disposables);
 
+        /*
         providers.push(
             languages.registerInlayHintsProvider("htsl", new languageFeatures.InlayHintsAdapter())
         );
@@ -19,6 +20,7 @@ function setupMode() {
         providers.push(
             languages.registerRenameProvider("htsl", new languageFeatures.RenameAdapter())
         );
+        */
 
         /*
         providers.push(

@@ -1,7 +1,8 @@
 import type { Parser } from "./parser.js";
-import type { IrCondition } from "./ir.js";
+import type { IrCondition } from "../ir.js";
 import { error } from "./diagnostic.js";
-import { span } from "./span";
+import { span } from "../span";
+import { parseAmount, parseComparison, parseGamemode, parseStatName } from "./arguments";
 
 export function parseCondition(p: Parser): IrCondition {
     if (p.eatIdent("stat")) {
@@ -17,7 +18,7 @@ export function parseCondition(p: Parser): IrCondition {
     }
 }
 
-function parseStructuredCondition<T extends IrCondition["type"]>(
+function parseConditionRecovering<T extends IrCondition["type"]>(
     p: Parser,
     type: T,
     parser: (condition: IrCondition & { type: T }) => void
@@ -32,15 +33,15 @@ function parseStructuredCondition<T extends IrCondition["type"]>(
 }
 
 function parseConditionCompareStat(p: Parser): IrCondition {
-    return parseStructuredCondition(p, "COMPARE_STAT", (condition) => {
-        condition.stat = p.parseSpanned(p.parseStatName);
-        condition.op = p.parseSpanned(p.parseComparison);
-        condition.amount = p.parseSpanned(p.parseAmount);
+    return parseConditionRecovering(p, "COMPARE_STAT", (condition) => {
+        condition.stat = p.spanned(parseStatName);
+        condition.op = p.spanned(parseComparison);
+        condition.amount = p.spanned(parseAmount);
     });
 }
 
 function parseConditionRequiredGamemode(p: Parser): IrCondition {
-    return parseStructuredCondition(p, "REQUIRED_GAMEMODE", (condition) => {
-        condition.gamemode = p.parseSpanned(p.parseGamemode);
+    return parseConditionRecovering(p, "REQUIRED_GAMEMODE", (condition) => {
+        condition.gamemode = p.spanned(parseGamemode);
     });
 }

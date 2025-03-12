@@ -1,5 +1,6 @@
-import { error, type IrAction, type ParseResult } from "../parse";
+import { error } from "../parse";
 import { ACTION_KWS } from "../helpers";
+import type { IrAction, ParseResult } from "../ir";
 
 export function checkLimits(
     result: ParseResult

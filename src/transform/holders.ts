@@ -1,7 +1,7 @@
 import type { ActionHolder } from "housing-common/src/types";
-import { span, type Span } from "../parse/span";
+import { span, type Span } from "../span";
 import { edit, type TextEdit } from "./edit";
-import type { IrActionHolder } from "../parse";
+import type { IrActionHolder } from "../ir";
 import type { CodeStyle } from "./style";
 import { insertAction, insertActions, modifyActions } from "./actions";
 import { diff } from "./diff";

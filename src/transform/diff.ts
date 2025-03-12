@@ -1,4 +1,4 @@
-import type { Element, IrElement } from "../parse";
+import type { Element, IrElement } from "../ir";
 
 export type Diff<T extends Element> = DiffInsert<T> | DiffDelete<T> | DiffModify<T>;
 

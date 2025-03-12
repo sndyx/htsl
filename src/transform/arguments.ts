@@ -1,9 +1,9 @@
-import { span, type Span } from "../parse/span";
+import { span, type Span } from "../span";
 import type { CodeStyle, WrittenStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
-import type { SemanticKind } from "../analysis/semantics";
+import type { SemanticKind } from "../semantics";
 import type { Action, Condition, Operation } from "housing-common/src/types";
-import type { IrAction, IrCondition } from "../parse";
+import type { IrAction, IrCondition } from "../ir";
 import { insertActions, modifyActions } from "./actions";
 import { insertConditions, modifyConditions } from "./conditions";
 import { OPERATION_SYMBOLS } from "../helpers";
