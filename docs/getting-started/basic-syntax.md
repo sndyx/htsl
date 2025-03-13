@@ -2,20 +2,20 @@
 
 ## Comments
 
-```hs
+```htsl
 // This is a line comment
 
 /* This is a block comment
    on multiple lines. */
 ```
 
-Comments do not affect the resulting actions.
+Comments are ignored by HTSL.
 
 ## Actions
 
 Declare an action using its name and its options separated by spaces:
 
-```hs
+```htsl
 // sends a chat message!
 chat "Hello World!"
 ```
@@ -26,14 +26,14 @@ You can only declare one action on a given line.
 
 Stats can be set using the `stat` action:
 
-```hs
+```htsl
 // set stat named Kills to 5
 stat Kills = 5
 ```
 
 The following is also equivalent:
 
-```hs
+```htsl
 stat Kills set 5
 ```
 
@@ -43,17 +43,23 @@ You can use any of the following modes:
 |-----|-----------|-----------|----------|--------|
 | `=` | `+=`      | `-=`      | `*=`     | `/=`   |
 
-Stats can be assigned to other stats:
+A stat can be assigned to the value given by another stat:
 
-```hs
-stat x = stat y
+```htsl
+stat A = stat B
+```
+
+Or a placeholder:
+
+```htsl
+stat Ping = %player.ping%
 ```
 
 ## Stat Types
 
-Global and team stats are virtually the same:
+Global and team stats are used the same way:
 
-```hs
+```htsl
 // adds 1 to the global stat named GlobalKills
 globalstat GlobalKills += 1
 
@@ -61,3 +67,25 @@ globalstat GlobalKills += 1
 teamstat TeamKills RedTeam += 1
 ```
 
+## Conditionals
+
+Actions can be ran if a certain condition is true.
+
+The following code will not send any message to the player:
+```htsl
+stat Deaths = 5
+// ...
+if (stat Deaths == 10) {
+   chat "You have died too many times!"
+}
+```
+
+However, if we change the value of Kills to 10, it will send the message to the player:
+```diff
+- stat Deaths = 5
++ stat Deaths = 10
+// ...
+if (stat Deaths == 10) {
+   chat "You have died too many times!"
+}
+```
