@@ -26,11 +26,10 @@ function setupMode() {
         providers.push(
             languages.registerSignatureHelpProvider("htsl", new languageFeatures.SignatureHelpAdapter())
         );
-
+        */
         providers.push(
             languages.registerCompletionItemProvider("htsl", new languageFeatures.CompletionItemAdapter())
         );
-        */
 
         providers.push(new languageFeatures.DiagnosticsAdapter());
     }

@@ -1,5 +1,6 @@
-import { editor, IDisposable, languages, MarkerSeverity, Position } from "monaco-editor";
+import { editor, IDisposable, languages, MarkerSeverity, Position, Range } from "monaco-editor";
 import * as htsl from "htsl/src";
+import { ACTION_KWS, ACTIONS } from "../../../src/helpers.ts";
 
 // --- inlay hints ---
 
@@ -182,4 +183,37 @@ export class DiagnosticsAdapter {
         severity.split("");
         return MarkerSeverity.Error;
     }
+}
+
+// --- rename ---
+
+export class CompletionItemAdapter implements languages.CompletionItemProvider {
+    provideCompletionItems(
+        model: editor.ITextModel,
+        position: Position,
+        context: languages.CompletionContext,
+        // token: CancellationToken
+    ): languages.ProviderResult<languages.CompletionList> {
+        const word = model.getWordAtPosition(position);
+        if (!word) return;
+
+        const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+        };
+
+        return {
+            suggestions: ACTIONS.map(action => {
+                return {
+                    label: action,
+                    kind: languages.CompletionItemKind.Function,
+                    insertText: action,
+                    range
+                };
+            })
+        };
+    }
+
 }
