@@ -89,3 +89,48 @@ if (stat Deaths == 10) {
    chat "You have died too many times!"
 }
 ```
+
+Multiple conditions can be added, delimited by commas.
+
+Appending "and" after the if keyword requires all conditions to be met for the conditional to execute;
+appending "or" requires only one condition to be true.
+
+By default, a conditional will only run if all conditions are met.
+```htsl
+stat A = 3
+stat B = 20
+// ...
+if (stat A == 5, stat B == 20) { // By default checks all conditions, does NOT execute because one condition fails
+    // ...
+}
+// ...
+if or (stat A == 20, stat A == 3, stat B == 2) { // At least one condition is true, meaning that this will execute
+    // ...
+}
+```
+
+A condition can be inverted by preceding it with an '!'.
+
+Actions can be triggered if the conditions are not met, using the else keyword.
+```htsl
+if (!isSneaking) {
+    chat "You are not sneaky."
+} else {
+    chat "You are quiet as a mouse."
+}
+```
+
+## Random Actions
+
+Similar to conditionals, random actions contain a subset of actions; one of these actions will be randomly executed.
+```htsl
+// Simulate a dice roll
+random {
+    stat roll = 1
+    stat roll = 2
+    stat roll = 3
+    stat roll = 4
+    stat roll = 5
+    stat roll = 6
+}
+```
