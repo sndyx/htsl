@@ -87,7 +87,7 @@ export class Parser {
 		let value;
 		if (this.eatIdent("true")) value = true;
 		if (this.eatIdent("false")) value = false;
-		if (!value) throw error("expected true/false value", this.token.span);
+		if (value === undefined) throw error("expected true/false value", this.token.span);
 		return value;
 	}
 

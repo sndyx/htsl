@@ -40,6 +40,10 @@ export function parseAction(p: Parser): IrAction {
         return { type: "EXIT", kwSpan: p.prev.span, span: p.prev.span };
     } else if (p.eatIdent("cancelEvent")) {
         return { type: "CANCEL_EVENT", kwSpan: p.prev.span, span: p.prev.span };
+    } else if (p.eatIdent("function")) {
+        return parseActionFunction(p);
+    } else if (p.eatIdent("pause")) {
+        return parseActionPause(p);
     }
 
     if (p.check("ident")) {
@@ -172,5 +176,18 @@ function parseActionSetVelocity(p: Parser): IrAction {
 function parseActionTeleport(p: Parser): IrAction {
     return parseActionRecovering(p, "TELEPORT", (action) => {
         action.location = p.spanned(parseLocation);
+    });
+}
+
+function parseActionFunction(p: Parser): IrAction {
+    return parseActionRecovering(p, "FUNCTION", (action) => {
+        action.name = p.spanned(p.parseString);
+        action.global = p.spanned(p.parseBoolean);
+    });
+}
+
+function parseActionPause(p: Parser): IrAction {
+    return parseActionRecovering(p, "PAUSE", (action) => {
+        action.ticks = p.spanned(() => p.parseBoundedNumber(1, 1000));
     });
 }

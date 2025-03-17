@@ -113,8 +113,13 @@ export class DiagnosticsAdapter {
         editor.setModelMarkers(model, "owner", markers);
     }
 
-    private htslDiagnosticLevelToMarkerSeverity(severity: string): MarkerSeverity {
-        severity.split("");
+    private htslDiagnosticLevelToMarkerSeverity(severity: htsl.DiagnosticLevel): MarkerSeverity {
+        if (severity === "error") {
+            return MarkerSeverity.Error;
+        } else if (severity === "warning") {
+            return MarkerSeverity.Warning;
+        }
+
         return MarkerSeverity.Error;
     }
 }

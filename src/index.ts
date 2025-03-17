@@ -5,7 +5,7 @@ import type { ActionHolder } from "housing-common/src/types";
 
 export * from "./span";
 export * from "./ir";
-export type { Diagnostic } from "./diagnostic";
+export type { Diagnostic, DiagnosticLevel } from "./diagnostic";
 
 export * as parse from "./parse";
 export * as transform from "./transform";

@@ -1,10 +1,10 @@
 import type { Span } from "./span.js";
 
-type Level = "bug" | "error" | "warning" | "info";
+export type DiagnosticLevel = "bug" | "error" | "warning" | "info";
 
 export type Diagnostic = {
     message: string,
-    level: Level,
+    level: DiagnosticLevel,
     span: Span,
 };
 
