@@ -1,6 +1,6 @@
 import { span } from "../span.js";
 import { token, type Token } from "./token.js";
-import { error } from "./diagnostic.js";
+import { error } from "../diagnostic.js";
 
 export class Lexer {
 	src: string;
@@ -177,7 +177,7 @@ export class Lexer {
 
 		if (c === "\n") return token("eol", singleSpan);
 
-		throw error(`unknown token "${c}"`, singleSpan); // Eventually turn this into a diagnostic
+		return token("unknown", singleSpan, { value: c });
 	}
 
 	hasNext(): boolean {

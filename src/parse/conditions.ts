@@ -1,6 +1,6 @@
 import type { Parser } from "./parser.js";
 import type { IrCondition } from "../ir.js";
-import { error } from "./diagnostic.js";
+import { error } from "../diagnostic.js";
 import { span } from "../span";
 import { parseAmount, parseComparison, parseGamemode, parseStatName } from "./arguments";
 

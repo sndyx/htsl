@@ -65,8 +65,3 @@ export function partialEq(src: any, target: any): boolean {
 		return target[key] === src[key];
 	});
 }
-
-export function irKeys(value: any) {
-	return Object.keys(value)
-		.filter(it => !["type", "kwSpan", "span"].includes(it));
-}

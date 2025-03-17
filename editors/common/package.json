@@ -1,12 +1,10 @@
 {
-  "name": "htsl-monaco",
+  "name": "htsl-editor-common",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "monaco-editor": "^0.52.2",
-    "htsl": "file:../..",
-    "htsl-editor-common": "file:../common"
+    "htsl": "file:../.."
   },
   "devDependencies": {
     "typescript": "~5.7.2"

@@ -1,4 +1,4 @@
-import { error } from "../parse";
+import { error } from "../diagnostic";
 import { ACTION_KWS } from "../helpers";
 import type { IrAction, ParseResult } from "../ir";
 
@@ -50,8 +50,8 @@ function checkActionLimits(
 
     for (const action of actions) {
         if (limits[action.type] <= 0) {
-            const message = `Limit of ${ACTION_LIMITS[action.type]} ${ACTION_KWS[action.type]} actions exceeded`
-            result.diagnostics.push(error(message, action.kwSpan));
+            const message = `Limit of ${ACTION_LIMITS[action.type]} ${ACTION_KWS[action.type]} actions exceeded`;
+            result.diagnostics.push(error(message, action.span));
         }
 
         limits[action.type] -= 1;

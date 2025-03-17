@@ -1,51 +1,37 @@
 import type { ActionHolder } from "housing-common/src/types";
-import { parse } from "../parse";
+import { parseFromString } from "../parse";
 import { modifyHolders } from "./holders";
 import { DEFAULT_CODE_STYLE } from "./style";
-import { applyEdits } from "./edit";
-import { unwrapIr } from "../ir";
+import { applyEdits, type TextEdit } from "./edit";
+
+export { applyEdits, type TextEdit } from "./edit";
+
+export function transformEdits(
+    holders: ActionHolder[],
+    hintSrc: string,
+): TextEdit[] {
+    const hint = parseFromString(hintSrc);
+
+    return modifyHolders(hint.holders, holders, DEFAULT_CODE_STYLE);
+}
 
 export function transform(
     holders: ActionHolder[],
-    hintSrc?: string,
+    hintSrc: string,
 ): string {
-    const hint = parse(hintSrc ?? "");
+    const edits = transformEdits(holders, hintSrc);
 
-    const edits = modifyHolders(hint.holders, holders, DEFAULT_CODE_STYLE);
+    return applyEdits(hintSrc, edits);
+}
 
-    return applyEdits(hintSrc ?? "", edits);
+export function generateEdits(
+    holders: ActionHolder[]
+): TextEdit[] {
+    return transformEdits(holders, "");
 }
 
 export function generate(
     holders: ActionHolder[],
 ): string {
-    return transform(holders, undefined);
+    return transform(holders, "");
 }
-
-const actions = parse(`
-stat z = "%stat.player/x%"
-
-if and () {
-    stat y = 10
-    
-    chat "Hello world!"
-}
-chat "Hello guys"
-
-chat "Goodbye, now :("
-
-if () { chat "cya" }
-`).holders.map(unwrapIr) as ActionHolder[];
-
-const hintText = `
-stat z = /* comment */ 10
-
-chat      "Goodbye, now :("
-
-if () { chat "bye bye" }
-`;
-
-const result = transform(actions, hintText);
-
-console.log(result);
-

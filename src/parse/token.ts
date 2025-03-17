@@ -16,7 +16,8 @@ export type TokenType =
 	| PlaceholderKind
 	| IdentKind
 	| EolKind
-	| EofKind;
+	| EofKind
+	| UnknownKind;
 
 export type CommaKind = { kind: "comma" };
 
@@ -39,10 +40,11 @@ export type IdentKind = { kind: "ident"; value: string };
 export type EolKind = { kind: "eol" };
 export type EofKind = { kind: "eof" };
 
+export type UnknownKind = { kind: "unknown", value: string };
+
 export type Delimiter = "parenthesis" | "brace" | "bracket";
 
 export type BinOp = "plus" | "minus" | "star" | "slash" | "star_star";
-
 export type CmpOp = "greater_than" | "less_than" | "equals";
 
 export function token<K extends Token["kind"]>(
@@ -70,6 +72,7 @@ const TOKEN_KIND_NAMES: {
 	ident: "identifier",
 	eol: "end of line",
 	eof: "end of file",
+	unknown: "unknown token",
 };
 
 const DELIMITER_SYMBOLS: {
@@ -122,6 +125,8 @@ export function tokenToString(tok: Token["kind"] | Partial<Token>) {
 			return tok.delim
 				? DELIMITER_SYMBOLS[tok.delim].charAt(1)
 				: TOKEN_KIND_NAMES[tok.kind];
+		case "unknown":
+			return tok.value
 		case undefined:
 			throw Error("undefined token kind");
 		default:

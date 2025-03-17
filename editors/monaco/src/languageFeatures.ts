@@ -1,10 +1,9 @@
-import { editor, IDisposable, languages, MarkerSeverity, Position, Range } from "monaco-editor";
+import { editor, IDisposable, languages, MarkerSeverity } from "monaco-editor";
 import * as htsl from "htsl/src";
-import { ACTION_KWS, ACTIONS } from "../../../src/helpers.ts";
+import * as common from "htsl-editor-common/src";
 
 // --- inlay hints ---
 
-/*
 export class InlayHintsAdapter implements languages.InlayHintsProvider {
     public provideInlayHints(
         model: editor.ITextModel,
@@ -13,83 +12,18 @@ export class InlayHintsAdapter implements languages.InlayHintsProvider {
     ): languages.ProviderResult<languages.InlayHintList> {
         if (model.isDisposed()) return null;
 
-        const htslHints = htsl.getInlayHints(model.getValue());
+        const htslHints = common.provideInlayHints(model.getValue());
         const hints: languages.InlayHint[] = htslHints.map(hint => {
             return {
                 kind: languages.InlayHintKind.Parameter,
                 position: model.getPositionAt(hint.span.start),
-                label: hint.label
+                label: hint.label + ":"
             };
         });
 
         return { hints, dispose: () => {} };
     }
 }
-*/
-
-// --- rename ---
-
-/*
-export class RenameAdapter implements languages.RenameProvider {
-    public resolveRenameLocation(
-        model: editor.ITextModel,
-        position: Position,
-        // token: CancellationToken
-    ): languages.ProviderResult<languages.RenameLocation> {
-        if (model.isDisposed()) return null;
-
-        const location = htsl.resolveRename(model.getValue(), model.getOffsetAt(position));
-
-        if (!location) return;
-
-        const start = model.getPositionAt(location.span.start);
-        const end = model.getPositionAt(location.span.end);
-
-        return {
-            range: {
-                startLineNumber: start.lineNumber,
-                startColumn: start.column,
-                endLineNumber: end.lineNumber,
-                endColumn: end.column
-            },
-            text: location.text
-        }
-    }
-
-    provideRenameEdits(
-        model: editor.ITextModel,
-        position: Position,
-        newName: string,
-        // token: CancellationToken
-    ): languages.ProviderResult<languages.WorkspaceEdit> {
-        const htslEdits = htsl.getRenameLocations(model.getValue(), model.getOffsetAt(position), newName);
-        if (!htslEdits) return;
-
-        const edits = htslEdits.map(edit => {
-            const start = model.getPositionAt(edit.span.start);
-            const end = model.getPositionAt(edit.span.end);
-
-            return {
-                resource: model.uri,
-                textEdit: {
-                    range: {
-                        startLineNumber: start.lineNumber,
-                        startColumn: start.column,
-                        endLineNumber: end.lineNumber,
-                        endColumn: end.column
-                    },
-                    text: edit.text
-                },
-                versionId: model.getVersionId()
-            };
-        });
-
-        return {
-            edits
-        };
-    }
-}
-*/
 
 // --- diagnostics ---
 
@@ -160,11 +94,11 @@ export class DiagnosticsAdapter {
     }
 
     private validate(model: editor.ITextModel) {
-        const htslDiagnostics = htsl.getDiagnostics(model.getValue());
+        const htslDiagnostics = htsl.diagnostics(model.getValue());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = model.getPositionAt(diagnostic.range.start);
-            const end = model.getPositionAt(diagnostic.range.end)
+            const start = model.getPositionAt(diagnostic.span.start);
+            const end = model.getPositionAt(diagnostic.span.end)
 
             return {
                 message: diagnostic.message,
@@ -183,37 +117,4 @@ export class DiagnosticsAdapter {
         severity.split("");
         return MarkerSeverity.Error;
     }
-}
-
-// --- rename ---
-
-export class CompletionItemAdapter implements languages.CompletionItemProvider {
-    provideCompletionItems(
-        model: editor.ITextModel,
-        position: Position,
-        context: languages.CompletionContext,
-        // token: CancellationToken
-    ): languages.ProviderResult<languages.CompletionList> {
-        const word = model.getWordAtPosition(position);
-        if (!word) return;
-
-        const range = {
-            startLineNumber: position.lineNumber,
-            endLineNumber: position.lineNumber,
-            startColumn: word.startColumn,
-            endColumn: word.endColumn,
-        };
-
-        return {
-            suggestions: ACTIONS.map(action => {
-                return {
-                    label: action,
-                    kind: languages.CompletionItemKind.Function,
-                    insertText: action,
-                    range
-                };
-            })
-        };
-    }
-
 }

@@ -1,6 +1,6 @@
 import type { Operation, Amount, Location, Comparison, Gamemode } from "housing-common/src/types";
 import type { Parser } from "./parser";
-import { error } from "./diagnostic";
+import { error } from "../diagnostic";
 import type { PlaceholderKind } from "./token";
 import { parseNumericalPlaceholder } from "./placeholders";
 
@@ -135,15 +135,14 @@ export function parseOperation(p: Parser): Operation {
     ) {
         return "set";
     }
-    if (p.check("str") || p.check("ident")) {
-        p.addDiagnostic(
-            error("Expected operation (increment, decrement, set, multiply, divide)", p.token.span)
+
+    if ((p.check("str") || p.check("ident"))) {
+        throw error(
+            "Expected operation (increment, decrement, set, multiply, divide)", p.token.span
         );
     } else {
-        p.addDiagnostic(error("Expected operation", p.token.span));
+        throw error("Expected operation", p.token.span);
     }
-    p.next();
-    return "set";
 }
 
 export function parseAmount(p: Parser): Amount {
@@ -169,5 +168,5 @@ export function parseAmount(p: Parser): Amount {
         const team = parseStatName(p);
         return `%stat.team/${name} ${team}%`;
     }
-    throw error("expected amount", p.token.span);
+    throw error("Expected amount", p.token.span);
 }

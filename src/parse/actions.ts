@@ -1,6 +1,6 @@
 import type { Parser } from "./parser.js";
 import type { IrAction } from "../ir.js";
-import { error } from "./diagnostic.js";
+import { error } from "../diagnostic.js";
 import { parseCondition } from "./conditions.js";
 import { span } from "../span";
 import { parseAmount, parseLocation, parseOperation, parseStatName } from "./arguments";
@@ -47,7 +47,7 @@ export function parseAction(p: Parser): IrAction {
     }
 
     p.next();
-    throw error("Expected action", p.token.span);
+    throw error("Expected action", p.prev.span);
 }
 
 function parseActionRecovering<T extends IrAction["type"]>(
@@ -66,7 +66,6 @@ function parseActionRecovering<T extends IrAction["type"]>(
 
 function parseActionConditional(p: Parser): IrAction {
     return parseActionRecovering(p, "CONDITIONAL", (action) => {
-        action.matchAny = p.spanned(() => false); // placeholder
         if (p.check("ident")) {
             action.matchAny = p.spanned(() => {
                 if (p.eatIdent("and")) return false;
@@ -88,7 +87,6 @@ function parseActionConditional(p: Parser): IrAction {
 
         p.eat("eol"); // so else can optionally be on the next line
 
-        action.elseActions = p.spanned(() => []); // placeholder
         if (p.eatIdent("else")) {
             action.elseActions = p.spanned(p.parseBlock);
         }

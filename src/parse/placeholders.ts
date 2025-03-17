@@ -1,5 +1,5 @@
 import type { Parser } from "./parser";
-import { error } from "./diagnostic";
+import { error } from "../diagnostic";
 
 export function parseNumericalPlaceholder(
     p: Parser
@@ -85,5 +85,5 @@ export function parseNumericalPlaceholder(
             addIssueInvalidPlaceholder();
     }
 
-    return value;
+    return `%${value}%`;
 }

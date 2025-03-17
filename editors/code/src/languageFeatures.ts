@@ -1,16 +1,16 @@
 import * as vscode from "vscode";
 import * as htsl from "htsl/src";
+import * as common from "htsl-editor-common/src";
 
 // --- inlay hints ---
 
-/*
 export class InlayHintsAdapter implements vscode.InlayHintsProvider {
     public provideInlayHints(
         document: vscode.TextDocument,
         // range: vscode.Span,
         // token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.InlayHint[]> {
-        const htslHints = htsl.getInlayHints(document.getText());
+        const htslHints = common.provideInlayHints(document.getText());
 
         return htslHints.map(hint => {
             return {
@@ -21,7 +21,6 @@ export class InlayHintsAdapter implements vscode.InlayHintsProvider {
         });
     }
 }
-*/
 
 // --- diagnostics ---
 
@@ -87,11 +86,11 @@ export class DiagnosticsAdapter {
     }
 
     private validate(document: vscode.TextDocument) {
-        const htslDiagnostics = htsl.getDiagnostics(document.getText());
+        const htslDiagnostics = htsl.diagnostics(document.getText());
 
         const markers = htslDiagnostics.map(diagnostic => {
-            const start = document.positionAt(diagnostic.range!!.start);
-            const end = document.positionAt(diagnostic.range!!.end);
+            const start = document.positionAt(diagnostic.span!!.start);
+            const end = document.positionAt(diagnostic.span!!.end);
 
             return new vscode.Diagnostic(
                 new vscode.Range(start, end),

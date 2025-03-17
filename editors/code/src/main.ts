@@ -10,11 +10,9 @@ export function activate(
     function registerProviders() {
         disposeAll(disposables);
 
-        /*
         providers.push(
             languages.registerInlayHintsProvider("htsl", new languageFeatures.InlayHintsAdapter())
-        )
-        */
+        );
 
         providers.push(new languageFeatures.DiagnosticsAdapter());
     }

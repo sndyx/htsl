@@ -1,5 +1,4 @@
-import type { Action, Condition } from "housing-common/src/types/";
-import { ACTIONS } from "./helpers.js";
+import type { Action, Condition } from "housing-common/src/types";
 
 export type SemanticKind =
     | "stat_name"
@@ -21,7 +20,7 @@ export type SemanticKind =
     | "potion"
     | "lobby";
 
-const CONDITION_SEMANTIC_DESCRIPTORS: {
+export const CONDITION_SEMANTIC_DESCRIPTORS: {
     [K in Condition["type"]]: {
         [key in keyof Omit<Extract<Condition, { type: K }>, "type">]-?: SemanticKind
     }
@@ -40,7 +39,7 @@ const CONDITION_SEMANTIC_DESCRIPTORS: {
     }
 }
 
-const ACTION_SEMANTIC_DESCRIPTORS: {
+export const ACTION_SEMANTIC_DESCRIPTORS: {
     [K in Action["type"]]: {
         [key in keyof Omit<Extract<Action, { type: K }>, "type">]-?: SemanticKind
     }
@@ -136,20 +135,3 @@ const ACTION_SEMANTIC_DESCRIPTORS: {
         message: "string"
     }
 }
-
-export const SEMANTIC_DESCRIPTORS = {
-    ...ACTION_SEMANTIC_DESCRIPTORS,
-    ...CONDITION_SEMANTIC_DESCRIPTORS
-};
-
-export const SEMANTIC_KIND_OPTIONS: {
-    [key: string]: string[]
-} = {
-    "action": ACTIONS,
-    "mode": [
-        "set", "increment", "decrement", "multiply", "divide",
-        "inc", "dec", "mul", "div",
-    ],
-    "conditional_mode": ["and", "or"],
-    "amount": []
-};

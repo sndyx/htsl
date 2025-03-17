@@ -41,8 +41,8 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
                 cases: {
                     '@typeKeywords': 'type.keyword',
                     '@keywords': 'keyword',
-                    "@actions": "entity.name",
-                    "@conditions": "entity.name",
+                    "@actions": "entity.name.function",
+                    "@conditions": "entity.name.function",
                     '@default': 'identifier'
                 }
             }],

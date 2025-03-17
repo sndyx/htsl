@@ -1,4 +1,4 @@
-import { error } from "../parse";
+import { error } from "../diagnostic";
 import type { IrAction, ParseResult } from "../ir";
 
 export function checkNesting(

@@ -1,6 +1,7 @@
 import { partialEq } from "../helpers.js";
 import type { Lexer } from "./lexer.js";
 import {
+	type CloseDelimKind,
 	type Delimiter,
 	type I64Kind, type IdentKind,
 	type StrKind,
@@ -8,7 +9,7 @@ import {
 	tokenToString,
 } from "./token.js";
 import { type Span, span } from "../span.js";
-import { type Diagnostic, error } from "./diagnostic.js";
+import { type Diagnostic, error } from "../diagnostic.js";
 import type { IrAction, ParseResult } from "../ir.js";
 import { parseAction } from "./actions.js";
 import { parseHolder } from "./holders";
@@ -62,22 +63,22 @@ export class Parser {
 			this.eatNewlines();
 			if (this.check("eof")) throw error("expected }", this.token.span);
 			if (this.eat({ kind: "close_delim", delim: "brace" })) break;
-			try {
-				const action = parseAction(this);
-				if (!action) break;
-				if (
-					!this.eat("eol") &&
-					!this.check("eof") &&
-					!this.check({ kind: "close_delim", delim: "brace" })
-				) {
-					this.addDiagnostic(error("Expected end of line", this.token.span));
-				}
 
-				actions.push(action);
-			} catch (e) {
-				this.addDiagnostic(e as Diagnostic);
-				this.recover(["eol"]);
+			const action = this.parseRecovering(
+				["eol", { kind: "close_delim", delim: "brace" }],
+				parseAction
+			);
+			if (!action) continue;
+
+			if (
+				!this.eat("eol") &&
+				!this.check("eof") &&
+				!this.check({ kind: "close_delim", delim: "brace" })
+			) {
+				this.addDiagnostic(error("Expected end of line", this.token.span));
 			}
+
+			actions.push(action);
 		}
 		return actions;
 	}
@@ -158,18 +159,27 @@ export class Parser {
 		return tokens;
 	}
 
-	parseDelimitedCommaSeq<T>(delim: Delimiter, parser: () => T) {
-		parser.bind(this);
+	parseDelimitedCommaSeq<T>(
+		delim: Delimiter,
+		parser: ((p: Parser) => T) | (() => T)
+	) {
 		this.expect({ kind: "open_delim", delim });
 		const seq: Array<T> = [];
 		this.eatNewlines();
-		while (!this.eat({ kind: "close_delim", delim })) {
-			if (this.token.kind === "eof") break;
-			seq.push(parser());
+
+		const closeDelim: CloseDelimKind = { kind: "close_delim", delim };
+		while (!this.eat(closeDelim)) {
+			if (this.token.kind === "eof") {
+				// we have reached the end of the file without finding a close delim
+				throw error(`Expected ${tokenToString(closeDelim)}`, this.token.span);
+			}
+
+			seq.push(parser.call(this, this));
 			this.eatNewlines();
 			if (!this.eat("comma")) {
-				if (!this.eat({ kind: "close_delim", delim })) {
+				if (!this.eat(closeDelim)) {
 					this.addDiagnostic(error("expected ,", this.token.span));
+					this.recover([closeDelim]);
 				} else break;
 			}
 			this.eatNewlines();
@@ -179,11 +189,12 @@ export class Parser {
 
 	parseRecovering<T>(
 		recoveryTokens: Array<Token["kind"] | Partial<Token>>,
-		parser: () => T
+		parser: ((p: Parser) => T) | (() => T)
 	): T | undefined {
 		try {
-			return parser.call(this);
+			return parser.call(this, this);
 		} catch (e) {
+			if (e instanceof Error) throw e;
 			this.addDiagnostic(e as Diagnostic);
 			this.recover(recoveryTokens);
 		}

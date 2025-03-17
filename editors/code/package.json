@@ -13,7 +13,8 @@
     "package": "vsce package"
   },
   "dependencies": {
-    "htsl": "file:../.."
+    "htsl": "file:../..",
+    "htsl-editor-common": "file:../common"
   },
   "devDependencies": {
     "@types/vscode": "^1.97.0",

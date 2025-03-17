@@ -1,19 +1,19 @@
-import { type Diagnostic, parse } from "./parse";
-import type { IrAction } from "./ir";
+import { parseFromString } from "./parse";
+import { unwrapIr } from "./ir";
+import type { Diagnostic } from "./diagnostic";
+import type { ActionHolder } from "housing-common/src/types";
 
-const result = parse(`
-stat x = 5
-stat y = stat y
+export * from "./span";
+export * from "./ir";
+export type { Diagnostic } from "./diagnostic";
 
-doTwice "Hi!"
-`).holders[0].actions?.value!;
+export * as parse from "./parse";
+export * as transform from "./transform";
 
-console.log(result);
-
-export function getActions(src: string): IrAction[] {
-    return parse(src).holders.flatMap(it => it.actions!.value);
+export function actions(src: string): ActionHolder[] {
+    return parseFromString(src).holders.map(unwrapIr) as ActionHolder[];
 }
 
-export function getDiagnostics(src: string): Diagnostic[] {
-    return parse(src).diagnostics;
+export function diagnostics(src: string): Diagnostic[] {
+    return parseFromString(src).diagnostics;
 }

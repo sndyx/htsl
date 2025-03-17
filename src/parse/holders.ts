@@ -1,7 +1,7 @@
 import type { Parser } from "./parser";
 import type { IrActionHolder } from "../ir";
 import { span } from "../span";
-import { error } from "./diagnostic";
+import { error } from "../diagnostic";
 
 export function parseHolder(p: Parser): IrActionHolder {
     if (p.eat({ kind: "ident", value: "goto" })) {

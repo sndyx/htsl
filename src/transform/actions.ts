@@ -2,11 +2,11 @@ import type { Action, ActionConditional, ActionRandom } from "housing-common/src
 import { span, type Span } from "../span";
 import type { CodeStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
-import type { IrAction } from "../ir";
-import { ACTION_KWS, irKeys } from "../helpers";
-import { createCondition } from "./conditions";
+import { irKeys, type IrAction } from "../ir";
+import { ACTION_KWS } from "../helpers";
+import { insertCondition } from "./conditions";
 import { diff } from "./diff";
-import { SEMANTIC_DESCRIPTORS } from "../semantics";
+import { ACTION_SEMANTIC_DESCRIPTORS } from "../semantics";
 import { insertArgument, modifyArgument } from "./arguments";
 
 export function insertActions(
@@ -67,7 +67,7 @@ export function insertAction(
 
     for (const property of irKeys(action)) {
         // @ts-ignore
-        const kind = SEMANTIC_DESCRIPTORS[action.type][property];
+        const kind = ACTION_SEMANTIC_DESCRIPTORS[action.type][property];
         // @ts-ignore
         const argument = action[property];
 
@@ -87,7 +87,7 @@ export function modifyAction(
     let pos = from.kwSpan.end;
     for (const property of irKeys(to)) {
         // @ts-ignore
-        const kind = SEMANTIC_DESCRIPTORS[to.type][property];
+        const kind = ACTION_SEMANTIC_DESCRIPTORS[to.type][property];
         // @ts-ignore
         const fromArgument: { value: any, span: Span } = from[property];
         // @ts-ignore
@@ -124,7 +124,7 @@ function insertActionConditional(
     for (let i = 0; i < action.conditions.length; i++) {
         const condition = action.conditions[i];
 
-        conditionEdits.push(createCondition(condition, sp, style));
+        conditionEdits.push(insertCondition(condition, pos, style));
     }
 
     let length = 0;
