@@ -165,6 +165,7 @@ function parseActionConditional(p: Parser): IrAction {
 function parseActionSetGroup(p: Parser): IrAction {
     return parseActionRecovering(p, "SET_GROUP", (action) => {
         action.group = p.spanned(p.parseString);
+        if (p.check("eol")) return;
         action.demotionProtection = p.spanned(p.parseBoolean);
     });
 }
