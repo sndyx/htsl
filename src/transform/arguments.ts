@@ -2,7 +2,7 @@ import { span, type Span } from "../span";
 import type { CodeStyle, WrittenStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
 import type { SemanticKind } from "../semantics";
-import type { Action, Comparison, Condition, Operation } from "housing-common/src/types";
+import type { Action, Comparison, Condition, Location, Operation } from "housing-common/src/types";
 import type { IrAction, IrCondition } from "../ir";
 import { insertActions, modifyActions } from "./actions";
 import { insertConditions, modifyConditions } from "./conditions";
@@ -91,6 +91,18 @@ export function insertArgument(
                 text = matchAny ? "or" : "and";
             }
             return [edit(sp, text)];
+
+        case "location":
+            const location = argument as Location;
+
+            if (location.type === "LOCATION_CUSTOM") {
+                return [edit(sp, `custom_coordinates "${location.value}"`)]
+            } else if (location.type === "LOCATION_SPAWN") {
+                return [edit(sp, "house_spawn")];
+            } else { // if (location.type === "LOCATION_INVOKERS") {
+                return [edit(sp, "invokers_location")];
+            }
+
         case "inversion":
             const inverted = argument as boolean;
 
