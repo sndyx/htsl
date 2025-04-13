@@ -1,0 +1,797 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Lexer > comments 1`] = `
+[
+  {
+    "kind": "ident",
+    "span": {
+      "end": 4,
+      "start": 0,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 6,
+      "start": 5,
+    },
+    "value": "x",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 8,
+      "start": 7,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 10,
+      "start": 9,
+    },
+    "value": "5",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 12,
+      "start": 11,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 16,
+      "start": 12,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 18,
+      "start": 17,
+    },
+    "value": "y",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 20,
+      "start": 19,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 25,
+      "start": 21,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 27,
+      "start": 26,
+    },
+    "value": "x",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 43,
+      "start": 42,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 45,
+      "start": 44,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 65,
+      "start": 64,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 69,
+      "start": 65,
+    },
+    "value": "chat",
+  },
+  {
+    "kind": "str",
+    "span": {
+      "end": 87,
+      "start": 70,
+    },
+    "value": "%stat.player/y%",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 89,
+      "start": 88,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 91,
+      "start": 90,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 137,
+      "start": 136,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 139,
+      "start": 138,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 143,
+      "start": 139,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 145,
+      "start": 144,
+    },
+    "value": "z",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 147,
+      "start": 146,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 150,
+      "start": 148,
+    },
+    "value": "10",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 152,
+      "start": 151,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 154,
+      "start": 153,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 219,
+      "start": 218,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 221,
+      "start": 220,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 225,
+      "start": 221,
+    },
+    "value": "chat",
+  },
+  {
+    "kind": "str",
+    "span": {
+      "end": 243,
+      "start": 226,
+    },
+    "value": "%stat.player/z%",
+  },
+]
+`;
+
+exports[`Lexer > identifiers 1`] = `
+[
+  {
+    "kind": "ident",
+    "span": {
+      "end": 4,
+      "start": 0,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 17,
+      "start": 5,
+    },
+    "value": "myIdentifier",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 19,
+      "start": 18,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 21,
+      "start": 20,
+    },
+    "value": "5",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 23,
+      "start": 22,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 27,
+      "start": 23,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 52,
+      "start": 28,
+    },
+    "value": "my/structured/identifier",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 54,
+      "start": 53,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 57,
+      "start": 55,
+    },
+    "value": "10",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 59,
+      "start": 58,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 61,
+      "start": 60,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 65,
+      "start": 61,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 78,
+      "start": 66,
+    },
+    "value": "myIdentifier",
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "slash",
+    "span": {
+      "end": 81,
+      "start": 79,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 86,
+      "start": 82,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 111,
+      "start": 87,
+    },
+    "value": "my/structured/identifier",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 113,
+      "start": 112,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 117,
+      "start": 113,
+    },
+    "value": "stat",
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 138,
+      "start": 118,
+    },
+    "value": "now_with_underscores",
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 140,
+      "start": 139,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 144,
+      "start": 141,
+    },
+    "value": "100",
+  },
+]
+`;
+
+exports[`Lexer > tokens 1`] = `
+[
+  {
+    "kind": "comma",
+    "span": {
+      "end": 1,
+      "start": 0,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 3,
+      "start": 2,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "plus",
+    "span": {
+      "end": 4,
+      "start": 3,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 6,
+      "start": 5,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "minus",
+    "span": {
+      "end": 7,
+      "start": 6,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 9,
+      "start": 8,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "star",
+    "span": {
+      "end": 10,
+      "start": 9,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 12,
+      "start": 11,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "slash",
+    "span": {
+      "end": 13,
+      "start": 12,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 15,
+      "start": 14,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "star_star",
+    "span": {
+      "end": 17,
+      "start": 15,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 19,
+      "start": 18,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "plus",
+    "span": {
+      "end": 21,
+      "start": 19,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 23,
+      "start": 22,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "minus",
+    "span": {
+      "end": 25,
+      "start": 23,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 27,
+      "start": 26,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "star",
+    "span": {
+      "end": 29,
+      "start": 27,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 31,
+      "start": 30,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "slash",
+    "span": {
+      "end": 33,
+      "start": 31,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 35,
+      "start": 34,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "greater_than",
+    "span": {
+      "end": 36,
+      "start": 35,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 38,
+      "start": 37,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "less_than",
+    "span": {
+      "end": 39,
+      "start": 38,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 41,
+      "start": 40,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 42,
+      "start": 41,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 44,
+      "start": 43,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "greater_than",
+    "span": {
+      "end": 46,
+      "start": 44,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 48,
+      "start": 47,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "less_than",
+    "span": {
+      "end": 50,
+      "start": 48,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 52,
+      "start": 51,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "equals",
+    "span": {
+      "end": 54,
+      "start": 52,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 56,
+      "start": 55,
+    },
+  },
+  {
+    "delim": "parenthesis",
+    "kind": "open_delim",
+    "span": {
+      "end": 57,
+      "start": 56,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 59,
+      "start": 58,
+    },
+  },
+  {
+    "delim": "brace",
+    "kind": "open_delim",
+    "span": {
+      "end": 60,
+      "start": 59,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 62,
+      "start": 61,
+    },
+  },
+  {
+    "delim": "bracket",
+    "kind": "open_delim",
+    "span": {
+      "end": 63,
+      "start": 62,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 65,
+      "start": 64,
+    },
+  },
+  {
+    "delim": "parenthesis",
+    "kind": "close_delim",
+    "span": {
+      "end": 66,
+      "start": 65,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 68,
+      "start": 67,
+    },
+  },
+  {
+    "delim": "brace",
+    "kind": "close_delim",
+    "span": {
+      "end": 69,
+      "start": 68,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 71,
+      "start": 70,
+    },
+  },
+  {
+    "delim": "bracket",
+    "kind": "close_delim",
+    "span": {
+      "end": 72,
+      "start": 71,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 74,
+      "start": 73,
+    },
+  },
+  {
+    "kind": "str",
+    "span": {
+      "end": 82,
+      "start": 74,
+    },
+    "value": "string",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 84,
+      "start": 83,
+    },
+  },
+  {
+    "kind": "placeholder",
+    "span": {
+      "end": 97,
+      "start": 84,
+    },
+    "value": "placeholder",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 99,
+      "start": 98,
+    },
+  },
+  {
+    "kind": "i64",
+    "span": {
+      "end": 104,
+      "start": 99,
+    },
+    "value": "12345",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 106,
+      "start": 105,
+    },
+  },
+  {
+    "kind": "f64",
+    "span": {
+      "end": 112,
+      "start": 106,
+    },
+    "value": "1.2345",
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 114,
+      "start": 113,
+    },
+  },
+  {
+    "kind": "ident",
+    "span": {
+      "end": 124,
+      "start": 114,
+    },
+    "value": "identifier",
+  },
+]
+`;
