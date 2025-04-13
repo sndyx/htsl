@@ -113,6 +113,12 @@ export function parseNumericalPlaceholder(
             if (args.length == 1) addIssueInvalidArgument("Expected team name");
             if (args.length > 2) addIssueInvalidArgument("Team stat key cannot contain spaces");
             break;
+        case "random.int":
+            if (args.length == 0) addIssueInvalidArgument("Expected lower bound");
+            else if (args.length == 1) addIssueInvalidArgument("Expected upper bound");
+            else if (args.length > 2) addIssueInvalidArgument("Unknown argument");
+            else if (!parseInt(args[0]) || !parseInt(args[1])) addIssueInvalidArgument("Bounds must be integers");
+            break;
         default:
             addIssueInvalidPlaceholder();
     }
