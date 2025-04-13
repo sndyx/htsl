@@ -37,23 +37,23 @@ exports[`Lexer > comments 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 12,
-      "start": 11,
+      "end": 11,
+      "start": 10,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 16,
-      "start": 12,
+      "end": 15,
+      "start": 11,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 18,
-      "start": 17,
+      "end": 17,
+      "start": 16,
     },
     "value": "y",
   },
@@ -61,104 +61,104 @@ exports[`Lexer > comments 1`] = `
     "kind": "cmp_op",
     "op": "equals",
     "span": {
-      "end": 20,
-      "start": 19,
+      "end": 19,
+      "start": 18,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 25,
-      "start": 21,
+      "end": 24,
+      "start": 20,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 27,
-      "start": 26,
+      "end": 26,
+      "start": 25,
     },
     "value": "x",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 43,
-      "start": 42,
+      "end": 41,
+      "start": 40,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 45,
-      "start": 44,
+      "end": 42,
+      "start": 41,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 65,
-      "start": 64,
+      "end": 61,
+      "start": 60,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 69,
-      "start": 65,
+      "end": 65,
+      "start": 61,
     },
     "value": "chat",
   },
   {
     "kind": "str",
     "span": {
-      "end": 87,
-      "start": 70,
+      "end": 83,
+      "start": 66,
     },
     "value": "%stat.player/y%",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 89,
-      "start": 88,
+      "end": 84,
+      "start": 83,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 91,
-      "start": 90,
+      "end": 85,
+      "start": 84,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 137,
-      "start": 136,
+      "end": 128,
+      "start": 127,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 139,
-      "start": 138,
+      "end": 129,
+      "start": 128,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 143,
-      "start": 139,
+      "end": 133,
+      "start": 129,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 145,
-      "start": 144,
+      "end": 135,
+      "start": 134,
     },
     "value": "z",
   },
@@ -166,59 +166,59 @@ exports[`Lexer > comments 1`] = `
     "kind": "cmp_op",
     "op": "equals",
     "span": {
-      "end": 147,
-      "start": 146,
+      "end": 137,
+      "start": 136,
     },
   },
   {
     "kind": "i64",
     "span": {
-      "end": 150,
-      "start": 148,
+      "end": 140,
+      "start": 138,
     },
     "value": "10",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 152,
-      "start": 151,
+      "end": 141,
+      "start": 140,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 154,
-      "start": 153,
+      "end": 142,
+      "start": 141,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 219,
-      "start": 218,
+      "end": 202,
+      "start": 201,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 221,
-      "start": 220,
+      "end": 203,
+      "start": 202,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 225,
-      "start": 221,
+      "end": 207,
+      "start": 203,
     },
     "value": "chat",
   },
   {
     "kind": "str",
     "span": {
-      "end": 243,
-      "start": 226,
+      "end": 225,
+      "start": 208,
     },
     "value": "%stat.player/z%",
   },
@@ -262,23 +262,23 @@ exports[`Lexer > identifiers 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 23,
-      "start": 22,
+      "end": 22,
+      "start": 21,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 27,
-      "start": 23,
+      "end": 26,
+      "start": 22,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 52,
-      "start": 28,
+      "end": 51,
+      "start": 27,
     },
     "value": "my/structured/identifier",
   },
@@ -286,45 +286,45 @@ exports[`Lexer > identifiers 1`] = `
     "kind": "cmp_op",
     "op": "equals",
     "span": {
-      "end": 54,
-      "start": 53,
+      "end": 53,
+      "start": 52,
     },
   },
   {
     "kind": "i64",
     "span": {
-      "end": 57,
-      "start": 55,
+      "end": 56,
+      "start": 54,
     },
     "value": "10",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 59,
-      "start": 58,
+      "end": 57,
+      "start": 56,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 61,
-      "start": 60,
+      "end": 58,
+      "start": 57,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 65,
-      "start": 61,
+      "end": 62,
+      "start": 58,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 78,
-      "start": 66,
+      "end": 75,
+      "start": 63,
     },
     "value": "myIdentifier",
   },
@@ -332,46 +332,46 @@ exports[`Lexer > identifiers 1`] = `
     "kind": "bin_op_eq",
     "op": "slash",
     "span": {
-      "end": 81,
-      "start": 79,
+      "end": 78,
+      "start": 76,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 86,
-      "start": 82,
+      "end": 83,
+      "start": 79,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 111,
-      "start": 87,
+      "end": 108,
+      "start": 84,
     },
     "value": "my/structured/identifier",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 113,
-      "start": 112,
+      "end": 109,
+      "start": 108,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 117,
-      "start": 113,
+      "end": 113,
+      "start": 109,
     },
     "value": "stat",
   },
   {
     "kind": "ident",
     "span": {
-      "end": 138,
-      "start": 118,
+      "end": 134,
+      "start": 114,
     },
     "value": "now_with_underscores",
   },
@@ -379,15 +379,15 @@ exports[`Lexer > identifiers 1`] = `
     "kind": "cmp_op",
     "op": "equals",
     "span": {
-      "end": 140,
-      "start": 139,
+      "end": 136,
+      "start": 135,
     },
   },
   {
     "kind": "i64",
     "span": {
-      "end": 144,
-      "start": 141,
+      "end": 140,
+      "start": 137,
     },
     "value": "100",
   },
@@ -406,16 +406,31 @@ exports[`Lexer > tokens 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 3,
-      "start": 2,
+      "end": 2,
+      "start": 1,
     },
   },
   {
     "kind": "bin_op",
     "op": "plus",
     "span": {
+      "end": 3,
+      "start": 2,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
       "end": 4,
       "start": 3,
+    },
+  },
+  {
+    "kind": "bin_op",
+    "op": "minus",
+    "span": {
+      "end": 5,
+      "start": 4,
     },
   },
   {
@@ -427,7 +442,7 @@ exports[`Lexer > tokens 1`] = `
   },
   {
     "kind": "bin_op",
-    "op": "minus",
+    "op": "star",
     "span": {
       "end": 7,
       "start": 6,
@@ -436,46 +451,61 @@ exports[`Lexer > tokens 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 9,
-      "start": 8,
-    },
-  },
-  {
-    "kind": "bin_op",
-    "op": "star",
-    "span": {
-      "end": 10,
-      "start": 9,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 12,
-      "start": 11,
+      "end": 8,
+      "start": 7,
     },
   },
   {
     "kind": "bin_op",
     "op": "slash",
     "span": {
-      "end": 13,
-      "start": 12,
+      "end": 9,
+      "start": 8,
     },
   },
   {
     "kind": "eol",
     "span": {
-      "end": 15,
-      "start": 14,
+      "end": 10,
+      "start": 9,
     },
   },
   {
     "kind": "bin_op",
     "op": "star_star",
     "span": {
-      "end": 17,
+      "end": 12,
+      "start": 10,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 13,
+      "start": 12,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "plus",
+    "span": {
+      "end": 15,
+      "start": 13,
+    },
+  },
+  {
+    "kind": "eol",
+    "span": {
+      "end": 16,
       "start": 15,
+    },
+  },
+  {
+    "kind": "bin_op_eq",
+    "op": "minus",
+    "span": {
+      "end": 18,
+      "start": 16,
     },
   },
   {
@@ -487,7 +517,7 @@ exports[`Lexer > tokens 1`] = `
   },
   {
     "kind": "bin_op_eq",
-    "op": "plus",
+    "op": "star",
     "span": {
       "end": 21,
       "start": 19,
@@ -496,16 +526,31 @@ exports[`Lexer > tokens 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 23,
-      "start": 22,
+      "end": 22,
+      "start": 21,
     },
   },
   {
     "kind": "bin_op_eq",
-    "op": "minus",
+    "op": "slash",
+    "span": {
+      "end": 24,
+      "start": 22,
+    },
+  },
+  {
+    "kind": "eol",
     "span": {
       "end": 25,
-      "start": 23,
+      "start": 24,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "greater_than",
+    "span": {
+      "end": 26,
+      "start": 25,
     },
   },
   {
@@ -516,11 +561,26 @@ exports[`Lexer > tokens 1`] = `
     },
   },
   {
-    "kind": "bin_op_eq",
-    "op": "star",
+    "kind": "cmp_op",
+    "op": "less_than",
+    "span": {
+      "end": 28,
+      "start": 27,
+    },
+  },
+  {
+    "kind": "eol",
     "span": {
       "end": 29,
-      "start": 27,
+      "start": 28,
+    },
+  },
+  {
+    "kind": "cmp_op",
+    "op": "equals",
+    "span": {
+      "end": 30,
+      "start": 29,
     },
   },
   {
@@ -531,8 +591,8 @@ exports[`Lexer > tokens 1`] = `
     },
   },
   {
-    "kind": "bin_op_eq",
-    "op": "slash",
+    "kind": "cmp_op_eq",
+    "op": "greater_than",
     "span": {
       "end": 33,
       "start": 31,
@@ -541,46 +601,61 @@ exports[`Lexer > tokens 1`] = `
   {
     "kind": "eol",
     "span": {
-      "end": 35,
+      "end": 34,
+      "start": 33,
+    },
+  },
+  {
+    "kind": "cmp_op_eq",
+    "op": "less_than",
+    "span": {
+      "end": 36,
       "start": 34,
     },
   },
   {
-    "kind": "cmp_op",
-    "op": "greater_than",
+    "kind": "eol",
     "span": {
-      "end": 36,
-      "start": 35,
+      "end": 37,
+      "start": 36,
     },
   },
   {
-    "kind": "eol",
+    "kind": "cmp_op_eq",
+    "op": "equals",
     "span": {
-      "end": 38,
+      "end": 39,
       "start": 37,
     },
   },
   {
-    "kind": "cmp_op",
-    "op": "less_than",
+    "kind": "eol",
     "span": {
-      "end": 39,
-      "start": 38,
+      "end": 40,
+      "start": 39,
     },
   },
   {
-    "kind": "eol",
+    "delim": "parenthesis",
+    "kind": "open_delim",
     "span": {
       "end": 41,
       "start": 40,
     },
   },
   {
-    "kind": "cmp_op",
-    "op": "equals",
+    "kind": "eol",
     "span": {
       "end": 42,
       "start": 41,
+    },
+  },
+  {
+    "delim": "brace",
+    "kind": "open_delim",
+    "span": {
+      "end": 43,
+      "start": 42,
     },
   },
   {
@@ -591,11 +666,26 @@ exports[`Lexer > tokens 1`] = `
     },
   },
   {
-    "kind": "cmp_op_eq",
-    "op": "greater_than",
+    "delim": "bracket",
+    "kind": "open_delim",
+    "span": {
+      "end": 45,
+      "start": 44,
+    },
+  },
+  {
+    "kind": "eol",
     "span": {
       "end": 46,
-      "start": 44,
+      "start": 45,
+    },
+  },
+  {
+    "delim": "parenthesis",
+    "kind": "close_delim",
+    "span": {
+      "end": 47,
+      "start": 46,
     },
   },
   {
@@ -606,11 +696,26 @@ exports[`Lexer > tokens 1`] = `
     },
   },
   {
-    "kind": "cmp_op_eq",
-    "op": "less_than",
+    "delim": "brace",
+    "kind": "close_delim",
+    "span": {
+      "end": 49,
+      "start": 48,
+    },
+  },
+  {
+    "kind": "eol",
     "span": {
       "end": 50,
-      "start": 48,
+      "start": 49,
+    },
+  },
+  {
+    "delim": "bracket",
+    "kind": "close_delim",
+    "span": {
+      "end": 51,
+      "start": 50,
     },
   },
   {
@@ -621,175 +726,70 @@ exports[`Lexer > tokens 1`] = `
     },
   },
   {
-    "kind": "cmp_op_eq",
-    "op": "equals",
-    "span": {
-      "end": 54,
-      "start": 52,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 56,
-      "start": 55,
-    },
-  },
-  {
-    "delim": "parenthesis",
-    "kind": "open_delim",
-    "span": {
-      "end": 57,
-      "start": 56,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 59,
-      "start": 58,
-    },
-  },
-  {
-    "delim": "brace",
-    "kind": "open_delim",
-    "span": {
-      "end": 60,
-      "start": 59,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 62,
-      "start": 61,
-    },
-  },
-  {
-    "delim": "bracket",
-    "kind": "open_delim",
-    "span": {
-      "end": 63,
-      "start": 62,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 65,
-      "start": 64,
-    },
-  },
-  {
-    "delim": "parenthesis",
-    "kind": "close_delim",
-    "span": {
-      "end": 66,
-      "start": 65,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 68,
-      "start": 67,
-    },
-  },
-  {
-    "delim": "brace",
-    "kind": "close_delim",
-    "span": {
-      "end": 69,
-      "start": 68,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 71,
-      "start": 70,
-    },
-  },
-  {
-    "delim": "bracket",
-    "kind": "close_delim",
-    "span": {
-      "end": 72,
-      "start": 71,
-    },
-  },
-  {
-    "kind": "eol",
-    "span": {
-      "end": 74,
-      "start": 73,
-    },
-  },
-  {
     "kind": "str",
     "span": {
-      "end": 82,
-      "start": 74,
+      "end": 60,
+      "start": 52,
     },
     "value": "string",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 84,
-      "start": 83,
+      "end": 61,
+      "start": 60,
     },
   },
   {
     "kind": "placeholder",
     "span": {
-      "end": 97,
-      "start": 84,
+      "end": 74,
+      "start": 61,
     },
     "value": "placeholder",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 99,
-      "start": 98,
+      "end": 75,
+      "start": 74,
     },
   },
   {
     "kind": "i64",
     "span": {
-      "end": 104,
-      "start": 99,
+      "end": 80,
+      "start": 75,
     },
     "value": "12345",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 106,
-      "start": 105,
+      "end": 81,
+      "start": 80,
     },
   },
   {
     "kind": "f64",
     "span": {
-      "end": 112,
-      "start": 106,
+      "end": 87,
+      "start": 81,
     },
     "value": "1.2345",
   },
   {
     "kind": "eol",
     "span": {
-      "end": 114,
-      "start": 113,
+      "end": 88,
+      "start": 87,
     },
   },
   {
     "kind": "ident",
     "span": {
-      "end": 124,
-      "start": 114,
+      "end": 98,
+      "start": 88,
     },
     "value": "identifier",
   },
