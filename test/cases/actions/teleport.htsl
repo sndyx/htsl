@@ -1,0 +1,15 @@
+tp custom_location "1 1 1"
+tp custom_location "-1 1.1 1.1"
+tp custom_location "1 1 1"
+
+tp custom_location "^ ^ ^"
+tp custom_location "^10 ^ ^"
+
+if () {
+    tp "custom_location" "~1 ~ 1"
+    tp "custom_location" "~ ~ ~"
+
+    tp custom_coordinates "1 1 1"
+    tp house_spawn
+    tp invokers_location
+}

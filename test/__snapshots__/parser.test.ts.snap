@@ -2512,3 +2512,278 @@ exports[`Parser > parse shorthands 1`] = `
   ],
 }
 `;
+
+exports[`Parser > parse teleport 1`] = `
+{
+  "diagnostics": [],
+  "holders": [
+    {
+      "actions": {
+        "span": {
+          "end": 299,
+          "start": 0,
+        },
+        "value": [
+          {
+            "kwSpan": {
+              "end": 2,
+              "start": 0,
+            },
+            "location": {
+              "span": {
+                "end": 26,
+                "start": 3,
+              },
+              "value": {
+                "type": "LOCATION_CUSTOM",
+                "value": "1 1 1",
+              },
+            },
+            "span": {
+              "end": 26,
+              "start": 0,
+            },
+            "type": "TELEPORT",
+          },
+          {
+            "kwSpan": {
+              "end": 29,
+              "start": 27,
+            },
+            "location": {
+              "span": {
+                "end": 58,
+                "start": 30,
+              },
+              "value": {
+                "type": "LOCATION_CUSTOM",
+                "value": "-1 1.1 1.1",
+              },
+            },
+            "span": {
+              "end": 58,
+              "start": 27,
+            },
+            "type": "TELEPORT",
+          },
+          {
+            "kwSpan": {
+              "end": 61,
+              "start": 59,
+            },
+            "location": {
+              "span": {
+                "end": 85,
+                "start": 62,
+              },
+              "value": {
+                "type": "LOCATION_CUSTOM",
+                "value": "1 1 1",
+              },
+            },
+            "span": {
+              "end": 85,
+              "start": 59,
+            },
+            "type": "TELEPORT",
+          },
+          {
+            "kwSpan": {
+              "end": 89,
+              "start": 87,
+            },
+            "location": {
+              "span": {
+                "end": 113,
+                "start": 90,
+              },
+              "value": {
+                "type": "LOCATION_CUSTOM",
+                "value": "^ ^ ^",
+              },
+            },
+            "span": {
+              "end": 113,
+              "start": 87,
+            },
+            "type": "TELEPORT",
+          },
+          {
+            "kwSpan": {
+              "end": 116,
+              "start": 114,
+            },
+            "location": {
+              "span": {
+                "end": 142,
+                "start": 117,
+              },
+              "value": {
+                "type": "LOCATION_CUSTOM",
+                "value": "^10 ^ ^",
+              },
+            },
+            "span": {
+              "end": 142,
+              "start": 114,
+            },
+            "type": "TELEPORT",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 149,
+                "start": 147,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 299,
+                "start": 299,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 299,
+                "start": 150,
+              },
+              "value": [
+                {
+                  "kwSpan": {
+                    "end": 158,
+                    "start": 156,
+                  },
+                  "location": {
+                    "span": {
+                      "end": 185,
+                      "start": 159,
+                    },
+                    "value": {
+                      "type": "LOCATION_CUSTOM",
+                      "value": "~1 ~ 1",
+                    },
+                  },
+                  "span": {
+                    "end": 185,
+                    "start": 156,
+                  },
+                  "type": "TELEPORT",
+                },
+                {
+                  "kwSpan": {
+                    "end": 192,
+                    "start": 190,
+                  },
+                  "location": {
+                    "span": {
+                      "end": 218,
+                      "start": 193,
+                    },
+                    "value": {
+                      "type": "LOCATION_CUSTOM",
+                      "value": "~ ~ ~",
+                    },
+                  },
+                  "span": {
+                    "end": 218,
+                    "start": 190,
+                  },
+                  "type": "TELEPORT",
+                },
+                {
+                  "kwSpan": {
+                    "end": 226,
+                    "start": 224,
+                  },
+                  "location": {
+                    "span": {
+                      "end": 253,
+                      "start": 227,
+                    },
+                    "value": {
+                      "type": "LOCATION_CUSTOM",
+                      "value": "1 1 1",
+                    },
+                  },
+                  "span": {
+                    "end": 253,
+                    "start": 224,
+                  },
+                  "type": "TELEPORT",
+                },
+                {
+                  "kwSpan": {
+                    "end": 260,
+                    "start": 258,
+                  },
+                  "location": {
+                    "span": {
+                      "end": 272,
+                      "start": 261,
+                    },
+                    "value": {
+                      "type": "LOCATION_SPAWN",
+                    },
+                  },
+                  "span": {
+                    "end": 272,
+                    "start": 258,
+                  },
+                  "type": "TELEPORT",
+                },
+                {
+                  "kwSpan": {
+                    "end": 279,
+                    "start": 277,
+                  },
+                  "location": {
+                    "span": {
+                      "end": 297,
+                      "start": 280,
+                    },
+                    "value": {
+                      "type": "LOCATION_INVOKERS",
+                    },
+                  },
+                  "span": {
+                    "end": 297,
+                    "start": 277,
+                  },
+                  "type": "TELEPORT",
+                },
+              ],
+            },
+            "kwSpan": {
+              "end": 146,
+              "start": 144,
+            },
+            "matchAny": {
+              "span": {
+                "end": 146,
+                "start": 147,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 299,
+              "start": 144,
+            },
+            "type": "CONDITIONAL",
+          },
+        ],
+      },
+      "kwSpan": {
+        "end": 0,
+        "start": 0,
+      },
+      "span": {
+        "end": 299,
+        "start": 0,
+      },
+      "type": "UNKNOWN",
+    },
+  ],
+}
+`;
