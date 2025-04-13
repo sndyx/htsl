@@ -1,0 +1,28 @@
+stat x = %player.ping%
+stat x = %player.health%
+stat x = %player.maxhealth%
+stat x = %player.hunger%
+stat x = %player.experience%
+stat x = %player.level%
+stat x = %player.protocol%
+stat x = %player.location.x%
+stat x = %player.location.y%
+stat x = %player.location.z%
+
+if () {
+    stat x = %player.location.pitch%
+    stat x = %player.location.yaw%
+    stat x = %player.group.priority%
+    stat x = %player.parkour.ticks%
+    stat x = %house.guests%
+    stat x = %house.cookies%
+    stat x = %house.players%
+    stat x = %date.unix%
+    stat x = %stat.player/x%
+    stat x = %stat.global/x%
+}
+
+if () {
+    stat x = %stat.team/x team%
+    stat x = %random.int/1 10%
+}
