@@ -199,7 +199,7 @@ export function parseInventorySlot(p: Parser): InventorySlot {
     if (p.eatOption("boots")) {
         return "boots";
     }
-    if (p.eatOption("first available slot")) {
+    if (p.eatOption("first available slot") || p.eatOption("first slot")) {
         return "first";
     }
     if (p.eatOption("hand slot")) {
