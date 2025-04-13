@@ -132,8 +132,10 @@ function parseConditionRequireItem(p: Parser, inverted: Inverted): IrCondition {
         condition.whatToCheck = p.spanned(parseItemProperty);
         condition.whereToCheck = p.spanned(parseItemLocation);
         condition.amount = p.spanned(() => {
-            if (p.eatOption("Any Amount")) return "Any Amount";
-            else if (p.eatOption("Equal or Greater Amount")) return "Equal or Greater Amount";
+            if (p.eatOption("Any Amount") || p.eatOption("anyAmount")) return "Any Amount";
+            else if (p.eatOption("Equal or Greater Amount") || p.eatOption("equalOrGreaterAmount")) {
+                return "Equal or Greater Amount";
+            }
             else throw error("Expected item amount", p.token.span);
         });
     });
