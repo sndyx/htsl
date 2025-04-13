@@ -101,6 +101,7 @@ export function parseNumericalPlaceholder(
         case "house.guests":
         case "house.cookies":
         case "house.players":
+        case "date.unix":
             if (args.length > 0) addIssueInvalidArgument("No arguments expected");
             break;
         case "stat.player":
