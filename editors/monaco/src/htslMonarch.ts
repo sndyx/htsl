@@ -18,13 +18,8 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
     ],
 
     actions: htsl.helpers.ACTION_KWS,
+    conditions: htsl.helpers.CONDITION_KWS,
     shorthands: htsl.helpers.SHORTHANDS,
-
-    conditions: [
-        "blockType", "damageAmount", "damageCause", "doingParkour", "fishingEnv", "hasItem",
-        "hasPotion", "isItem", "isSneaking", "maxHealth", "isFlying", "health", "hunger",
-        "portal", "canPvp", "gamemode", "hasGroup", "hasPermission", "hasTeam", "inRegion"
-    ],
 
     symbols:  /[=><!~?:&|+\-*\/^]+/,
 
