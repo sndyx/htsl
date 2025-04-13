@@ -1,136 +1,82 @@
 {
   "scopeName": "source.htsl",
-  "name": "HTSL",
-  "fileTypes": ["htsl"],
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#strings" },
     { "include": "#keywords" },
-    { "include": "#numbers" },
+    { "include": "#typeKeywords" },
     { "include": "#operators" },
-    { "include": "#delimiters" },
-    { "include": "#identifiers" }
+    { "include": "#actions" },
+    { "include": "#shorthands" },
+    { "include": "#conditions" },
+    { "include": "#escapes" },
+    { "include": "#whitespace" },
+    { "include": "#strings" },
+    { "include": "#comments" },
+    { "include": "#placeholders" },
+    { "include": "#numbers" }
   ],
   "repository": {
-    "comments": {
+    "keywords": {
+      "match": "\\b(goto|loop|if|else|and|or|function|random|exit|define|macro|true|false)\\b",
+      "name": "keyword.control.htsl"
+    },
+    "typeKeywords": {
+      "match": "\\b(stat|globalstat|teamstat|placeholder)\\b",
+      "name": "keyword.type.htsl"
+    },
+    "operators": {
+      "match": "[=><!~?:&|+\\-*\\/^]+",
+      "name": "keyword.operator.htsl"
+    },
+    "actions": {
+      "match": "\\b(applyLayout|applyPotion|balanceTeam|cancelEvent|changeHealth|hungerLevel|maxHealth|changePlayerGroup|clearEffects|closeMenu|actionBar|displayMenu|title|enchant|exit|failParkour|fullHeal|xpLevel|giveItem|houseSpawn|kill|parkCheck|pause|sound|removeItem|resetInventory|chat|lobby|compassTarget|gamemode|setTeam|tp|consumeItem|stat|globalstat|teamstat|launch|changeVelocity|dropItem|function|random|if)\\b",
+      "name": "support.function.action.htsl"
+    },
+    "shorthands": {
+      "match": "\\b(globalstat|stat|teamstat|randomint|health|maxHealth|hunger|locX|locY|locZ|unix)\\b",
+      "name": "support.constant.shorthand.htsl"
+    },
+    "conditions": {
+      "match": "\\b(blockType|damageAmount|damageCause|doingParkour|fishingEnv|hasItem|hasPotion|isItem|isSneaking|maxHealth|isFlying|health|hunger|portal|canPvp|gamemode|hasGroup|hasPermission|hasTeam|inRegion|teamstat|stat|globalstat|placeholder)\\b",
+      "name": "support.function.condition.htsl"
+    },
+    "escapes": {
+      "match": "\\\\(?:[abfnrtv\\\\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+      "name": "constant.character.escape.htsl"
+    },
+    "whitespace": {
       "patterns": [
-        {
-          "name": "comment.line.double-slash.htsl",
-          "match": "//.*$"
-        },
-        {
-          "name": "comment.block.htsl",
-          "begin": "/\\*",
-          "end": "\\*/",
-          "patterns": [
-            {
-              "include": "#comments"
-            }
-          ]
-        }
+        { "match": "[ \t\r\n]+", "name": "whitespace.htsl" },
+        { "match": "\/\*.*?\*\/", "name": "comment.block.htsl" },
+        { "match": "\/\/.*$", "name": "comment.line.htsl" }
       ]
     },
     "strings": {
+      "begin": "\"",
+      "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.htsl" } },
+      "end": "\"",
+      "endCaptures": { "0": { "name": "punctuation.definition.string.end.htsl" } },
+      "name": "string.quoted.double.htsl",
       "patterns": [
-        {
-          "name": "string.quoted.double.htsl",
-          "begin": "\"",
-          "end": "\"",
-          "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.string.begin.htsl"
-            }
-          },
-          "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.string.end.htsl"
-            }
-          },
-          "patterns": [
-            {
-              "name": "constant.character.escape.htsl",
-              "match": "\\\\(?:[abfnrtv\\\\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
-            },
-            {
-              "name": "meta.placeholder.htsl",
-              "begin": "%",
-              "end": "%",
-              "beginCaptures": {
-                "0": {
-                  "name": "punctuation.definition.placeholder.begin.htsl"
-                }
-              },
-              "endCaptures": {
-                "0": {
-                  "name": "punctuation.definition.placeholder.end.htsl"
-                }
-              },
-              "patterns": [
-                {
-                  "name": "constant.character.escape.htsl",
-                  "match": "\\\\."
-                }
-              ]
-            }
-          ]
-        }
+        { "include": "#escapes" },
+        { "include": "#placeholders" }
       ]
     },
-    "keywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.htsl",
-          "match": "\\b(?:goto|loop|if|else|and|or|\"and\"|\"or\"|function|random)\\b"
-        },
-        {
-          "name": "storage.type.htsl",
-          "match": "\\b(?:stat|globalstat|teamstat|placeholder)\\b"
-        },
-        {
-          "name": "entity.name.function.htsl",
-          "match": "\\b(?:applyLayout|applyPotion|balanceTeam|cancelEvent|changeHealth|hungerLevel|maxHealth|changePlayerGroup|clearEffects|closeMenu|actionBar|displayMenu|title|enchant|exit|failParkour|fullHeal|xpLevel|giveItem|houseSpawn|kill|parkCheck|pause|sound|removeItem|resetInventory|chat|lobby|compassTarget|gamemode|setTeam|tp|consumeItem)\\b"
-        },
-        {
-          "name": "entity.name.function.htsl",
-          "match": "\\b(?:blockType|damageAmount|damageCause|doingParkour|fishingEnv|hasItem|hasPotion|isItem|isSneaking|maxHealth|isFlying|health|hunger|portal|canPvp|gamemode|hasGroup|hasPermission|hasTeam|inRegion)\\b"
-        }
-      ]
+    "placeholders": {
+      "begin": "%",
+      "beginCaptures": { "0": { "name": "punctuation.definition.placeholder.begin.htsl" } },
+      "end": "%",
+      "endCaptures": { "0": { "name": "punctuation.definition.placeholder.end.htsl" } },
+      "name": "string.placeholder.htsl"
     },
-    "identifiers": {
+    "comments": {
       "patterns": [
-        {
-          "name": "identifier.htsl",
-          "match": "\\b[a-zA-Z_$][\\w$]*\\b"
-        }
+        { "begin": "\/*", "end": "*\/", "name": "comment.block.htsl" },
+        { "match": "\/\/.*", "name": "comment.line.double-slash.htsl" }
       ]
     },
     "numbers": {
-      "patterns": [
-        {
-          "name": "constant.numeric.htsl",
-          "match": "\\b\\d+(\\.\\d*)?\\b"
-        }
-      ]
-    },
-    "operators": {
-      "patterns": [
-        {
-          "name": "keyword.operator.htsl",
-          "match": "(==|<=|>=|=<|=>|!=|\\+=|-=|\\*=|/=|//=|\\/\\/|\\*\\*|[=><!~?:&|+\\-*/^])"
-        }
-      ]
-    },
-    "delimiters": {
-      "patterns": [
-        {
-          "name": "punctuation.separator.htsl",
-          "match": "[;,\\.]"
-        },
-        {
-          "name": "punctuation.bracket.htsl",
-          "match": "[\\{\\}\\(\\)\\[\\]]"
-        }
-      ]
+      "match": "\\d+(\\.\\d+)?",
+      "name": "constant.numeric.htsl"
     }
   }
 }
