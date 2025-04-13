@@ -310,7 +310,7 @@ export function parseCoordinates(p: Parser) {
     const isRelative = (s: string) =>
         (s.startsWith("~") || s.startsWith("^"))
         && ((s.length == 1) || isNumeric(s.substring(1)));
-    const isNumeric = (s: string) => /^-?\d+$/.test(s);
+    const isNumeric = (s: string) => !isNaN(parseFloat(s));
 
     let offset = 0;
     const components = tokens.map((token, index) => {
