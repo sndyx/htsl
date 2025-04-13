@@ -27,24 +27,24 @@ exports[`Parser > error invalid stat actions 1`] = `
     "level": "error",
     "message": "Expected amount",
     "span": {
-      "end": 28,
-      "start": 19,
+      "end": 27,
+      "start": 18,
     },
   },
   {
     "level": "error",
     "message": "Expected operation",
     "span": {
-      "end": 38,
-      "start": 37,
+      "end": 36,
+      "start": 35,
     },
   },
   {
     "level": "error",
     "message": "Expected stat name",
     "span": {
-      "end": 44,
-      "start": 44,
+      "end": 41,
+      "start": 41,
     },
   },
 ]
@@ -64,16 +64,16 @@ exports[`Parser > error invalid stat names 1`] = `
     "level": "error",
     "message": "Stat name cannot be empty",
     "span": {
-      "end": 36,
-      "start": 34,
+      "end": 35,
+      "start": 33,
     },
   },
   {
     "level": "error",
     "message": "Stat name cannot contain spaces",
     "span": {
-      "end": 60,
-      "start": 48,
+      "end": 58,
+      "start": 46,
     },
   },
 ]
@@ -85,8 +85,8 @@ exports[`Parser > error limits surpassed 1`] = `
     "level": "error",
     "message": "Limit of 10 globalstat actions exceeded",
     "span": {
-      "end": 328,
-      "start": 312,
+      "end": 307,
+      "start": 291,
     },
   },
 ]
@@ -98,8 +98,8 @@ exports[`Parser > error nested conditionals 1`] = `
     "level": "error",
     "message": "Cannot use a conditional inside of a conditional",
     "span": {
-      "end": 15,
-      "start": 13,
+      "end": 14,
+      "start": 12,
     },
   },
 ]
@@ -125,7 +125,7 @@ exports[`Parser > parse conditionals 1`] = `
     {
       "actions": {
         "span": {
-          "end": 302,
+          "end": 278,
           "start": 0,
         },
         "value": [
@@ -139,32 +139,32 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "elseActions": {
               "span": {
-                "end": 29,
-                "start": 30,
+                "end": 26,
+                "start": 26,
               },
               "value": null,
             },
             "ifActions": {
               "span": {
-                "end": 27,
+                "end": 25,
                 "start": 6,
               },
               "value": [
                 {
                   "kwSpan": {
-                    "end": 17,
-                    "start": 13,
+                    "end": 16,
+                    "start": 12,
                   },
                   "message": {
                     "span": {
-                      "end": 24,
-                      "start": 18,
+                      "end": 23,
+                      "start": 17,
                     },
                     "value": "true",
                   },
                   "span": {
-                    "end": 24,
-                    "start": 13,
+                    "end": 23,
+                    "start": 12,
                   },
                   "type": "MESSAGE",
                 },
@@ -182,7 +182,7 @@ exports[`Parser > parse conditionals 1`] = `
               "value": false,
             },
             "span": {
-              "end": 29,
+              "end": 26,
               "start": 0,
             },
             "type": "CONDITIONAL",
@@ -190,30 +190,30 @@ exports[`Parser > parse conditionals 1`] = `
           {
             "amount": {
               "span": {
-                "end": 42,
-                "start": 40,
+                "end": 38,
+                "start": 36,
               },
               "value": 10n,
             },
             "kwSpan": {
-              "end": 35,
-              "start": 31,
+              "end": 31,
+              "start": 27,
             },
             "op": {
               "span": {
-                "end": 39,
-                "start": 38,
+                "end": 35,
+                "start": 34,
               },
               "value": "set",
             },
             "span": {
-              "end": 42,
-              "start": 31,
+              "end": 38,
+              "start": 27,
             },
             "stat": {
               "span": {
-                "end": 37,
-                "start": 36,
+                "end": 33,
+                "start": 32,
               },
               "value": "x",
             },
@@ -222,44 +222,44 @@ exports[`Parser > parse conditionals 1`] = `
           {
             "conditions": {
               "span": {
-                "end": 65,
-                "start": 53,
+                "end": 59,
+                "start": 47,
               },
               "value": [
                 {
                   "amount": {
                     "span": {
-                      "end": 64,
-                      "start": 63,
+                      "end": 58,
+                      "start": 57,
                     },
                     "value": 5n,
                   },
                   "inverted": {
                     "span": {
-                      "end": 54,
-                      "start": 54,
+                      "end": 48,
+                      "start": 48,
                     },
                     "value": false,
                   },
                   "kwSpan": {
-                    "end": 58,
-                    "start": 54,
+                    "end": 52,
+                    "start": 48,
                   },
                   "op": {
                     "span": {
-                      "end": 62,
-                      "start": 61,
+                      "end": 56,
+                      "start": 55,
                     },
                     "value": "greater_than",
                   },
                   "span": {
-                    "end": 64,
-                    "start": 54,
+                    "end": 58,
+                    "start": 48,
                   },
                   "stat": {
                     "span": {
-                      "end": 60,
-                      "start": 59,
+                      "end": 54,
+                      "start": 53,
                     },
                     "value": "x",
                   },
@@ -269,25 +269,25 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "elseActions": {
               "span": {
-                "end": 115,
-                "start": 88,
+                "end": 105,
+                "start": 80,
               },
               "value": [
                 {
                   "kwSpan": {
-                    "end": 104,
-                    "start": 100,
+                    "end": 95,
+                    "start": 91,
                   },
                   "message": {
                     "span": {
-                      "end": 112,
-                      "start": 105,
+                      "end": 103,
+                      "start": 96,
                     },
                     "value": "false",
                   },
                   "span": {
-                    "end": 112,
-                    "start": 100,
+                    "end": 103,
+                    "start": 91,
                   },
                   "type": "MESSAGE",
                 },
@@ -295,127 +295,127 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "ifActions": {
               "span": {
-                "end": 87,
-                "start": 66,
+                "end": 79,
+                "start": 60,
               },
               "value": [
                 {
                   "kwSpan": {
-                    "end": 77,
-                    "start": 73,
+                    "end": 70,
+                    "start": 66,
                   },
                   "message": {
                     "span": {
-                      "end": 84,
-                      "start": 78,
+                      "end": 77,
+                      "start": 71,
                     },
                     "value": "true",
                   },
                   "span": {
-                    "end": 84,
-                    "start": 73,
+                    "end": 77,
+                    "start": 66,
                   },
                   "type": "MESSAGE",
                 },
               ],
             },
             "kwSpan": {
-              "end": 48,
-              "start": 46,
+              "end": 42,
+              "start": 40,
             },
             "matchAny": {
               "span": {
-                "end": 52,
-                "start": 49,
+                "end": 46,
+                "start": 43,
               },
               "value": false,
             },
             "span": {
-              "end": 115,
-              "start": 46,
+              "end": 105,
+              "start": 40,
             },
             "type": "CONDITIONAL",
           },
           {
             "conditions": {
               "span": {
-                "end": 149,
-                "start": 122,
+                "end": 137,
+                "start": 110,
               },
               "value": [
                 {
                   "amount": {
                     "span": {
-                      "end": 134,
-                      "start": 133,
+                      "end": 122,
+                      "start": 121,
                     },
                     "value": 5n,
+                  },
+                  "inverted": {
+                    "span": {
+                      "end": 111,
+                      "start": 111,
+                    },
+                    "value": false,
+                  },
+                  "kwSpan": {
+                    "end": 115,
+                    "start": 111,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 120,
+                      "start": 118,
+                    },
+                    "value": "equals",
+                  },
+                  "span": {
+                    "end": 122,
+                    "start": 111,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 117,
+                      "start": 116,
+                    },
+                    "value": "x",
+                  },
+                  "type": "COMPARE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 136,
+                      "start": 134,
+                    },
+                    "value": 10n,
                   },
                   "inverted": {
                     "span": {
                       "end": 123,
-                      "start": 123,
+                      "start": 124,
                     },
                     "value": false,
                   },
                   "kwSpan": {
-                    "end": 127,
-                    "start": 123,
+                    "end": 128,
+                    "start": 124,
                   },
                   "op": {
                     "span": {
-                      "end": 132,
-                      "start": 130,
+                      "end": 133,
+                      "start": 131,
                     },
                     "value": "equals",
                   },
                   "span": {
-                    "end": 134,
-                    "start": 123,
+                    "end": 136,
+                    "start": 124,
                   },
                   "stat": {
                     "span": {
-                      "end": 129,
-                      "start": 128,
-                    },
-                    "value": "x",
-                  },
-                  "type": "COMPARE_STAT",
-                },
-                {
-                  "amount": {
-                    "span": {
-                      "end": 148,
-                      "start": 146,
-                    },
-                    "value": 10n,
-                  },
-                  "inverted": {
-                    "span": {
-                      "end": 135,
-                      "start": 136,
-                    },
-                    "value": false,
-                  },
-                  "kwSpan": {
-                    "end": 140,
-                    "start": 136,
-                  },
-                  "op": {
-                    "span": {
-                      "end": 145,
-                      "start": 143,
-                    },
-                    "value": "equals",
-                  },
-                  "span": {
-                    "end": 148,
-                    "start": 136,
-                  },
-                  "stat": {
-                    "span": {
-                      "end": 142,
-                      "start": 141,
+                      "end": 130,
+                      "start": 129,
                     },
                     "value": "y",
                   },
@@ -425,76 +425,76 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "elseActions": {
               "span": {
-                "end": 158,
-                "start": 159,
+                "end": 143,
+                "start": 143,
               },
               "value": null,
             },
             "ifActions": {
               "span": {
-                "end": 156,
-                "start": 150,
+                "end": 142,
+                "start": 138,
               },
               "value": [],
             },
             "kwSpan": {
-              "end": 121,
-              "start": 119,
+              "end": 109,
+              "start": 107,
             },
             "matchAny": {
               "span": {
-                "end": 121,
-                "start": 122,
+                "end": 109,
+                "start": 110,
               },
               "value": false,
             },
             "span": {
-              "end": 158,
-              "start": 119,
+              "end": 143,
+              "start": 107,
             },
             "type": "CONDITIONAL",
           },
           {
             "conditions": {
               "span": {
-                "end": 192,
-                "start": 163,
+                "end": 176,
+                "start": 147,
               },
               "value": [
                 {
                   "amount": {
                     "span": {
-                      "end": 177,
-                      "start": 175,
+                      "end": 161,
+                      "start": 159,
                     },
                     "value": 10n,
                   },
                   "inverted": {
                     "span": {
-                      "end": 165,
-                      "start": 164,
+                      "end": 149,
+                      "start": 148,
                     },
                     "value": true,
                   },
                   "kwSpan": {
-                    "end": 169,
-                    "start": 165,
+                    "end": 153,
+                    "start": 149,
                   },
                   "op": {
                     "span": {
-                      "end": 174,
-                      "start": 172,
+                      "end": 158,
+                      "start": 156,
                     },
                     "value": "equals",
                   },
                   "span": {
-                    "end": 177,
-                    "start": 165,
+                    "end": 161,
+                    "start": 149,
                   },
                   "stat": {
                     "span": {
-                      "end": 171,
-                      "start": 170,
+                      "end": 155,
+                      "start": 154,
                     },
                     "value": "x",
                   },
@@ -503,116 +503,116 @@ exports[`Parser > parse conditionals 1`] = `
                 {
                   "amount": {
                     "span": {
-                      "end": 191,
-                      "start": 190,
+                      "end": 175,
+                      "start": 174,
                     },
                     "value": 5n,
                   },
                   "inverted": {
                     "span": {
-                      "end": 180,
-                      "start": 179,
+                      "end": 164,
+                      "start": 163,
                     },
                     "value": true,
                   },
                   "kwSpan": {
-                    "end": 184,
-                    "start": 180,
+                    "end": 168,
+                    "start": 164,
                   },
                   "op": {
                     "span": {
-                      "end": 189,
+                      "end": 173,
+                      "start": 171,
+                    },
+                    "value": "equals",
+                  },
+                  "span": {
+                    "end": 175,
+                    "start": 164,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 170,
+                      "start": 169,
+                    },
+                    "value": "y",
+                  },
+                  "type": "COMPARE_STAT",
+                },
+              ],
+            },
+            "elseActions": {
+              "span": {
+                "end": 182,
+                "start": 182,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 181,
+                "start": 177,
+              },
+              "value": [],
+            },
+            "kwSpan": {
+              "end": 146,
+              "start": 144,
+            },
+            "matchAny": {
+              "span": {
+                "end": 146,
+                "start": 147,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 182,
+              "start": 144,
+            },
+            "type": "CONDITIONAL",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 198,
+                "start": 186,
+              },
+              "value": [
+                {
+                  "amount": {
+                    "span": {
+                      "end": 197,
+                      "start": 196,
+                    },
+                    "value": 5n,
+                  },
+                  "inverted": {
+                    "span": {
+                      "end": 187,
                       "start": 187,
                     },
-                    "value": "equals",
-                  },
-                  "span": {
-                    "end": 191,
-                    "start": 180,
-                  },
-                  "stat": {
-                    "span": {
-                      "end": 186,
-                      "start": 185,
-                    },
-                    "value": "y",
-                  },
-                  "type": "COMPARE_STAT",
-                },
-              ],
-            },
-            "elseActions": {
-              "span": {
-                "end": 201,
-                "start": 202,
-              },
-              "value": null,
-            },
-            "ifActions": {
-              "span": {
-                "end": 199,
-                "start": 193,
-              },
-              "value": [],
-            },
-            "kwSpan": {
-              "end": 162,
-              "start": 160,
-            },
-            "matchAny": {
-              "span": {
-                "end": 162,
-                "start": 163,
-              },
-              "value": false,
-            },
-            "span": {
-              "end": 201,
-              "start": 160,
-            },
-            "type": "CONDITIONAL",
-          },
-          {
-            "conditions": {
-              "span": {
-                "end": 218,
-                "start": 206,
-              },
-              "value": [
-                {
-                  "amount": {
-                    "span": {
-                      "end": 217,
-                      "start": 216,
-                    },
-                    "value": 5n,
-                  },
-                  "inverted": {
-                    "span": {
-                      "end": 207,
-                      "start": 207,
-                    },
                     "value": false,
                   },
                   "kwSpan": {
-                    "end": 211,
-                    "start": 207,
+                    "end": 191,
+                    "start": 187,
                   },
                   "op": {
                     "span": {
-                      "end": 215,
-                      "start": 214,
+                      "end": 195,
+                      "start": 194,
                     },
                     "value": "less_than",
                   },
                   "span": {
-                    "end": 217,
-                    "start": 207,
+                    "end": 197,
+                    "start": 187,
                   },
                   "stat": {
                     "span": {
-                      "end": 213,
-                      "start": 212,
+                      "end": 193,
+                      "start": 192,
                     },
                     "value": "x",
                   },
@@ -622,25 +622,25 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "elseActions": {
               "span": {
-                "end": 256,
-                "start": 235,
+                "end": 236,
+                "start": 215,
               },
               "value": [
                 {
                   "kwSpan": {
-                    "end": 246,
-                    "start": 242,
+                    "end": 226,
+                    "start": 222,
                   },
                   "message": {
                     "span": {
-                      "end": 254,
-                      "start": 247,
+                      "end": 234,
+                      "start": 227,
                     },
                     "value": "false",
                   },
                   "span": {
-                    "end": 254,
-                    "start": 242,
+                    "end": 234,
+                    "start": 222,
                   },
                   "type": "MESSAGE",
                 },
@@ -648,161 +648,161 @@ exports[`Parser > parse conditionals 1`] = `
             },
             "ifActions": {
               "span": {
-                "end": 234,
-                "start": 219,
+                "end": 214,
+                "start": 199,
               },
               "value": [
                 {
                   "kwSpan": {
-                    "end": 225,
-                    "start": 221,
+                    "end": 205,
+                    "start": 201,
                   },
                   "message": {
                     "span": {
-                      "end": 232,
-                      "start": 226,
+                      "end": 212,
+                      "start": 206,
                     },
                     "value": "true",
                   },
                   "span": {
-                    "end": 232,
-                    "start": 221,
+                    "end": 212,
+                    "start": 201,
                   },
                   "type": "MESSAGE",
                 },
               ],
             },
             "kwSpan": {
-              "end": 205,
-              "start": 203,
+              "end": 185,
+              "start": 183,
             },
             "matchAny": {
               "span": {
-                "end": 205,
-                "start": 206,
+                "end": 185,
+                "start": 186,
               },
               "value": false,
             },
             "span": {
-              "end": 256,
-              "start": 203,
+              "end": 236,
+              "start": 183,
             },
             "type": "CONDITIONAL",
           },
           {
             "conditions": {
               "span": {
-                "end": 268,
-                "start": 266,
+                "end": 246,
+                "start": 244,
               },
               "value": [],
             },
             "elseActions": {
               "span": {
-                "end": 273,
+                "end": 250,
+                "start": 250,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 249,
+                "start": 247,
+              },
+              "value": [],
+            },
+            "kwSpan": {
+              "end": 240,
+              "start": 238,
+            },
+            "matchAny": {
+              "span": {
+                "end": 243,
+                "start": 241,
+              },
+              "value": true,
+            },
+            "span": {
+              "end": 250,
+              "start": 238,
+            },
+            "type": "CONDITIONAL",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 260,
+                "start": 258,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 264,
+                "start": 264,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 263,
+                "start": 261,
+              },
+              "value": [],
+            },
+            "kwSpan": {
+              "end": 252,
+              "start": 250,
+            },
+            "matchAny": {
+              "span": {
+                "end": 257,
+                "start": 253,
+              },
+              "value": true,
+            },
+            "span": {
+              "end": 264,
+              "start": 250,
+            },
+            "type": "CONDITIONAL",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 275,
                 "start": 273,
               },
-              "value": null,
-            },
-            "ifActions": {
-              "span": {
-                "end": 271,
-                "start": 269,
-              },
-              "value": [],
-            },
-            "kwSpan": {
-              "end": 262,
-              "start": 260,
-            },
-            "matchAny": {
-              "span": {
-                "end": 265,
-                "start": 263,
-              },
-              "value": true,
-            },
-            "span": {
-              "end": 273,
-              "start": 260,
-            },
-            "type": "CONDITIONAL",
-          },
-          {
-            "conditions": {
-              "span": {
-                "end": 283,
-                "start": 281,
-              },
               "value": [],
             },
             "elseActions": {
               "span": {
-                "end": 288,
-                "start": 288,
+                "end": 278,
+                "start": 278,
               },
               "value": null,
             },
             "ifActions": {
               "span": {
-                "end": 286,
-                "start": 284,
-              },
-              "value": [],
-            },
-            "kwSpan": {
-              "end": 275,
-              "start": 273,
-            },
-            "matchAny": {
-              "span": {
-                "end": 280,
+                "end": 278,
                 "start": 276,
               },
-              "value": true,
-            },
-            "span": {
-              "end": 288,
-              "start": 273,
-            },
-            "type": "CONDITIONAL",
-          },
-          {
-            "conditions": {
-              "span": {
-                "end": 299,
-                "start": 297,
-              },
-              "value": [],
-            },
-            "elseActions": {
-              "span": {
-                "end": 302,
-                "start": 302,
-              },
-              "value": null,
-            },
-            "ifActions": {
-              "span": {
-                "end": 302,
-                "start": 300,
-              },
               "value": [],
             },
             "kwSpan": {
-              "end": 290,
-              "start": 288,
+              "end": 266,
+              "start": 264,
             },
             "matchAny": {
               "span": {
-                "end": 296,
-                "start": 291,
+                "end": 272,
+                "start": 267,
               },
               "value": false,
             },
             "span": {
-              "end": 302,
-              "start": 288,
+              "end": 278,
+              "start": 264,
             },
             "type": "CONDITIONAL",
           },
@@ -813,7 +813,7 @@ exports[`Parser > parse conditionals 1`] = `
         "start": 0,
       },
       "span": {
-        "end": 302,
+        "end": 278,
         "start": 0,
       },
       "type": "UNKNOWN",
@@ -829,7 +829,7 @@ exports[`Parser > parse global stats 1`] = `
     {
       "actions": {
         "span": {
-          "end": 78,
+          "end": 76,
           "start": 0,
         },
         "value": [
@@ -868,30 +868,30 @@ exports[`Parser > parse global stats 1`] = `
           {
             "amount": {
               "span": {
-                "end": 45,
-                "start": 33,
+                "end": 44,
+                "start": 32,
               },
               "value": "%stat.global/x%",
             },
             "kwSpan": {
-              "end": 28,
-              "start": 18,
+              "end": 27,
+              "start": 17,
             },
             "op": {
               "span": {
-                "end": 32,
-                "start": 31,
+                "end": 31,
+                "start": 30,
               },
               "value": "set",
             },
             "span": {
-              "end": 45,
-              "start": 18,
+              "end": 44,
+              "start": 17,
             },
             "stat": {
               "span": {
-                "end": 30,
-                "start": 29,
+                "end": 29,
+                "start": 28,
               },
               "value": "y",
             },
@@ -900,30 +900,30 @@ exports[`Parser > parse global stats 1`] = `
           {
             "amount": {
               "span": {
-                "end": 78,
-                "start": 62,
+                "end": 76,
+                "start": 60,
               },
               "value": "%stat.global/y%",
             },
             "kwSpan": {
-              "end": 57,
-              "start": 47,
+              "end": 55,
+              "start": 45,
             },
             "op": {
               "span": {
-                "end": 61,
-                "start": 60,
+                "end": 59,
+                "start": 58,
               },
               "value": "set",
             },
             "span": {
-              "end": 78,
-              "start": 47,
+              "end": 76,
+              "start": 45,
             },
             "stat": {
               "span": {
-                "end": 59,
-                "start": 58,
+                "end": 57,
+                "start": 56,
               },
               "value": "z",
             },
@@ -936,7 +936,7 @@ exports[`Parser > parse global stats 1`] = `
         "start": 0,
       },
       "span": {
-        "end": 78,
+        "end": 76,
         "start": 0,
       },
       "type": "UNKNOWN",
@@ -952,22 +952,22 @@ exports[`Parser > parse omitted fields 1`] = `
     {
       "actions": {
         "span": {
-          "end": 143,
+          "end": 138,
           "start": 0,
         },
         "value": [
           {
             "fadein": {
               "span": {
-                "end": 16,
-                "start": 15,
+                "end": 15,
+                "start": 14,
               },
               "value": undefined,
             },
             "fadeout": {
               "span": {
-                "end": 16,
-                "start": 15,
+                "end": 15,
+                "start": 14,
               },
               "value": undefined,
             },
@@ -981,15 +981,15 @@ exports[`Parser > parse omitted fields 1`] = `
             },
             "stay": {
               "span": {
-                "end": 16,
-                "start": 15,
+                "end": 15,
+                "start": 14,
               },
               "value": undefined,
             },
             "subtitle": {
               "span": {
-                "end": 16,
-                "start": 15,
+                "end": 15,
+                "start": 14,
               },
               "value": undefined,
             },
@@ -1005,44 +1005,44 @@ exports[`Parser > parse omitted fields 1`] = `
           {
             "fadein": {
               "span": {
-                "end": 57,
-                "start": 56,
+                "end": 55,
+                "start": 54,
               },
               "value": undefined,
             },
             "fadeout": {
               "span": {
-                "end": 57,
-                "start": 56,
+                "end": 55,
+                "start": 54,
               },
               "value": undefined,
             },
             "kwSpan": {
-              "end": 21,
-              "start": 16,
+              "end": 20,
+              "start": 15,
             },
             "span": {
-              "end": 55,
-              "start": 16,
+              "end": 54,
+              "start": 15,
             },
             "stay": {
               "span": {
-                "end": 57,
-                "start": 56,
+                "end": 55,
+                "start": 54,
               },
               "value": undefined,
             },
             "subtitle": {
               "span": {
-                "end": 55,
-                "start": 38,
+                "end": 54,
+                "start": 37,
               },
               "value": "Goodbye, world!",
             },
             "title": {
               "span": {
-                "end": 37,
-                "start": 22,
+                "end": 36,
+                "start": 21,
               },
               "value": "Hello, World!",
             },
@@ -1051,44 +1051,44 @@ exports[`Parser > parse omitted fields 1`] = `
           {
             "fadein": {
               "span": {
-                "end": 83,
-                "start": 82,
+                "end": 81,
+                "start": 80,
               },
               "value": 1,
             },
             "fadeout": {
               "span": {
-                "end": 87,
-                "start": 86,
+                "end": 85,
+                "start": 84,
               },
               "value": 1,
             },
             "kwSpan": {
-              "end": 62,
-              "start": 57,
+              "end": 60,
+              "start": 55,
             },
             "span": {
-              "end": 87,
-              "start": 57,
+              "end": 85,
+              "start": 55,
             },
             "stay": {
               "span": {
-                "end": 85,
-                "start": 84,
+                "end": 83,
+                "start": 82,
               },
               "value": 5,
             },
             "subtitle": {
               "span": {
-                "end": 81,
-                "start": 71,
+                "end": 79,
+                "start": 69,
               },
               "value": "Subtitle",
             },
             "title": {
               "span": {
-                "end": 70,
-                "start": 63,
+                "end": 68,
+                "start": 61,
               },
               "value": "Title",
             },
@@ -1097,50 +1097,50 @@ exports[`Parser > parse omitted fields 1`] = `
           {
             "function": {
               "span": {
-                "end": 115,
-                "start": 100,
+                "end": 111,
+                "start": 96,
               },
               "value": "MyFunction :)",
             },
             "global": {
               "span": {
-                "end": 115,
-                "start": 116,
+                "end": 111,
+                "start": 111,
               },
               "value": null,
             },
             "kwSpan": {
-              "end": 99,
-              "start": 91,
+              "end": 95,
+              "start": 87,
             },
             "span": {
-              "end": 115,
-              "start": 91,
+              "end": 111,
+              "start": 87,
             },
             "type": "FUNCTION",
           },
           {
             "function": {
               "span": {
-                "end": 138,
-                "start": 126,
+                "end": 133,
+                "start": 121,
               },
               "value": "MyFunction",
             },
             "global": {
               "span": {
-                "end": 143,
-                "start": 139,
+                "end": 138,
+                "start": 134,
               },
               "value": true,
             },
             "kwSpan": {
-              "end": 125,
-              "start": 117,
+              "end": 120,
+              "start": 112,
             },
             "span": {
-              "end": 143,
-              "start": 117,
+              "end": 138,
+              "start": 112,
             },
             "type": "FUNCTION",
           },
@@ -1151,7 +1151,818 @@ exports[`Parser > parse omitted fields 1`] = `
         "start": 0,
       },
       "span": {
-        "end": 143,
+        "end": 138,
+        "start": 0,
+      },
+      "type": "UNKNOWN",
+    },
+  ],
+}
+`;
+
+exports[`Parser > parse placeholders 1`] = `
+{
+  "diagnostics": [],
+  "holders": [
+    {
+      "actions": {
+        "span": {
+          "end": 666,
+          "start": 0,
+        },
+        "value": [
+          {
+            "amount": {
+              "span": {
+                "end": 22,
+                "start": 9,
+              },
+              "value": "%player.ping%",
+            },
+            "kwSpan": {
+              "end": 4,
+              "start": 0,
+            },
+            "op": {
+              "span": {
+                "end": 8,
+                "start": 7,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 22,
+              "start": 0,
+            },
+            "stat": {
+              "span": {
+                "end": 6,
+                "start": 5,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 47,
+                "start": 32,
+              },
+              "value": "%player.health%",
+            },
+            "kwSpan": {
+              "end": 27,
+              "start": 23,
+            },
+            "op": {
+              "span": {
+                "end": 31,
+                "start": 30,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 47,
+              "start": 23,
+            },
+            "stat": {
+              "span": {
+                "end": 29,
+                "start": 28,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 75,
+                "start": 57,
+              },
+              "value": "%player.maxhealth%",
+            },
+            "kwSpan": {
+              "end": 52,
+              "start": 48,
+            },
+            "op": {
+              "span": {
+                "end": 56,
+                "start": 55,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 75,
+              "start": 48,
+            },
+            "stat": {
+              "span": {
+                "end": 54,
+                "start": 53,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 100,
+                "start": 85,
+              },
+              "value": "%player.hunger%",
+            },
+            "kwSpan": {
+              "end": 80,
+              "start": 76,
+            },
+            "op": {
+              "span": {
+                "end": 84,
+                "start": 83,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 100,
+              "start": 76,
+            },
+            "stat": {
+              "span": {
+                "end": 82,
+                "start": 81,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 129,
+                "start": 110,
+              },
+              "value": "%player.experience%",
+            },
+            "kwSpan": {
+              "end": 105,
+              "start": 101,
+            },
+            "op": {
+              "span": {
+                "end": 109,
+                "start": 108,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 129,
+              "start": 101,
+            },
+            "stat": {
+              "span": {
+                "end": 107,
+                "start": 106,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 153,
+                "start": 139,
+              },
+              "value": "%player.level%",
+            },
+            "kwSpan": {
+              "end": 134,
+              "start": 130,
+            },
+            "op": {
+              "span": {
+                "end": 138,
+                "start": 137,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 153,
+              "start": 130,
+            },
+            "stat": {
+              "span": {
+                "end": 136,
+                "start": 135,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 180,
+                "start": 163,
+              },
+              "value": "%player.protocol%",
+            },
+            "kwSpan": {
+              "end": 158,
+              "start": 154,
+            },
+            "op": {
+              "span": {
+                "end": 162,
+                "start": 161,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 180,
+              "start": 154,
+            },
+            "stat": {
+              "span": {
+                "end": 160,
+                "start": 159,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 209,
+                "start": 190,
+              },
+              "value": "%player.location.x%",
+            },
+            "kwSpan": {
+              "end": 185,
+              "start": 181,
+            },
+            "op": {
+              "span": {
+                "end": 189,
+                "start": 188,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 209,
+              "start": 181,
+            },
+            "stat": {
+              "span": {
+                "end": 187,
+                "start": 186,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 238,
+                "start": 219,
+              },
+              "value": "%player.location.y%",
+            },
+            "kwSpan": {
+              "end": 214,
+              "start": 210,
+            },
+            "op": {
+              "span": {
+                "end": 218,
+                "start": 217,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 238,
+              "start": 210,
+            },
+            "stat": {
+              "span": {
+                "end": 216,
+                "start": 215,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 267,
+                "start": 248,
+              },
+              "value": "%player.location.z%",
+            },
+            "kwSpan": {
+              "end": 243,
+              "start": 239,
+            },
+            "op": {
+              "span": {
+                "end": 247,
+                "start": 246,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 267,
+              "start": 239,
+            },
+            "stat": {
+              "span": {
+                "end": 245,
+                "start": 244,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 274,
+                "start": 272,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 593,
+                "start": 593,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 592,
+                "start": 275,
+              },
+              "value": [
+                {
+                  "amount": {
+                    "span": {
+                      "end": 313,
+                      "start": 290,
+                    },
+                    "value": "%player.location.pitch%",
+                  },
+                  "kwSpan": {
+                    "end": 285,
+                    "start": 281,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 289,
+                      "start": 288,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 313,
+                    "start": 281,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 287,
+                      "start": 286,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 348,
+                      "start": 327,
+                    },
+                    "value": "%player.location.yaw%",
+                  },
+                  "kwSpan": {
+                    "end": 322,
+                    "start": 318,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 326,
+                      "start": 325,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 348,
+                    "start": 318,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 324,
+                      "start": 323,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 385,
+                      "start": 362,
+                    },
+                    "value": "%player.group.priority%",
+                  },
+                  "kwSpan": {
+                    "end": 357,
+                    "start": 353,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 361,
+                      "start": 360,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 385,
+                    "start": 353,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 359,
+                      "start": 358,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 421,
+                      "start": 399,
+                    },
+                    "value": "%player.parkour.ticks%",
+                  },
+                  "kwSpan": {
+                    "end": 394,
+                    "start": 390,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 398,
+                      "start": 397,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 421,
+                    "start": 390,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 396,
+                      "start": 395,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 449,
+                      "start": 435,
+                    },
+                    "value": "%house.guests%",
+                  },
+                  "kwSpan": {
+                    "end": 430,
+                    "start": 426,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 434,
+                      "start": 433,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 449,
+                    "start": 426,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 432,
+                      "start": 431,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 478,
+                      "start": 463,
+                    },
+                    "value": "%house.cookies%",
+                  },
+                  "kwSpan": {
+                    "end": 458,
+                    "start": 454,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 462,
+                      "start": 461,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 478,
+                    "start": 454,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 460,
+                      "start": 459,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 507,
+                      "start": 492,
+                    },
+                    "value": "%house.players%",
+                  },
+                  "kwSpan": {
+                    "end": 487,
+                    "start": 483,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 491,
+                      "start": 490,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 507,
+                    "start": 483,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 489,
+                      "start": 488,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 532,
+                      "start": 521,
+                    },
+                    "value": "%date.unix%",
+                  },
+                  "kwSpan": {
+                    "end": 516,
+                    "start": 512,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 520,
+                      "start": 519,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 532,
+                    "start": 512,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 518,
+                      "start": 517,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 561,
+                      "start": 546,
+                    },
+                    "value": "%stat.player/x%",
+                  },
+                  "kwSpan": {
+                    "end": 541,
+                    "start": 537,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 545,
+                      "start": 544,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 561,
+                    "start": 537,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 543,
+                      "start": 542,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 590,
+                      "start": 575,
+                    },
+                    "value": "%stat.global/x%",
+                  },
+                  "kwSpan": {
+                    "end": 570,
+                    "start": 566,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 574,
+                      "start": 573,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 590,
+                    "start": 566,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 572,
+                      "start": 571,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+              ],
+            },
+            "kwSpan": {
+              "end": 271,
+              "start": 269,
+            },
+            "matchAny": {
+              "span": {
+                "end": 271,
+                "start": 272,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 593,
+              "start": 269,
+            },
+            "type": "CONDITIONAL",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 599,
+                "start": 597,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 666,
+                "start": 666,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 666,
+                "start": 600,
+              },
+              "value": [
+                {
+                  "amount": {
+                    "span": {
+                      "end": 633,
+                      "start": 615,
+                    },
+                    "value": "%stat.team/x team%",
+                  },
+                  "kwSpan": {
+                    "end": 610,
+                    "start": 606,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 614,
+                      "start": 613,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 633,
+                    "start": 606,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 612,
+                      "start": 611,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 664,
+                      "start": 647,
+                    },
+                    "value": "%random.int/1 10%",
+                  },
+                  "kwSpan": {
+                    "end": 642,
+                    "start": 638,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 646,
+                      "start": 645,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 664,
+                    "start": 638,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 644,
+                      "start": 643,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+              ],
+            },
+            "kwSpan": {
+              "end": 596,
+              "start": 594,
+            },
+            "matchAny": {
+              "span": {
+                "end": 596,
+                "start": 597,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 666,
+              "start": 594,
+            },
+            "type": "CONDITIONAL",
+          },
+        ],
+      },
+      "kwSpan": {
+        "end": 0,
+        "start": 0,
+      },
+      "span": {
+        "end": 666,
         "start": 0,
       },
       "type": "UNKNOWN",
@@ -1167,7 +1978,7 @@ exports[`Parser > parse player stats 1`] = `
     {
       "actions": {
         "span": {
-          "end": 54,
+          "end": 52,
           "start": 0,
         },
         "value": [
@@ -1206,30 +2017,30 @@ exports[`Parser > parse player stats 1`] = `
           {
             "amount": {
               "span": {
-                "end": 27,
-                "start": 21,
+                "end": 26,
+                "start": 20,
               },
               "value": "%stat.player/x%",
             },
             "kwSpan": {
-              "end": 16,
-              "start": 12,
+              "end": 15,
+              "start": 11,
             },
             "op": {
               "span": {
-                "end": 20,
-                "start": 19,
+                "end": 19,
+                "start": 18,
               },
               "value": "set",
             },
             "span": {
-              "end": 27,
-              "start": 12,
+              "end": 26,
+              "start": 11,
             },
             "stat": {
               "span": {
-                "end": 18,
-                "start": 17,
+                "end": 17,
+                "start": 16,
               },
               "value": "y",
             },
@@ -1238,30 +2049,30 @@ exports[`Parser > parse player stats 1`] = `
           {
             "amount": {
               "span": {
-                "end": 54,
-                "start": 38,
+                "end": 52,
+                "start": 36,
               },
               "value": "%stat.player/y%",
             },
             "kwSpan": {
-              "end": 33,
-              "start": 29,
+              "end": 31,
+              "start": 27,
             },
             "op": {
               "span": {
-                "end": 37,
-                "start": 36,
+                "end": 35,
+                "start": 34,
               },
               "value": "set",
             },
             "span": {
-              "end": 54,
-              "start": 29,
+              "end": 52,
+              "start": 27,
             },
             "stat": {
               "span": {
-                "end": 35,
-                "start": 34,
+                "end": 33,
+                "start": 32,
               },
               "value": "z",
             },
@@ -1274,7 +2085,7 @@ exports[`Parser > parse player stats 1`] = `
         "start": 0,
       },
       "span": {
-        "end": 54,
+        "end": 52,
         "start": 0,
       },
       "type": "UNKNOWN",
@@ -1290,7 +2101,7 @@ exports[`Parser > parse shorthands 1`] = `
     {
       "actions": {
         "span": {
-          "end": 222,
+          "end": 209,
           "start": 0,
         },
         "value": [
@@ -1329,30 +2140,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 38,
-                "start": 26,
+                "end": 37,
+                "start": 25,
               },
               "value": "%stat.global/y%",
             },
             "kwSpan": {
-              "end": 21,
-              "start": 17,
+              "end": 20,
+              "start": 16,
             },
             "op": {
               "span": {
-                "end": 25,
-                "start": 24,
+                "end": 24,
+                "start": 23,
               },
               "value": "set",
             },
             "span": {
-              "end": 38,
-              "start": 17,
+              "end": 37,
+              "start": 16,
             },
             "stat": {
               "span": {
-                "end": 23,
-                "start": 22,
+                "end": 22,
+                "start": 21,
               },
               "value": "x",
             },
@@ -1361,31 +2172,31 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 64,
-                "start": 49,
+                "end": 62,
+                "start": 47,
               },
               "value": "%stat.team/y team%",
             },
             "kwSpan": {
-              "end": 44,
-              "start": 40,
+              "end": 42,
+              "start": 38,
             },
             "op": {
-              "span": {
-                "end": 48,
-                "start": 47,
-              },
-              "value": "set",
-            },
-            "span": {
-              "end": 64,
-              "start": 40,
-            },
-            "stat": {
               "span": {
                 "end": 46,
                 "start": 45,
               },
+              "value": "set",
+            },
+            "span": {
+              "end": 62,
+              "start": 38,
+            },
+            "stat": {
+              "span": {
+                "end": 44,
+                "start": 43,
+              },
               "value": "x",
             },
             "type": "CHANGE_STAT",
@@ -1393,30 +2204,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 90,
-                "start": 75,
+                "end": 87,
+                "start": 72,
               },
               "value": "%random.int/1 100%",
             },
             "kwSpan": {
-              "end": 70,
-              "start": 66,
+              "end": 67,
+              "start": 63,
             },
             "op": {
               "span": {
-                "end": 74,
-                "start": 73,
+                "end": 71,
+                "start": 70,
               },
               "value": "set",
             },
             "span": {
-              "end": 90,
-              "start": 66,
+              "end": 87,
+              "start": 63,
             },
             "stat": {
               "span": {
-                "end": 72,
-                "start": 71,
+                "end": 69,
+                "start": 68,
               },
               "value": "x",
             },
@@ -1425,30 +2236,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 107,
-                "start": 101,
+                "end": 103,
+                "start": 97,
               },
               "value": "%player.health%",
             },
             "kwSpan": {
-              "end": 96,
-              "start": 92,
+              "end": 92,
+              "start": 88,
             },
             "op": {
               "span": {
-                "end": 100,
-                "start": 99,
+                "end": 96,
+                "start": 95,
               },
               "value": "set",
             },
             "span": {
-              "end": 107,
-              "start": 92,
+              "end": 103,
+              "start": 88,
             },
             "stat": {
               "span": {
-                "end": 98,
-                "start": 97,
+                "end": 94,
+                "start": 93,
               },
               "value": "x",
             },
@@ -1457,30 +2268,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 127,
-                "start": 118,
+                "end": 122,
+                "start": 113,
               },
               "value": "%player.maxHealth%",
             },
             "kwSpan": {
-              "end": 113,
-              "start": 109,
+              "end": 108,
+              "start": 104,
             },
             "op": {
               "span": {
-                "end": 117,
-                "start": 116,
+                "end": 112,
+                "start": 111,
               },
               "value": "set",
             },
             "span": {
-              "end": 127,
-              "start": 109,
+              "end": 122,
+              "start": 104,
             },
             "stat": {
               "span": {
-                "end": 115,
-                "start": 114,
+                "end": 110,
+                "start": 109,
               },
               "value": "x",
             },
@@ -1489,30 +2300,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 144,
-                "start": 138,
+                "end": 138,
+                "start": 132,
               },
               "value": "%player.hunger%",
             },
             "kwSpan": {
-              "end": 133,
-              "start": 129,
+              "end": 127,
+              "start": 123,
             },
             "op": {
               "span": {
-                "end": 137,
-                "start": 136,
+                "end": 131,
+                "start": 130,
               },
               "value": "set",
             },
             "span": {
-              "end": 144,
-              "start": 129,
+              "end": 138,
+              "start": 123,
             },
             "stat": {
               "span": {
-                "end": 135,
-                "start": 134,
+                "end": 129,
+                "start": 128,
               },
               "value": "x",
             },
@@ -1521,30 +2332,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 159,
-                "start": 155,
+                "end": 152,
+                "start": 148,
               },
               "value": "%player.location.x%",
             },
             "kwSpan": {
-              "end": 150,
-              "start": 146,
+              "end": 143,
+              "start": 139,
             },
             "op": {
               "span": {
-                "end": 154,
-                "start": 153,
+                "end": 147,
+                "start": 146,
               },
               "value": "set",
             },
             "span": {
-              "end": 159,
-              "start": 146,
+              "end": 152,
+              "start": 139,
             },
             "stat": {
               "span": {
-                "end": 152,
-                "start": 151,
+                "end": 145,
+                "start": 144,
               },
               "value": "x",
             },
@@ -1553,30 +2364,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 174,
-                "start": 170,
+                "end": 166,
+                "start": 162,
               },
               "value": "%player.location.y%",
             },
             "kwSpan": {
-              "end": 165,
-              "start": 161,
+              "end": 157,
+              "start": 153,
             },
             "op": {
               "span": {
-                "end": 169,
-                "start": 168,
+                "end": 161,
+                "start": 160,
               },
               "value": "set",
             },
             "span": {
-              "end": 174,
-              "start": 161,
+              "end": 166,
+              "start": 153,
             },
             "stat": {
               "span": {
-                "end": 167,
-                "start": 166,
+                "end": 159,
+                "start": 158,
               },
               "value": "x",
             },
@@ -1585,30 +2396,30 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "amount": {
               "span": {
-                "end": 189,
-                "start": 185,
+                "end": 180,
+                "start": 176,
               },
               "value": "%player.location.z%",
             },
             "kwSpan": {
-              "end": 180,
-              "start": 176,
+              "end": 171,
+              "start": 167,
             },
             "op": {
               "span": {
-                "end": 184,
-                "start": 183,
+                "end": 175,
+                "start": 174,
               },
               "value": "set",
             },
             "span": {
-              "end": 189,
-              "start": 176,
+              "end": 180,
+              "start": 167,
             },
             "stat": {
               "span": {
-                "end": 182,
-                "start": 181,
+                "end": 173,
+                "start": 172,
               },
               "value": "x",
             },
@@ -1617,51 +2428,51 @@ exports[`Parser > parse shorthands 1`] = `
           {
             "conditions": {
               "span": {
-                "end": 198,
-                "start": 196,
+                "end": 187,
+                "start": 185,
               },
               "value": [],
             },
             "elseActions": {
               "span": {
-                "end": 222,
-                "start": 222,
+                "end": 209,
+                "start": 209,
               },
               "value": null,
             },
             "ifActions": {
               "span": {
-                "end": 222,
-                "start": 199,
+                "end": 209,
+                "start": 188,
               },
               "value": [
                 {
                   "amount": {
                     "span": {
-                      "end": 219,
-                      "start": 215,
+                      "end": 207,
+                      "start": 203,
                     },
                     "value": "%date.unix%",
                   },
                   "kwSpan": {
-                    "end": 210,
-                    "start": 206,
+                    "end": 198,
+                    "start": 194,
                   },
                   "op": {
                     "span": {
-                      "end": 214,
-                      "start": 213,
+                      "end": 202,
+                      "start": 201,
                     },
                     "value": "set",
                   },
                   "span": {
-                    "end": 219,
-                    "start": 206,
+                    "end": 207,
+                    "start": 194,
                   },
                   "stat": {
                     "span": {
-                      "end": 212,
-                      "start": 211,
+                      "end": 200,
+                      "start": 199,
                     },
                     "value": "x",
                   },
@@ -1670,19 +2481,19 @@ exports[`Parser > parse shorthands 1`] = `
               ],
             },
             "kwSpan": {
-              "end": 195,
-              "start": 193,
+              "end": 184,
+              "start": 182,
             },
             "matchAny": {
               "span": {
-                "end": 195,
-                "start": 196,
+                "end": 184,
+                "start": 185,
               },
               "value": false,
             },
             "span": {
-              "end": 222,
-              "start": 193,
+              "end": 209,
+              "start": 182,
             },
             "type": "CONDITIONAL",
           },
@@ -1693,7 +2504,7 @@ exports[`Parser > parse shorthands 1`] = `
         "start": 0,
       },
       "span": {
-        "end": 222,
+        "end": 209,
         "start": 0,
       },
       "type": "UNKNOWN",
