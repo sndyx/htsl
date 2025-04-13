@@ -17,6 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Clone housing-common
+        run: |
+          git clone https://github.com/housingdevs/housing-common.git ../housing-common
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
