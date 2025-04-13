@@ -10,7 +10,7 @@ import {
     parsePermission, parsePotionEffect,
     parseStatName
 } from "./arguments";
-import { ACTION_SEMANTIC_DESCRIPTORS, CONDITION_SEMANTIC_DESCRIPTORS } from "../semantics";
+import { CONDITION_SEMANTIC_DESCRIPTORS } from "../semantics";
 import { parseNumericalPlaceholder } from "./placeholders";
 import type { ConditionKw } from "../helpers";
 
@@ -94,6 +94,7 @@ function parseConditionRecovering<T extends IrCondition["type"]>(
 function parseConditionRequireGroup(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, "REQUIRE_GROUP", inverted, (condition) => {
         condition.group = p.spanned(p.parseName);
+        if (p.check("eol")) return;
         condition.includeHigherGroups = p.spanned(p.parseBoolean);
     });
 }
