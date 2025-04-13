@@ -29,10 +29,3 @@ jobs:
       - name: Run tests
         id: test
         run: npm test
-
-      - name: Upload Snapshots
-        if: success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: snapshots
-          path: test/__snapshots__/
