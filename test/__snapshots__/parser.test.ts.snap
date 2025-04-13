@@ -1160,6 +1160,817 @@ exports[`Parser > parse omitted fields 1`] = `
 }
 `;
 
+exports[`Parser > parse placeholders 1`] = `
+{
+  "diagnostics": [],
+  "holders": [
+    {
+      "actions": {
+        "span": {
+          "end": 693,
+          "start": 0,
+        },
+        "value": [
+          {
+            "amount": {
+              "span": {
+                "end": 22,
+                "start": 9,
+              },
+              "value": "%player.ping%",
+            },
+            "kwSpan": {
+              "end": 4,
+              "start": 0,
+            },
+            "op": {
+              "span": {
+                "end": 8,
+                "start": 7,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 22,
+              "start": 0,
+            },
+            "stat": {
+              "span": {
+                "end": 6,
+                "start": 5,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 48,
+                "start": 33,
+              },
+              "value": "%player.health%",
+            },
+            "kwSpan": {
+              "end": 28,
+              "start": 24,
+            },
+            "op": {
+              "span": {
+                "end": 32,
+                "start": 31,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 48,
+              "start": 24,
+            },
+            "stat": {
+              "span": {
+                "end": 30,
+                "start": 29,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 77,
+                "start": 59,
+              },
+              "value": "%player.maxhealth%",
+            },
+            "kwSpan": {
+              "end": 54,
+              "start": 50,
+            },
+            "op": {
+              "span": {
+                "end": 58,
+                "start": 57,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 77,
+              "start": 50,
+            },
+            "stat": {
+              "span": {
+                "end": 56,
+                "start": 55,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 103,
+                "start": 88,
+              },
+              "value": "%player.hunger%",
+            },
+            "kwSpan": {
+              "end": 83,
+              "start": 79,
+            },
+            "op": {
+              "span": {
+                "end": 87,
+                "start": 86,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 103,
+              "start": 79,
+            },
+            "stat": {
+              "span": {
+                "end": 85,
+                "start": 84,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 133,
+                "start": 114,
+              },
+              "value": "%player.experience%",
+            },
+            "kwSpan": {
+              "end": 109,
+              "start": 105,
+            },
+            "op": {
+              "span": {
+                "end": 113,
+                "start": 112,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 133,
+              "start": 105,
+            },
+            "stat": {
+              "span": {
+                "end": 111,
+                "start": 110,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 158,
+                "start": 144,
+              },
+              "value": "%player.level%",
+            },
+            "kwSpan": {
+              "end": 139,
+              "start": 135,
+            },
+            "op": {
+              "span": {
+                "end": 143,
+                "start": 142,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 158,
+              "start": 135,
+            },
+            "stat": {
+              "span": {
+                "end": 141,
+                "start": 140,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 186,
+                "start": 169,
+              },
+              "value": "%player.protocol%",
+            },
+            "kwSpan": {
+              "end": 164,
+              "start": 160,
+            },
+            "op": {
+              "span": {
+                "end": 168,
+                "start": 167,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 186,
+              "start": 160,
+            },
+            "stat": {
+              "span": {
+                "end": 166,
+                "start": 165,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 216,
+                "start": 197,
+              },
+              "value": "%player.location.x%",
+            },
+            "kwSpan": {
+              "end": 192,
+              "start": 188,
+            },
+            "op": {
+              "span": {
+                "end": 196,
+                "start": 195,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 216,
+              "start": 188,
+            },
+            "stat": {
+              "span": {
+                "end": 194,
+                "start": 193,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 246,
+                "start": 227,
+              },
+              "value": "%player.location.y%",
+            },
+            "kwSpan": {
+              "end": 222,
+              "start": 218,
+            },
+            "op": {
+              "span": {
+                "end": 226,
+                "start": 225,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 246,
+              "start": 218,
+            },
+            "stat": {
+              "span": {
+                "end": 224,
+                "start": 223,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "amount": {
+              "span": {
+                "end": 276,
+                "start": 257,
+              },
+              "value": "%player.location.z%",
+            },
+            "kwSpan": {
+              "end": 252,
+              "start": 248,
+            },
+            "op": {
+              "span": {
+                "end": 256,
+                "start": 255,
+              },
+              "value": "set",
+            },
+            "span": {
+              "end": 276,
+              "start": 248,
+            },
+            "stat": {
+              "span": {
+                "end": 254,
+                "start": 253,
+              },
+              "value": "x",
+            },
+            "type": "CHANGE_STAT",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 285,
+                "start": 283,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 616,
+                "start": 617,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 614,
+                "start": 286,
+              },
+              "value": [
+                {
+                  "amount": {
+                    "span": {
+                      "end": 325,
+                      "start": 302,
+                    },
+                    "value": "%player.location.pitch%",
+                  },
+                  "kwSpan": {
+                    "end": 297,
+                    "start": 293,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 301,
+                      "start": 300,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 325,
+                    "start": 293,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 299,
+                      "start": 298,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 361,
+                      "start": 340,
+                    },
+                    "value": "%player.location.yaw%",
+                  },
+                  "kwSpan": {
+                    "end": 335,
+                    "start": 331,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 339,
+                      "start": 338,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 361,
+                    "start": 331,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 337,
+                      "start": 336,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 399,
+                      "start": 376,
+                    },
+                    "value": "%player.group.priority%",
+                  },
+                  "kwSpan": {
+                    "end": 371,
+                    "start": 367,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 375,
+                      "start": 374,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 399,
+                    "start": 367,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 373,
+                      "start": 372,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 436,
+                      "start": 414,
+                    },
+                    "value": "%player.parkour.ticks%",
+                  },
+                  "kwSpan": {
+                    "end": 409,
+                    "start": 405,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 413,
+                      "start": 412,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 436,
+                    "start": 405,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 411,
+                      "start": 410,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 465,
+                      "start": 451,
+                    },
+                    "value": "%house.guests%",
+                  },
+                  "kwSpan": {
+                    "end": 446,
+                    "start": 442,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 450,
+                      "start": 449,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 465,
+                    "start": 442,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 448,
+                      "start": 447,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 495,
+                      "start": 480,
+                    },
+                    "value": "%house.cookies%",
+                  },
+                  "kwSpan": {
+                    "end": 475,
+                    "start": 471,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 479,
+                      "start": 478,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 495,
+                    "start": 471,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 477,
+                      "start": 476,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 525,
+                      "start": 510,
+                    },
+                    "value": "%house.players%",
+                  },
+                  "kwSpan": {
+                    "end": 505,
+                    "start": 501,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 509,
+                      "start": 508,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 525,
+                    "start": 501,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 507,
+                      "start": 506,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 551,
+                      "start": 540,
+                    },
+                    "value": "%date.unix%",
+                  },
+                  "kwSpan": {
+                    "end": 535,
+                    "start": 531,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 539,
+                      "start": 538,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 551,
+                    "start": 531,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 537,
+                      "start": 536,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 581,
+                      "start": 566,
+                    },
+                    "value": "%stat.player/x%",
+                  },
+                  "kwSpan": {
+                    "end": 561,
+                    "start": 557,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 565,
+                      "start": 564,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 581,
+                    "start": 557,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 563,
+                      "start": 562,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 611,
+                      "start": 596,
+                    },
+                    "value": "%stat.global/x%",
+                  },
+                  "kwSpan": {
+                    "end": 591,
+                    "start": 587,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 595,
+                      "start": 594,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 611,
+                    "start": 587,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 593,
+                      "start": 592,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+              ],
+            },
+            "kwSpan": {
+              "end": 282,
+              "start": 280,
+            },
+            "matchAny": {
+              "span": {
+                "end": 282,
+                "start": 283,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 616,
+              "start": 280,
+            },
+            "type": "CONDITIONAL",
+          },
+          {
+            "conditions": {
+              "span": {
+                "end": 623,
+                "start": 621,
+              },
+              "value": [],
+            },
+            "elseActions": {
+              "span": {
+                "end": 693,
+                "start": 693,
+              },
+              "value": null,
+            },
+            "ifActions": {
+              "span": {
+                "end": 693,
+                "start": 624,
+              },
+              "value": [
+                {
+                  "amount": {
+                    "span": {
+                      "end": 658,
+                      "start": 640,
+                    },
+                    "value": "%stat.team/x team%",
+                  },
+                  "kwSpan": {
+                    "end": 635,
+                    "start": 631,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 639,
+                      "start": 638,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 658,
+                    "start": 631,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 637,
+                      "start": 636,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+                {
+                  "amount": {
+                    "span": {
+                      "end": 690,
+                      "start": 673,
+                    },
+                    "value": "%random.int/1 10%",
+                  },
+                  "kwSpan": {
+                    "end": 668,
+                    "start": 664,
+                  },
+                  "op": {
+                    "span": {
+                      "end": 672,
+                      "start": 671,
+                    },
+                    "value": "set",
+                  },
+                  "span": {
+                    "end": 690,
+                    "start": 664,
+                  },
+                  "stat": {
+                    "span": {
+                      "end": 670,
+                      "start": 669,
+                    },
+                    "value": "x",
+                  },
+                  "type": "CHANGE_STAT",
+                },
+              ],
+            },
+            "kwSpan": {
+              "end": 620,
+              "start": 618,
+            },
+            "matchAny": {
+              "span": {
+                "end": 620,
+                "start": 621,
+              },
+              "value": false,
+            },
+            "span": {
+              "end": 693,
+              "start": 618,
+            },
+            "type": "CONDITIONAL",
+          },
+        ],
+      },
+      "kwSpan": {
+        "end": 0,
+        "start": 0,
+      },
+      "span": {
+        "end": 693,
+        "start": 0,
+      },
+      "type": "UNKNOWN",
+    },
+  ],
+}
+`;
+
 exports[`Parser > parse player stats 1`] = `
 {
   "diagnostics": [],
