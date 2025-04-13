@@ -134,6 +134,7 @@ export function parseOperation(p: Parser): Operation {
     }
     if (
         p.eatOption("multiply") ||
+        p.eatOption("mult") ||
         p.eatOption("mul") ||
         p.eat({ kind: "bin_op_eq", op: "star" })
     ) {
