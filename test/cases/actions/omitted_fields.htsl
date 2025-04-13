@@ -1,0 +1,6 @@
+title "Hello!"
+title "Hello, World!" "Goodbye, world!"
+title "Title" "Subtitle" 1 5 1
+
+function "MyFunction :)"
+function "MyFunction" true

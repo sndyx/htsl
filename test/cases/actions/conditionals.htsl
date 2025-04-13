@@ -10,4 +10,16 @@ if and (stat x > 5) {
     chat "false"
 }
 
+if (stat x == 5, stat y == 10) {
+
+}
+
+if (!stat x == 10, !stat y == 5) {
+
+}
+
 if (stat x < 5) { chat "true" } else { chat "false" }
+
+if or () {}
+if true () {}
+if false () {}

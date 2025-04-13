@@ -16,7 +16,7 @@ export class InlayHintsAdapter implements vscode.InlayHintsProvider {
             return {
                 kind: vscode.InlayHintKind.Parameter,
                 position: document.positionAt(hint.span.start),
-                label: hint.label
+                label: hint.label + ":"
             };
         });
     }

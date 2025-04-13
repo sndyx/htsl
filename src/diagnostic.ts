@@ -9,13 +9,13 @@ export type Diagnostic = {
 };
 
 export function error(
-    message: string, range: Span
+    message: string, span: Span
 ): Diagnostic {
-    return { message, level: "error", span: range };
+    return { message, level: "error", span };
 }
 
 export function warn(
-    message: string, range: Span
+    message: string, span: Span
 ): Diagnostic {
-    return { message, level: "warning", span: range };
+    return { message, level: "warning", span };
 }

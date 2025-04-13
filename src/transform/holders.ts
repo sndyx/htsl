@@ -1,4 +1,4 @@
-import type { ActionHolder } from "housing-common/src/types";
+import type { PartialActionHolder } from "housing-common/src/types/partial";
 import { span } from "../span";
 import { edit, type TextEdit } from "./edit";
 import type { IrActionHolder } from "../ir";
@@ -7,7 +7,7 @@ import { insertActions, modifyActions } from "./actions";
 import { diff } from "./diff";
 
 export function modifyHolders(
-    from: IrActionHolder[], to: ActionHolder[],
+    from: IrActionHolder[], to: PartialActionHolder[],
     style: CodeStyle
 ) {
     const edits: TextEdit[] = [];
@@ -32,7 +32,7 @@ export function modifyHolders(
 }
 
 export function insertHolder(
-    holder: ActionHolder, pos: number,
+    holder: PartialActionHolder, pos: number,
     style: CodeStyle
 ): TextEdit[] {
     const edits: TextEdit[] = [];
@@ -50,14 +50,14 @@ export function insertHolder(
             break;
     }
 
-    edits.push(...insertActions(holder.actions, pos, false, style));
+    edits.push(...insertActions(holder.actions ?? [], pos, false, style));
 
     return edits;
 }
 
 export function modifyHolder(
-    from: IrActionHolder, to: ActionHolder,
+    from: IrActionHolder, to: PartialActionHolder,
     style: CodeStyle
 ): TextEdit[] {
-    return modifyActions(from.actions?.value ?? [], to.actions, from.kwSpan.end, false, style);
+    return modifyActions(from.actions.value ?? [], to.actions ?? [], from.kwSpan.end, false, style);
 }

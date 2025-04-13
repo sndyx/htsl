@@ -4,12 +4,13 @@ import { edit, type TextEdit } from "./edit";
 import { irKeys, type IrCondition } from "../ir";
 import type { Condition } from "housing-common/src/types";
 import { diff } from "./diff";
-import { CONDITION_KWS } from "../helpers";
+import { CONDITIONS } from "../helpers";
 import { CONDITION_SEMANTIC_DESCRIPTORS } from "../semantics";
 import { insertArgument, modifyArgument } from "./arguments";
+import type { PartialCondition } from "housing-common/src/types/partial";
 
 export function insertConditions(
-    conditions: Condition[],
+    conditions: PartialCondition[],
     pos: number,
     style: CodeStyle
 ): TextEdit[] {
@@ -17,7 +18,7 @@ export function insertConditions(
 }
 
 export function modifyConditions(
-    from: IrCondition[], to: Condition[],
+    from: IrCondition[], to: PartialCondition[],
     pos: number,
     style: CodeStyle
 ): TextEdit[] {
@@ -40,21 +41,24 @@ export function modifyConditions(
         }
     }
 
-    return [];
+    return edits;
 }
 
 export function insertCondition(
-    condition: Condition, pos: number,
+    condition: PartialCondition, pos: number,
     style: CodeStyle
 ): TextEdit[] {
     const edits: TextEdit[] = [];
     const sp = span(pos, pos);
 
-    const kw = CONDITION_KWS[condition.type];
+    const kw = CONDITIONS[condition.type];
 
+    if (condition.inverted === true) edits.push(edit(sp, "!"));
     edits.push(edit(sp, kw));
 
     for (const property of irKeys(condition)) {
+        if (property === "inverted") continue; // DONT do this one
+
         // @ts-ignore
         const kind = CONDITION_SEMANTIC_DESCRIPTORS[condition.type][property];
         // @ts-ignore
@@ -68,7 +72,7 @@ export function insertCondition(
 }
 
 export function modifyCondition(
-    from: IrCondition, to: Condition,
+    from: IrCondition, to: PartialCondition,
     style: CodeStyle
 ): TextEdit[] {
     const edits: TextEdit[] = [];

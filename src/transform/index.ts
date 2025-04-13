@@ -1,4 +1,4 @@
-import type { ActionHolder } from "housing-common/src/types";
+import type { PartialActionHolder } from "housing-common/src/types/partial";
 import { parseFromString } from "../parse";
 import { modifyHolders } from "./holders";
 import { DEFAULT_CODE_STYLE } from "./style";
@@ -7,7 +7,7 @@ import { applyEdits, type TextEdit } from "./edit";
 export { applyEdits, type TextEdit } from "./edit";
 
 export function transformEdits(
-    holders: ActionHolder[],
+    holders: PartialActionHolder[],
     hintSrc: string,
 ): TextEdit[] {
     const hint = parseFromString(hintSrc);
@@ -16,7 +16,7 @@ export function transformEdits(
 }
 
 export function transform(
-    holders: ActionHolder[],
+    holders: PartialActionHolder[],
     hintSrc: string,
 ): string {
     const edits = transformEdits(holders, hintSrc);
@@ -25,13 +25,13 @@ export function transform(
 }
 
 export function generateEdits(
-    holders: ActionHolder[]
+    holders: PartialActionHolder[]
 ): TextEdit[] {
     return transformEdits(holders, "");
 }
 
 export function generate(
-    holders: ActionHolder[],
+    holders: PartialActionHolder[],
 ): string {
     return transform(holders, "");
 }

@@ -9,8 +9,10 @@ export type { Diagnostic, DiagnosticLevel } from "./diagnostic";
 
 export * as parse from "./parse";
 export * as transform from "./transform";
+export * as helpers from "./helpers";
 
 export function actions(src: string): ActionHolder[] {
+    // @ts-ignore lol
     return parseFromString(src).holders.map(unwrapIr) as ActionHolder[];
 }
 

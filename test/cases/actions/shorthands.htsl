@@ -1,0 +1,14 @@
+stat x = stat y
+stat x = globalstat y
+stat x = teamstat y team
+stat x = randomint 1 100
+stat x = health
+stat x = maxHealth
+stat x = hunger
+stat x = locX
+stat x = locY
+stat x = locZ
+
+if () {
+    stat x = unix
+}

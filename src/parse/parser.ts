@@ -83,6 +83,16 @@ export class Parser {
 		return actions;
 	}
 
+	 parseName(): string {
+		if (this.token.kind !== "ident" && this.token.kind !== "str") {
+			throw error("Expected name", this.token.span);
+		}
+
+		const value = this.token.value;
+		this.next();
+		return value;
+	}
+
 	parseBoolean(): boolean {
 		let value;
 		if (this.eatIdent("true")) value = true;
@@ -202,7 +212,7 @@ export class Parser {
 
 	spanned<T>(
 		parser: ((p: Parser) => T) | (() => T)
-	): { value: T; span: Span } {
+	): { value: T, span: Span } {
 		const lo = this.token.span.start;
 		const value = parser.call(this, this);
 		const hi = this.prev.span.end;

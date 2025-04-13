@@ -1,21 +1,38 @@
-import type { Operation, Amount, Location, Comparison, Gamemode } from "housing-common/src/types";
+import type {
+    Operation,
+    Amount,
+    Location,
+    Comparison,
+    Gamemode,
+    InventorySlot,
+    PotionEffect, Sound, Lobby, Enchantment, Permission, ItemProperty, ItemLocation
+} from "housing-common/src/types";
 import type { Parser } from "./parser";
 import { error } from "../diagnostic";
-import type { PlaceholderKind } from "./token";
+import type { StrKind } from "./token";
 import { parseNumericalPlaceholder } from "./placeholders";
+import {
+    ENCHANTMENTS,
+    ITEM_LOCATIONS,
+    ITEM_PROPERTIES,
+    LOBBIES,
+    PERMISSIONS,
+    POTION_EFFECTS,
+    SOUNDS
+} from "housing-common/src/helpers";
+import { type Span, span } from "../span";
+import { SHORTHANDS } from "../helpers";
 
 export function parseLocation(p: Parser): Location {
-    if (
-        p.eatIdent("custom_location") ||
-        p.eat({ kind: "str", value: "custom_location" })
-    ) {
-        return { type: "LOCATION_CUSTOM" };
+    if (p.eatOption("custom_location") || p.eatOption("custom_coordinates")) {
+        const value = parseCoordinates(p);
+        return { type: "LOCATION_CUSTOM", value };
     }
-    if (
-        p.eatIdent("house_spawn") ||
-        p.eat({ kind: "str", value: "house_spawn" })
-    ) {
+    if (p.eatOption("house_spawn") || p.eatOption("houseSpawn")) { // ???
         return { type: "LOCATION_SPAWN" };
+    }
+    if (p.eatOption("invokers_location") || p.eatOption("invokers location")) {
+        return { type: "LOCATION_INVOKERS" };
     }
     throw error("Invalid location", p.token.span);
 }
@@ -149,24 +166,193 @@ export function parseAmount(p: Parser): Amount {
     if (p.check("i64") || p.check({ kind: "bin_op", op: "minus" })) {
         return p.parseNumber();
     }
-    if (p.check("placeholder") || p.check("str")) {
+
+    let isShorthand = false;
+    for (const shorthand of SHORTHANDS) {
+        if (p.check({ kind: "ident", value: shorthand })) {
+            isShorthand = true;
+        }
+    }
+
+    if (isShorthand || p.check("placeholder") || p.check("str")) {
         return parseNumericalPlaceholder(p);
     }
-    if (p.eatIdent("stat")) {
-        const name = parseStatName(p);
-        return `%stat.player/${name}%`;
-    }
-    if (p.eatIdent("globalstat")) {
-        const name = parseStatName(p);
-        return `%stat.global/${name}%`;
-    }
-    if (p.eatIdent("teamstat")) {
-        const name = parseStatName(p);
-        if (!p.check("ident") && !p.check("str")) {
-            throw error("Expected team name", p.token.span);
-        }
-        const team = parseStatName(p);
-        return `%stat.team/${name} ${team}%`;
-    }
+
     throw error("Expected amount", p.token.span);
 }
+
+export function parseInventorySlot(p: Parser): InventorySlot {
+    if (p.check("i64")) {
+        return p.parseBoundedNumber(-1, 39);
+    }
+
+    if (p.eatOption("helmet")) {
+        return "helmet";
+    }
+    if (p.eatOption("chestplate")) {
+        return "chestplate";
+    }
+    if (p.eatOption("leggings")) {
+        return "leggings";
+    }
+    if (p.eatOption("boots")) {
+        return "boots";
+    }
+    if (p.eatOption("first available slot")) {
+        return "first";
+    }
+    if (p.eatOption("hand slot")) {
+        return "hand";
+    }
+
+    if ((p.check("str") || p.check("ident"))) {
+        throw error(
+            "Expected inventory slot (helmet, chestplate, leggings, boots, first slot, hand slot)", p.token.span
+        );
+    } else {
+        throw error("Expected inventory slot", p.token.span);
+    }
+}
+
+export function parsePotionEffect(p: Parser): PotionEffect {
+    for (const potionEffect of POTION_EFFECTS) {
+        if (p.eatOption(potionEffect)) {
+            return potionEffect;
+        }
+    }
+
+    throw error("Expected potion effect", p.token.span);
+}
+
+export function parseLobby(p: Parser): Lobby {
+    for (const lobby of LOBBIES) {
+        if (p.eatOption(lobby)) {
+            return lobby;
+        }
+    }
+
+    throw error("Expected lobby", p.token.span);
+}
+
+export function parseEnchantment(p: Parser): Enchantment {
+    for (const enchantment of ENCHANTMENTS) {
+        if (p.eatOption(enchantment)) {
+            return enchantment;
+        }
+    }
+
+    throw error("Expected enchantment", p.token.span);
+}
+
+export function parseSound(p: Parser): Sound {
+    if (!p.check("str")) {
+        throw error("Expected sound", p.token.span);
+    }
+
+    const value = (p.token as StrKind).value;
+    p.next();
+
+    for (const sound of SOUNDS) {
+        if (sound.name === value) return sound.path;
+        if (sound.path === value) return sound.path;
+    }
+
+    return value as Sound; // this is stupid but whatever
+}
+
+export function parsePermission(p: Parser): Permission {
+    for (const permission of PERMISSIONS) {
+        if (p.eatOption(permission)) {
+            return permission;
+        }
+    }
+
+    throw error("Expected permission", p.token.span);
+}
+
+export function parseItemProperty(p: Parser): ItemProperty {
+    for (const property of ITEM_PROPERTIES) {
+        if (p.eatOption(property)) {
+            return property;
+        }
+    }
+
+    throw error("Expected item property", p.token.span);
+}
+
+export function parseItemLocation(p: Parser): ItemLocation {
+    for (const location of ITEM_LOCATIONS) {
+        if (p.eatOption(location)) {
+            return location;
+        }
+    }
+
+    throw error("Expected item location", p.token.span);
+}
+
+
+export function parseCoordinates(p: Parser) {
+    if (p.token.kind !== "str") {
+        throw error("Expected coordinates", p.token.span);
+    }
+
+    let value = p.token.value;
+    const sp = p.token.span;
+    p.next();
+
+    const tokens = value.split(" ");
+
+    function addDiagnostic(message: string, span: Span) {
+        p.addDiagnostic(error(message, span));
+    }
+
+    const isRelative = (s: string) =>
+        (s.startsWith("~") || s.startsWith("^"))
+        && ((s.length == 1) || isNumeric(s.substring(1)));
+    const isNumeric = (s: string) => /^-?\d+$/.test(s);
+
+    let offset = 0;
+    const components = tokens.map((token, index) => {
+        const start = offset + 1;
+        offset += token.length + 1;
+        const end = start + token.length;
+
+        const tokenSpan = { start: sp.start + start, end: sp.start + end };
+        const isValid = isRelative(token) || isNumeric(token);
+        if (!isValid) {
+            addDiagnostic("Invalid component", tokenSpan);
+        }
+        return { token, isRelative: isRelative(token), index, span: tokenSpan };
+    });
+
+    if (components.length < 3) {
+        addDiagnostic("Expected 3 components", span(sp.start, sp.end));
+        return "";
+    }
+
+    const allDirectional = components.every((c) => c.token.startsWith("^"));
+    const anyDirectional = components.some((c) => c.token.startsWith("^"));
+    if (anyDirectional && !allDirectional) {
+        addDiagnostic("All components must be directional", sp);
+    }
+
+    const requiresPitchYaw = components.length === 5;
+    if (components.length > 3 && !requiresPitchYaw) {
+        addDiagnostic("Expected yaw", components[3].span);
+    }
+
+    if (requiresPitchYaw) {
+        const pitch = components[4];
+        if (!isNumeric(pitch.token)) {
+            addDiagnostic("Invalid pitch", pitch.span);
+        }
+        const yaw = components[4];
+        if (!isNumeric(yaw.token)) {
+            addDiagnostic("Invalid pitch", yaw.span);
+        }
+    }
+
+    return value;
+}
+
+

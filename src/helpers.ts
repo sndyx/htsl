@@ -1,19 +1,27 @@
-import type { Action, Condition, Operation } from "housing-common/src/types";
+import type { Action, Comparison, Condition, Operation } from "housing-common/src/types";
 
-export const ACTIONS = [
+export const ACTION_KWS = [
 	"applyLayout", "applyPotion", "balanceTeam", "cancelEvent", "changeHealth", "hungerLevel",
 	"maxHealth", "changePlayerGroup", "clearEffects", "closeMenu", "actionBar", "displayMenu",
 	"title", "enchant", "exit", "failParkour", "fullHeal", "xpLevel", "giveItem", "houseSpawn",
 	"kill", "parkCheck", "pause", "sound", "removeItem", "resetInventory", "chat", "lobby",
-	"compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "stat", "globalstat", "teamstat"
-];
+	"compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "stat", "globalstat", "teamstat",
+	"launch", "changeVelocity", "dropItem", "function", "random", "if"
+] as const;
 
-export const CONDITIONS = [
-	"stat", "globalstat", "teamstat", "gamemode", "damageAmount"
-];
+export type ActionKw = (typeof ACTION_KWS)[number];
 
-export const ACTION_KWS: {
-	[key in Action["type"]]: string
+export const CONDITION_KWS = [
+	"blockType", "damageAmount", "damageCause", "doingParkour", "fishingEnv", "hasItem",
+	"hasPotion", "isItem", "isSneaking", "maxHealth", "isFlying", "health", "hunger",
+	"portal", "canPvp", "gamemode", "hasGroup", "hasPermission", "hasTeam", "inRegion",
+	"teamstat", "stat", "globalstat", "placeholder"
+] as const;
+
+export type ConditionKw = (typeof CONDITION_KWS)[number];
+
+export const ACTIONS: {
+	[key in Action["type"]]: ActionKw
 } = {
 	APPLY_POTION_EFFECT: "applyPotion",
 	CLEAR_POTION_EFFECTS: "clearEffects",
@@ -36,18 +44,45 @@ export const ACTION_KWS: {
 	CHANGE_HEALTH: "changeHealth",
 	MESSAGE: "chat",
 	RANDOM: "random",
-	SET_VELOCITY: "setVelocity",
+	SET_VELOCITY: "changeVelocity",
 	TELEPORT: "tp",
 	EXIT: "exit",
-	CANCEL_EVENT: "cancelEvent"
+	CANCEL_EVENT: "cancelEvent",
+	PLAY_SOUND: "sound",
+	SET_COMPASS_TARGET: "compassTarget",
+	SET_GAMEMODE: "gamemode",
+	CHANGE_HUNGER: "hungerLevel",
+	FUNCTION: "function",
+	APPLY_INVENTORY_LAYOUT: "applyLayout",
+	ENCHANT_HELD_ITEM: "enchant",
+	PAUSE: "pause",
+	SET_TEAM: "setTeam",
+	SET_MENU: "displayMenu",
+	DROP_ITEM: "dropItem",
+	LAUNCH: "launch"
 };
 
-export const CONDITION_KWS: {
-	[key in Condition["type"]]: string
+export const CONDITIONS: {
+	[key in Condition["type"]]: ConditionKw
 } = {
+	COMPARE_HEALTH: "health",
+	COMPARE_HUNGER: "hunger",
+	COMPARE_MAX_HEALTH: "maxHealth",
+	COMPARE_PLACEHOLDER: "placeholder",
+	IS_DOING_PARKOUR: "doingParkour",
+	IS_FLYING: "isFlying",
+	IS_IN_REGION: "inRegion",
+	IS_SNEAKING: "isSneaking",
+	REQUIRE_GROUP: "hasGroup",
+	REQUIRE_ITEM: "hasItem",
+	REQUIRE_PERMISSION: "hasPermission",
+	REQUIRE_POTION_EFFECT: "hasPotion",
+	REQUIRE_TEAM: "hasTeam",
+	COMPARE_TEAM_STAT: "teamstat",
 	COMPARE_STAT: "stat",
-	REQUIRED_GAMEMODE: "gamemode",
-	COMPARE_DAMAGE: "damageAmount"
+	REQUIRE_GAMEMODE: "gamemode",
+	COMPARE_DAMAGE: "damageAmount",
+	COMPARE_GLOBAL_STAT: "globalstat"
 }
 
 export const OPERATION_SYMBOLS: {
@@ -59,6 +94,20 @@ export const OPERATION_SYMBOLS: {
 	multiply: "*=",
 	divide: "/="
 }
+
+export const COMPARISON_SYMBOLS: {
+	[key in Comparison]: string
+} = {
+	less_than: "<",
+	less_than_or_equals: "<=",
+	equals: "==",
+	greater_than: ">",
+	greater_than_or_equals: ">="
+}
+
+export const SHORTHANDS = [
+	"globalstat", "stat", "teamstat", "randomint", "health", "maxHealth", "hunger", "locX", "locY", "locZ", "unix"
+] as const;
 
 export function partialEq(src: any, target: any): boolean {
 	return Object.keys(target).every((key) => {

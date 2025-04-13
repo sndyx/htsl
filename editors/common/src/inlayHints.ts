@@ -27,12 +27,6 @@ function provideInlayHintsForActions(
     const hints: InlayHint[] = [];
 
     for (const action of actions) {
-        if (
-            action.type === "CHANGE_STAT"
-            || action.type === "CHANGE_TEAM_STAT"
-            || action.type === "CHANGE_GLOBAL_STAT"
-        ) continue; // don't provide hints for these
-
         if (action.type === "CONDITIONAL") {
             hints.push(...provideInlayHintsForConditions(action.conditions?.value ?? []));
 
@@ -42,14 +36,27 @@ function provideInlayHintsForActions(
             hints.push(...provideInlayHintsForActions(action.actions?.value ?? []));
         }
 
+        if (
+            action.type === "CHANGE_STAT"
+            || action.type === "CHANGE_TEAM_STAT"
+            || action.type === "CHANGE_GLOBAL_STAT"
+            || action.type === "CONDITIONAL"
+            || action.type === "RANDOM"
+        ) continue; // don't provide hints for these
+
         for (const key of htsl.irKeys(action)) {
-            if (key === "ifActions" || key === "elseActions") continue; // skip these
+            if (key === "function") continue; // skip these
 
             // @ts-ignore
             const element: { value: any, span: htsl.Span } = action[key];
-            if (!element) continue;
+
+            // this element was skipped on purpose
+            if (element.value === null) continue;
+
+            if (element.value === undefined) break;
 
             hints.push(hint(key, element.span));
+
         }
     }
 
@@ -62,10 +69,23 @@ function provideInlayHintsForConditions(
     const hints: InlayHint[] = [];
 
     for (const condition of conditions) {
+        if (
+            condition.type === "COMPARE_STAT"
+            || condition.type === "COMPARE_GLOBAL_STAT"
+            || condition.type === "COMPARE_TEAM_STAT"
+            || condition.type === "COMPARE_PLACEHOLDER"
+        ) continue; // don't provide hints for these
+
         for (const key of htsl.irKeys(condition)) {
+            if (key === "inverted") continue; // skip these
+
             // @ts-ignore
             const element: { value: any, span: htsl.Span } = condition[key];
-            if (!element) continue;
+
+            // this element was skipped on purpose
+            if (element.value === null) continue;
+
+            if (element.value === undefined) break;
 
             hints.push(hint(key, element.span));
         }

@@ -1,9 +1,40 @@
 import type { Parser } from "./parser";
 import { error } from "../diagnostic";
+import { parseStatName } from "./arguments";
 
 export function parseNumericalPlaceholder(
     p: Parser
 ): string {
+    if (p.eatIdent("stat")) {
+        const name = parseStatName(p);
+        return `%stat.player/${name}%`;
+    }
+    if (p.eatIdent("globalstat")) {
+        const name = parseStatName(p);
+        return `%stat.global/${name}%`;
+    }
+    if (p.eatIdent("teamstat")) {
+        const name = parseStatName(p);
+        if (!p.check("ident") && !p.check("str")) {
+            throw error("Expected team name", p.token.span);
+        }
+        const team = parseStatName(p);
+        return `%stat.team/${name} ${team}%`;
+    }
+    if (p.eatIdent("randomint")) {
+        const from = p.parseNumber();
+        const to = p.parseNumber();
+        return `%random.int/${from} ${to}%`;
+    }
+
+    if (p.eatIdent("health")) return "%player.health%";
+    if (p.eatIdent("maxHealth")) return "%player.maxHealth%";
+    if (p.eatIdent("hunger")) return "%player.hunger%";
+    if (p.eatIdent("locX")) return "%player.location.x%";
+    if (p.eatIdent("locY")) return "%player.location.y%";
+    if (p.eatIdent("locZ")) return "%player.location.z%";
+    if (p.eatIdent("unix")) return "%date.unix%";
+
     if (p.token.kind !== "str" && p.token.kind !== "placeholder") {
         throw error("Expected placeholder", p.token.span);
     }

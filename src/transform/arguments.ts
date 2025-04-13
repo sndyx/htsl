@@ -2,11 +2,11 @@ import { span, type Span } from "../span";
 import type { CodeStyle, WrittenStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
 import type { SemanticKind } from "../semantics";
-import type { Action, Condition, Operation } from "housing-common/src/types";
+import type { Action, Comparison, Condition, Operation } from "housing-common/src/types";
 import type { IrAction, IrCondition } from "../ir";
 import { insertActions, modifyActions } from "./actions";
 import { insertConditions, modifyConditions } from "./conditions";
-import { OPERATION_SYMBOLS } from "../helpers";
+import { COMPARISON_SYMBOLS, OPERATION_SYMBOLS } from "../helpers";
 
 export function modifyArgument(
     from: { value: any, span: Span }, to: any,
@@ -43,6 +43,8 @@ export function insertArgument(
 ): TextEdit[] {
     const sp = span(pos, pos);
 
+    if (argument === undefined || argument === null) return []; // omitted, or we have errors
+
     switch (kind) {
         case "string":
             return [edit(sp, `"${argument}"`)];
@@ -74,7 +76,13 @@ export function insertArgument(
             } else {
                 return [edit(sp, operation)];
             }
-
+        case "comparison":
+            let comparison: Comparison = argument;
+            if (style.cmpOpStyle === "symbolic") {
+                return [edit(sp, COMPARISON_SYMBOLS[comparison])];
+            } else {
+                return [edit(sp, comparison.replace("_", " "))];
+            }
         case "conditional_mode":
             const matchAny = argument as boolean;
 
@@ -83,6 +91,10 @@ export function insertArgument(
                 text = matchAny ? "or" : "and";
             }
             return [edit(sp, text)];
+        case "inversion":
+            const inverted = argument as boolean;
+
+            return [edit(sp, inverted ? "!" : "")];
 
         default:
             return [edit(sp, argument.toString())];

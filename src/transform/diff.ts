@@ -1,4 +1,5 @@
 import type { Element, IrElement } from "../ir";
+import type { PartialElement } from "../../../housing-common/src/types/partial";
 
 export type Diff<T extends Element> = DiffInsert<T> | DiffDelete<T> | DiffModify<T>;
 
@@ -18,7 +19,9 @@ type DiffModify<T extends Element> = {
     to: T
 };
 
-export function diff<T extends Element>(a: IrElement<T>[], b: T[]): Diff<T>[] {
+export function diff<T extends Element>(
+    a: IrElement<T>[], b: T[]
+): Diff<T>[] {
     const seq: Diff<T>[] = [];
     const { trace, offset } = shortestEdit(a, b);
     let x = a.length;
@@ -62,7 +65,9 @@ export function diff<T extends Element>(a: IrElement<T>[], b: T[]): Diff<T>[] {
     return seq;
 }
 
-function shortestEdit<T extends Element>(a: IrElement<T>[], b: T[]): { trace: number[][]; offset: number } {
+function shortestEdit<T extends Element>(
+    a: IrElement<T>[], b: T[]
+): { trace: number[][]; offset: number } {
     const n = a.length;
     const m = b.length;
     const max = n + m;

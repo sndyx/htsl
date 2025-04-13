@@ -38,7 +38,7 @@ function parseHolderUnknown(p: Parser): IrActionHolder {
 
 function parseHolderFunction(p: Parser): IrActionHolder {
     return parseHolderRecovering(p, "FUNCTION", (holder) => {
-        holder.name = p.spanned(p.parseIdent);
+        holder.name = p.spanned(p.parseName);
         holder.actions = p.spanned(p.parseActions);
     });
 }

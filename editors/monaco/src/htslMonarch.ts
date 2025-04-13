@@ -1,5 +1,6 @@
 import { languages } from "monaco-editor";
 import IMonarchLanguage = languages.IMonarchLanguage;
+import * as htsl from "htsl/src";
 
 export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
     keywords: [
@@ -16,13 +17,8 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
         "+=", "-=", "*=", "/=", "//="
     ],
 
-    actions: [
-        "applyLayout", "applyPotion", "balanceTeam", "cancelEvent", "changeHealth", "hungerLevel",
-        "maxHealth", "changePlayerGroup", "clearEffects", "closeMenu", "actionBar", "displayMenu",
-        "title", "enchant", "failParkour", "fullHeal", "xpLevel", "giveItem", "houseSpawn", "kill",
-        "parkCheck", "pause", "sound", "removeItem", "resetInventory", "chat", "lobby",
-        "compassTarget", "gamemode", "setTeam", "tp", "consumeItem", "setVelocity"
-    ],
+    actions: htsl.helpers.ACTION_KWS,
+    shorthands: htsl.helpers.SHORTHANDS,
 
     conditions: [
         "blockType", "damageAmount", "damageCause", "doingParkour", "fishingEnv", "hasItem",
@@ -43,6 +39,7 @@ export const HTSL_MONARCH_DEFINITION: IMonarchLanguage = {
                     '@keywords': 'keyword',
                     "@actions": "entity.name.function",
                     "@conditions": "entity.name.function",
+                    "@shorthands": "entity.name.function",
                     '@default': 'identifier'
                 }
             }],

@@ -4,6 +4,7 @@ export type Token = TokenType & { span: Span };
 
 export type TokenType =
 	| CommaKind
+	| ExclamationKind
 	| BinOpKind
 	| BinOpEqKind
 	| CmpOpKind
@@ -20,6 +21,7 @@ export type TokenType =
 	| UnknownKind;
 
 export type CommaKind = { kind: "comma" };
+export type ExclamationKind = { kind: "exclamation" };
 
 export type BinOpKind = { kind: "bin_op"; op: BinOp };
 export type BinOpEqKind = { kind: "bin_op_eq"; op: BinOp };
@@ -59,6 +61,7 @@ const TOKEN_KIND_NAMES: {
 	[key in Token["kind"]]: string;
 } = {
 	comma: ",",
+	exclamation: "!",
 	bin_op: "binary operator",
 	bin_op_eq: "binary operator",
 	cmp_op: "comparison",
