@@ -13,15 +13,15 @@ function checkHolderContext(
     result: ParseResult,
     holder: IrActionHolder
 ) {
-    if (!holder.actions.value) return;
+    if (!holder.actions?.value) return;
 
-    checkExitActions(result, holder.actions.value); // check for exit actions used outside conditionals
+    checkExitActions(result, holder.actions?.value ?? []); // check for exit actions used outside conditionals
 
     if (holder.type === "UNKNOWN") return; // don't check more rigorously
 
-    checkActionContext(result, holder, holder.actions.value);
+    checkActionContext(result, holder, holder.actions?.value ?? []);
 
-    for (const action of holder.actions.value) {
+    for (const action of holder.actions?.value ?? []) {
         if (action.type === "CONDITIONAL") {
             checkConditionalContext(result, holder, action.conditions?.value ?? []);
         }
@@ -35,10 +35,10 @@ function checkActionContext(
 ) {
     for (const action of actions) {
         if (action.type === "CONDITIONAL") {
-            checkActionContext(result, holder, action.ifActions.value ?? []);
-            checkActionContext(result, holder, action.elseActions.value ?? []);
+            checkActionContext(result, holder, action.ifActions?.value ?? []);
+            checkActionContext(result, holder, action.elseActions?.value ?? []);
         } else if (action.type === "RANDOM") {
-            checkActionContext(result, holder, action.actions.value ?? []);
+            checkActionContext(result, holder, action.actions?.value ?? []);
         }
         if (action.type === "CANCEL_EVENT") {
             if (holder.type !== "EVENT") {
@@ -77,7 +77,7 @@ function checkExitActions(
 
         // ensure no exits are in a random action
         if (action.type === "RANDOM") {
-            checkExitActions(result, action.actions.value ?? []);
+            checkExitActions(result, action.actions?.value ?? []);
         }
     }
 }

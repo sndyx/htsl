@@ -5,13 +5,13 @@ export function checkNesting(
     result: ParseResult
 ) {
     for (const holder of result.holders) {
-        for (const action of holder.actions.value ?? []) {
+        for (const action of holder.actions?.value ?? []) {
 
             if (action.type === "CONDITIONAL") {
-                checkActionNesting(result, "CONDITIONAL", action.ifActions.value ?? []);
-                checkActionNesting(result, "CONDITIONAL", action.elseActions.value ?? []);
+                checkActionNesting(result, "CONDITIONAL", action.ifActions?.value ?? []);
+                checkActionNesting(result, "CONDITIONAL", action.elseActions?.value ?? []);
             } else if (action.type === "RANDOM") {
-                checkActionNesting(result, "RANDOM", action.actions.value ?? []);
+                checkActionNesting(result, "RANDOM", action.actions?.value ?? []);
             }
         }
     }
@@ -39,10 +39,10 @@ function checkActionNesting(
 
         // to catch deeply nested actions, in case they have them for whatever reason.
         if (action.type === "CONDITIONAL") {
-            checkActionNesting(result, "CONDITIONAL", action.ifActions.value ?? []);
-            checkActionNesting(result, "CONDITIONAL", action.elseActions.value ?? []);
+            checkActionNesting(result, "CONDITIONAL", action.ifActions?.value ?? []);
+            checkActionNesting(result, "CONDITIONAL", action.elseActions?.value ?? []);
         } else if (action.type === "RANDOM") {
-            checkActionNesting(result, "RANDOM", action.actions.value ?? []);
+            checkActionNesting(result, "RANDOM", action.actions?.value ?? []);
         }
     }
 }

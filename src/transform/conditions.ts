@@ -26,7 +26,7 @@ export function modifyConditions(
 
     const diffs = diff(from, to);
 
-    let currentPos = pos;
+    let currentPos = pos + 1;
     for (const diff of diffs) {
         const sp = span(currentPos, currentPos);
         if (diff.type === "insert") {
@@ -78,7 +78,7 @@ export function modifyCondition(
     const edits: TextEdit[] = [];
 
     let pos = from.kwSpan.end;
-    for (const property of irKeys(to)) {
+    for (const property of irKeys(from)) {
         // @ts-ignore
         const kind = CONDITION_SEMANTIC_DESCRIPTORS[to.type][property];
         // @ts-ignore

@@ -1,4 +1,4 @@
-import type { Action, ActionConditional, ActionRandom } from "housing-common/src/types";
+import type { ActionConditional, ActionRandom } from "housing-common/src/types";
 import { span, type Span } from "../span";
 import type { CodeStyle } from "./style";
 import { edit, type TextEdit } from "./edit";
@@ -27,7 +27,7 @@ export function modifyActions(
 
     const diffs = diff(from, to);
 
-    let currentPos = pos;
+    let currentPos = pos + 1;
     for (const diff of diffs) {
         const sp = span(currentPos, currentPos);
         if (diff.type === "insert") {
@@ -86,7 +86,7 @@ export function modifyAction(
     const edits: TextEdit[] = [];
 
     let pos = from.kwSpan.end;
-    for (const property of irKeys(to)) {
+    for (const property of irKeys(from)) {
         // @ts-ignore
         const kind = ACTION_SEMANTIC_DESCRIPTORS[to.type][property];
         // @ts-ignore
@@ -118,7 +118,7 @@ function insertActionConditional(
     if (!(!style.explicitConditionalAnd && !action.matchAny)) {
         edits.push(edit(sp, action.matchAny ? "or" : "and"));
     }
-    edits.push(edit(sp, "("));
+    edits.push(edit(sp, " ("));
 
     const conditionEdits: TextEdit[][] = [];
 
@@ -138,10 +138,13 @@ function insertActionConditional(
     const doWrap = length > style.lineLength;
 
     if (doWrap) edits.push(edit(sp, "\n"));
+
+    let i = 0;
     for (const editGroup of conditionEdits) {
         edits.push(...editGroup);
         if (doWrap) edits.push(edit(sp, ", \n"));
-        else edits.push(edit(sp, ", "));
+        else if (i !== conditionEdits.length - 1) edits.push(edit(sp, ", "));
+        i++;
     }
 
     // if actions

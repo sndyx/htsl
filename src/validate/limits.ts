@@ -6,7 +6,7 @@ export function checkLimits(
     result: ParseResult
 ) {
     for (const holder of result.holders) {
-        checkActionLimits(result, holder.actions.value ?? []);
+        checkActionLimits(result, holder.actions?.value ?? []);
     }
 }
 

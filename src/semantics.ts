@@ -1,4 +1,4 @@
-import type { Action, Condition } from "housing-common/src/types";
+import type { Action, ActionHolder, Condition } from "housing-common/src/types";
 
 export type SemanticKind =
     | "stat_name"
@@ -28,7 +28,27 @@ export type SemanticKind =
     | "item_amount"
     | "item_property"
     | "item_location"
-    | "group_name";
+    | "group_name"
+    | "function_name"
+    | "event";
+
+export const ACTION_HOLDER_SEMANTIC_DESCRIPTORS: {
+    [K in ActionHolder["type"]]: {
+        [key in keyof Omit<Extract<ActionHolder, { type: K }>, "type">]-?: SemanticKind
+    }
+} = {
+    UNKNOWN: {
+        actions: "actions"
+    },
+    FUNCTION: {
+        name: "function_name",
+        actions: "actions"
+    },
+    EVENT: {
+        event: "event",
+        actions: "actions"
+    }
+}
 
 export const CONDITION_SEMANTIC_DESCRIPTORS: {
     [K in Condition["type"]]: {
@@ -36,23 +56,23 @@ export const CONDITION_SEMANTIC_DESCRIPTORS: {
     }
 } = {
     COMPARE_HEALTH: {
-        op: "operation",
+        op: "comparison",
         amount: "amount",
         inverted: "inversion",
     },
     COMPARE_HUNGER: {
-        op: "operation",
+        op: "comparison",
         amount: "amount",
         inverted: "inversion",
     },
     COMPARE_MAX_HEALTH: {
-        op: "operation",
+        op: "comparison",
         amount: "amount",
         inverted: "inversion",
     },
     COMPARE_PLACEHOLDER: {
         placeholder: "placeholder",
-        op: "operation",
+        op: "comparison",
         amount: "amount",
         inverted: "inversion",
     },
@@ -96,13 +116,13 @@ export const CONDITION_SEMANTIC_DESCRIPTORS: {
     COMPARE_GLOBAL_STAT: {
         amount: "amount",
         stat: "global_stat_name",
-        op: "operation",
+        op: "comparison",
         inverted: "inversion"
     },
     COMPARE_TEAM_STAT: {
         amount: "amount",
         stat: "team_stat_name",
-        op: "operation",
+        op: "comparison",
         team: "team_name",
         inverted: "inversion"
     },
@@ -148,7 +168,7 @@ export const ACTION_SEMANTIC_DESCRIPTORS: {
         level: "number"
     },
     FUNCTION: {
-        function: "string",
+        function: "function_name",
         global: "boolean"
     },
     LAUNCH: {
@@ -266,4 +286,39 @@ export const ACTION_SEMANTIC_DESCRIPTORS: {
     FAIL_PARKOUR: {
         message: "string"
     }
+}
+
+export const SEMANTIC_KIND_OPTIONS: {
+    [K in SemanticKind]: string[] | undefined
+} = {
+    string: undefined,
+    number: undefined,
+    boolean: ["true", "false"],
+    stat_name: undefined,
+    global_stat_name: undefined,
+    team_stat_name: undefined,
+    team_name: undefined,
+    amount: undefined,
+    operation: ["+=", "-=", "=", "*=", "/="],
+    comparison: [">", ">=", "=", "<", "<="],
+    conditional_mode: ["and", "or"],
+    conditions: undefined,
+    actions: undefined,
+    location: undefined,
+    gamemode: ["creative", "survival", "adventure"],
+    item: undefined,
+    potion: undefined,
+    lobby: undefined,
+    enchantment: undefined,
+    sound: undefined,
+    inversion: undefined,
+    placeholder: undefined,
+    region_name: undefined,
+    permission: undefined,
+    item_amount: undefined,
+    item_property: undefined,
+    item_location: undefined,
+    group_name: undefined,
+    function_name: undefined,
+    event: undefined
 }

@@ -9,7 +9,7 @@ import { insertConditions, modifyConditions } from "./conditions";
 import { COMPARISON_SYMBOLS, OPERATION_SYMBOLS } from "../helpers";
 
 export function modifyArgument(
-    from: { value: any, span: Span }, to: any,
+    from: { value: any | undefined, span: Span }, to: any | undefined,
     kind: SemanticKind,
     style: CodeStyle
 ): TextEdit[] {
@@ -17,14 +17,14 @@ export function modifyArgument(
 
     switch (kind) {
         case "actions":
-            const fromActions = from.value as IrAction[];
-            const toActions = to as Action[];
+            const fromActions = (from?.value ?? []) as IrAction[];
+            const toActions = (to ?? []) as Action[];
 
             return modifyActions(fromActions, toActions, from.span.start, true, style);
 
         case "conditions":
-            const fromConditions = from.value as IrCondition[];
-            const toConditions = to as Condition[];
+            const fromConditions = (from?.value ?? []) as IrCondition[];
+            const toConditions = (to ?? []) as Condition[];
 
             return modifyConditions(fromConditions, toConditions, from.span.start, style);
 
@@ -47,6 +47,7 @@ export function insertArgument(
 
     switch (kind) {
         case "string":
+        case "function_name":
             return [edit(sp, `"${argument}"`)];
 
         case "actions": {

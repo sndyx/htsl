@@ -2,8 +2,8 @@
   "name": "htsl",
   "version": "1.0.0",
   "description": "HTSL compiler and decompiler",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/htsl/src/index.js",
+  "types": "dist/htsl/src/index.d.ts",
   "scripts": {
     "dev": "npx tsx watch src/index.ts",
     "test": "vitest",

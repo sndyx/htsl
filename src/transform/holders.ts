@@ -1,10 +1,12 @@
 import type { PartialActionHolder } from "housing-common/src/types/partial";
-import { span } from "../span";
+import { type Span, span } from "../span";
 import { edit, type TextEdit } from "./edit";
-import type { IrActionHolder } from "../ir";
+import { type IrActionHolder, irKeys } from "../ir";
 import type { CodeStyle } from "./style";
 import { insertActions, modifyActions } from "./actions";
 import { diff } from "./diff";
+import { ACTION_HOLDER_SEMANTIC_DESCRIPTORS, type SemanticKind } from "../semantics";
+import { insertArgument, modifyArgument } from "./arguments";
 
 export function modifyHolders(
     from: IrActionHolder[], to: PartialActionHolder[],
@@ -59,5 +61,31 @@ export function modifyHolder(
     from: IrActionHolder, to: PartialActionHolder,
     style: CodeStyle
 ): TextEdit[] {
-    return modifyActions(from.actions.value ?? [], to.actions ?? [], from.kwSpan.end, false, style);
+    const edits: TextEdit[] = [];
+
+    let pos = from.kwSpan.end;
+    for (const property of irKeys(from)) {
+        // @ts-ignore
+        const kind: SemanticKind = ACTION_HOLDER_SEMANTIC_DESCRIPTORS[to.type][property];
+
+        if (kind === "actions") {
+            edits.push(...modifyActions(from.actions?.value ?? [], to.actions ?? [], pos, false, style));
+            continue;
+        }
+
+        // @ts-ignore
+        const fromArgument: { value: any, span: Span } = from[property];
+        // @ts-ignore
+        const toArgument = to[property];
+
+        if (fromArgument !== undefined) {
+            pos = from.span.end;
+            edits.push(...modifyArgument(fromArgument, toArgument, kind, style));
+        } else {
+            edits.push(edit(span(pos, pos), " "));
+            edits.push(...insertArgument(toArgument, pos, kind, style));
+        }
+    }
+
+    return edits;
 }

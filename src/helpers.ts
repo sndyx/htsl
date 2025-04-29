@@ -114,3 +114,38 @@ export function partialEq(src: any, target: any): boolean {
 		return target[key] === src[key];
 	});
 }
+
+export function deepEq(obj1: any, obj2: any): boolean {
+	if (obj1 === obj2) {
+		return true; // Check for strict equality
+	}
+
+	if (
+		typeof obj1 !== 'object' ||
+		typeof obj2 !== 'object' ||
+		obj1 === null ||
+		obj2 === null
+	) {
+		return false; // Primitive values or one of them is null
+	}
+
+	if (Array.isArray(obj1) !== Array.isArray(obj2)) {
+		return false; // One is an array and the other is not
+	}
+
+	const keys1 = Object.keys(obj1);
+	const keys2 = Object.keys(obj2);
+
+	if (keys1.length !== keys2.length) {
+		return false; // Different number of keys
+	}
+
+	// Compare all keys and values recursively
+	for (const key of keys1) {
+		if (!keys2.includes(key) || !deepEq(obj1[key], obj2[key])) {
+			return false;
+		}
+	}
+
+	return true;
+}

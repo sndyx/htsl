@@ -19,6 +19,8 @@
     "module": "ES2022",
     "outDir": "dist",
     "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
 
     /* If your code doesn't run in the DOM: */
     "lib": ["es2022"]
