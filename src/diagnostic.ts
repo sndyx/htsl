@@ -1,4 +1,4 @@
-import type { Span } from './span.js';
+import type { Span } from './span';
 
 export type DiagnosticLevel = 'bug' | 'error' | 'warning' | 'info';
 

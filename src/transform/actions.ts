@@ -1,4 +1,4 @@
-import type { Action, ActionConditional, ActionRandom } from 'housing-common/src/types';
+import type { ActionConditional, ActionRandom } from 'housing-common/src/types';
 import { span, type Span } from '../span';
 import type { CodeStyle } from './style';
 import { edit, type TextEdit } from './edit';

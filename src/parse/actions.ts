@@ -1,10 +1,10 @@
-import type { Parser } from './parser.js';
-import type { IrAction } from '../ir.js';
-import { error } from '../diagnostic.js';
-import { parseCondition } from './conditions.js';
+import type { Parser } from './parser';
+import type { IrAction } from '../ir';
+import { error } from '../diagnostic';
+import { parseCondition } from './conditions';
 import { span } from '../span';
 import {
-    parseAmount,
+    parseNumericValue,
     parseEnchantment,
     parseGamemode,
     parseInventorySlot,
@@ -13,10 +13,10 @@ import {
     parseOperation,
     parsePotionEffect,
     parseSound,
-    parseStatName,
+    parseVarName, parseValue,
 } from './arguments';
-import { ACTION_SEMANTIC_DESCRIPTORS } from '../semantics';
 import type { ActionKw } from '../helpers';
+import type { VarHolder } from 'housing-common/src/types';
 
 export function parseAction(p: Parser): IrAction {
     function eatKw(kw: ActionKw): boolean {
@@ -54,9 +54,9 @@ export function parseAction(p: Parser): IrAction {
     } else if (eatKw('lobby')) {
         return parseActionSendToLobby(p);
     } else if (eatKw('stat')) {
-        return parseActionChangeStat(p);
+        return parseActionChangeVar(p);
     } else if (eatKw('globalstat')) {
-        return parseActionChangeGlobalStat(p);
+        return parseActionChangeGlobalVar(p);
     } else if (eatKw('tp')) {
         return parseActionTeleport(p);
     } else if (eatKw('failParkour')) {
@@ -84,7 +84,7 @@ export function parseAction(p: Parser): IrAction {
     } else if (eatKw('setTeam')) {
         return parseActionSetTeam(p);
     } else if (eatKw('teamstat')) {
-        return parseActionChangeTeamStat(p);
+        return parseActionChangeTeamVar(p);
     } else if (eatKw('displayMenu')) {
         return parseActionDisplayMenu(p);
     } else if (eatKw('dropItem')) {
@@ -117,13 +117,6 @@ function parseActionRecovering<T extends IrAction['type']>(
     p.parseRecovering(['eol'], () => {
         parser(action);
     });
-    for (const key in ACTION_SEMANTIC_DESCRIPTORS[action.type]) {
-        // @ts-ignore
-        if (action[key] === undefined) {
-            // @ts-ignore
-            action[key] = { value: undefined, span: p.token.span };
-        }
-    }
     action.span = span(start, p.prev.span.end);
     return action;
 }
@@ -157,14 +150,12 @@ function parseActionConditional(p: Parser): IrAction {
         let token = p.token;
         let hadNewline = p.eat('eol');
 
-        action.elseActions = p.spanned(() => {
-            if (p.eatIdent('else')) return p.parseBlock();
-            else if (hadNewline) {
-                p.tokens.push(p.token);
-                p.token = token;
-            }
-            return null;
-        });
+        if (p.eatIdent('else')) {
+            action.elseActions = p.spanned(p.parseBlock);
+        } else if (hadNewline) {
+            p.tokens.push(p.token);
+            p.token = token;
+        }
     });
 }
 
@@ -198,7 +189,7 @@ function parseActionActionBar(p: Parser): IrAction {
 function parseActionChangeMaxHealth(p: Parser): IrAction {
     return parseActionRecovering(p, 'CHANGE_HEALTH', (action) => {
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.amount = p.spanned(parseNumericValue);
     });
 }
 
@@ -229,17 +220,14 @@ function parseActionApplyPotionEffect(p: Parser): IrAction {
         action.duration = p.spanned(() => p.parseBoundedNumber(1, 2592000));
         action.level = p.spanned(() => p.parseBoundedNumber(1, 10));
         action.override = p.spanned(p.parseBoolean);
-        action.showIcon = p.spanned(() => {
-            if (p.check('ident')) {
-                return p.parseBoolean();
-            } else return null;
-        });
+        if (p.check("eol")) return; // shorthand
+        action.showIcon = p.spanned(p.parseBoolean);
     });
 }
 
 function parseActionGiveExperienceLevels(p: Parser): IrAction {
     return parseActionRecovering(p, 'GIVE_EXPERIENCE_LEVELS', (action) => {
-        action.amount = p.spanned(parseAmount);
+        action.amount = p.spanned(parseNumericValue);
     });
 }
 
@@ -249,19 +237,25 @@ function parseActionSendToLobby(p: Parser): IrAction {
     });
 }
 
-function parseActionChangeStat(p: Parser): IrAction {
-    return parseActionRecovering(p, 'CHANGE_STAT', (action) => {
-        action.stat = p.spanned(parseStatName);
+function parseActionChangeVar(p: Parser): IrAction {
+    return parseActionRecovering(p, 'CHANGE_VAR', (action) => {
+        action.holder = p.spanned(() => ({ type: 'player' }) as VarHolder);
+        action.var = p.spanned(parseVarName);
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.value = p.spanned(parseValue);
+        if (p.check('eol')) return; // shorthand
+        action.unset = p.spanned(p.parseBoolean);
     });
 }
 
-function parseActionChangeGlobalStat(p: Parser): IrAction {
-    return parseActionRecovering(p, 'CHANGE_GLOBAL_STAT', (action) => {
-        action.stat = p.spanned(parseStatName);
+function parseActionChangeGlobalVar(p: Parser): IrAction {
+    return parseActionRecovering(p, 'CHANGE_VAR', (action) => {
+        action.holder = p.spanned(() => ({ type: 'global' } as VarHolder));
+        action.var = p.spanned(parseVarName);
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.value = p.spanned(parseValue);
+        if (p.check('eol')) return; // shorthand
+        action.unset = p.spanned(p.parseBoolean);
     });
 }
 
@@ -301,14 +295,14 @@ function parseActionSetGamemode(p: Parser): IrAction {
 function parseActionChangeHealth(p: Parser): IrAction {
     return parseActionRecovering(p, 'CHANGE_HEALTH', (action) => {
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.amount = p.spanned(parseNumericValue);
     });
 }
 
 function parseActionChangeHunger(p: Parser): IrAction {
     return parseActionRecovering(p, 'CHANGE_HUNGER', (action) => {
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.amount = p.spanned(parseNumericValue);
     });
 }
 
@@ -321,11 +315,8 @@ function parseActionRandom(p: Parser): IrAction {
 function parseActionFunction(p: Parser): IrAction {
     return parseActionRecovering(p, 'FUNCTION', (action) => {
         action.function = p.spanned(p.parseName);
-
-        action.global = p.spanned(() => {
-            if (p.check('ident')) return p.parseBoolean();
-            else return null;
-        });
+        if (p.check("eol")) return; // shorthand
+        action.global = p.spanned(p.parseBoolean);
     });
 }
 
@@ -354,12 +345,14 @@ function parseActionSetTeam(p: Parser): IrAction {
     });
 }
 
-function parseActionChangeTeamStat(p: Parser): IrAction {
-    return parseActionRecovering(p, 'CHANGE_TEAM_STAT', (action) => {
-        action.stat = p.spanned(parseStatName);
-        action.team = p.spanned(parseStatName);
+function parseActionChangeTeamVar(p: Parser): IrAction {
+    return parseActionRecovering(p, 'CHANGE_VAR', (action) => {
+        action.var = p.spanned(parseVarName);
+        action.holder = p.spanned(() => ({ type: 'team', team: p.parseName() }) as VarHolder);
         action.op = p.spanned(parseOperation);
-        action.amount = p.spanned(parseAmount);
+        action.value = p.spanned(parseValue);
+        if (p.check('eol')) return; // shorthand
+        action.unset = p.spanned(p.parseBoolean);
     });
 }
 
@@ -382,9 +375,9 @@ function parseActionDropItem(p: Parser): IrAction {
 
 function parseActionSetVelocity(p: Parser): IrAction {
     return parseActionRecovering(p, 'SET_VELOCITY', (action) => {
-        action.x = p.spanned(parseAmount);
-        action.y = p.spanned(parseAmount);
-        action.z = p.spanned(parseAmount);
+        action.x = p.spanned(parseNumericValue);
+        action.y = p.spanned(parseNumericValue);
+        action.z = p.spanned(parseNumericValue);
     });
 }
 

@@ -1,22 +1,22 @@
 import type { Parser } from './parser';
 import { error } from '../diagnostic';
-import { parseStatName } from './arguments';
+import { parseVarName } from './arguments';
 
 export function parseNumericalPlaceholder(p: Parser): string {
     if (p.eatIdent('stat')) {
-        const name = parseStatName(p);
+        const name = parseVarName(p);
         return `%stat.player/${name}%`;
     }
     if (p.eatIdent('globalstat')) {
-        const name = parseStatName(p);
+        const name = parseVarName(p);
         return `%stat.global/${name}%`;
     }
     if (p.eatIdent('teamstat')) {
-        const name = parseStatName(p);
+        const name = parseVarName(p);
         if (!p.check('ident') && !p.check('str')) {
             throw error('Expected team name', p.token.span);
         }
-        const team = parseStatName(p);
+        const team = parseVarName(p);
         return `%stat.team/${name} ${team}%`;
     }
     if (p.eatIdent('randomint')) {

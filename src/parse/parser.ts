@@ -1,5 +1,5 @@
-import { partialEq } from '../helpers.js';
-import type { Lexer } from './lexer.js';
+import { partialEq } from '../helpers';
+import type { Lexer } from './lexer';
 import {
     type CloseDelimKind,
     type Delimiter,

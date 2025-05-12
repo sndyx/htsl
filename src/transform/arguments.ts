@@ -103,9 +103,9 @@ export function insertArgument(
         case 'location':
             const location = argument as Location;
 
-            if (location.type === 'LOCATION_CUSTOM') {
+            if (location.type === 'location_custom') {
                 return [edit(sp, `custom_coordinates "${location.value}"`)];
-            } else if (location.type === 'LOCATION_SPAWN') {
+            } else if (location.type === 'location_spawn') {
                 return [edit(sp, 'house_spawn')];
             } else {
                 // if (location.type === "LOCATION_INVOKERS") {

@@ -1,15 +1,15 @@
 import type {
-    PartialAction,
-    PartialActionHolder,
-    PartialCondition,
-} from 'housing-common/src/types/partial';
+    Action,
+    ActionHolder,
+    Condition,
+} from 'housing-common/src/types';
 import type { Span } from './span';
 import type { Diagnostic } from './diagnostic';
 
 type Wrap<T> = {
-    value: T extends PartialAction
+    value: T extends Action
         ? IrAction
-        : T extends PartialCondition
+        : T extends Condition
           ? IrCondition
           : T extends (infer U)[]
             ? WrapArray<U>
@@ -17,9 +17,9 @@ type Wrap<T> = {
     span: Span;
 };
 
-type WrapArray<U> = U extends PartialAction
+type WrapArray<U> = U extends Action
     ? IrAction[]
-    : U extends PartialCondition
+    : U extends Condition
       ? IrCondition[]
       : U extends (infer V)[]
         ? WrapArray<V>[]
@@ -32,12 +32,12 @@ export type IrElement<T extends Element> = {
     kwSpan: Span;
     span: Span;
 } & {
-    [K in keyof T]: K extends 'type' ? T[K] : Wrap<T[K]>;
+    [K in keyof T]: K extends 'type' ? T[K] : Wrap<T[K]> | undefined;
 };
 
-export type IrAction = IrElement<PartialAction>;
-export type IrCondition = IrElement<PartialCondition>;
-export type IrActionHolder = IrElement<PartialActionHolder>;
+export type IrAction = IrElement<Action>;
+export type IrCondition = IrElement<Condition>;
+export type IrActionHolder = IrElement<ActionHolder>;
 
 export type ParseResult = {
     holders: IrActionHolder[];

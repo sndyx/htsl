@@ -1,20 +1,21 @@
-import type { Parser } from './parser.js';
-import type { IrCondition } from '../ir.js';
-import { error } from '../diagnostic.js';
+import type { Parser } from './parser';
+import type { IrCondition } from '../ir';
+import { error } from '../diagnostic';
 import { type Span, span } from '../span';
 import {
-    parseAmount,
+    parseNumericValue,
     parseComparison,
     parseGamemode,
     parseItemLocation,
     parseItemProperty,
     parsePermission,
     parsePotionEffect,
-    parseStatName,
+    parseVarName, parseValue,
 } from './arguments';
 import { CONDITION_SEMANTIC_DESCRIPTORS } from '../semantics';
 import { parseNumericalPlaceholder } from './placeholders';
 import type { ConditionKw } from '../helpers';
+import type { VarHolder } from 'housing-common/src/types';
 
 type Inverted = { value: boolean; span: Span };
 
@@ -27,9 +28,9 @@ export function parseCondition(p: Parser): IrCondition {
     if (eatKw('hasGroup')) {
         return parseConditionRequireGroup(p, inverted);
     } else if (eatKw('stat')) {
-        return parseConditionCompareStat(p, inverted);
+        return parseConditionCompareVar(p, inverted);
     } else if (eatKw('globalstat')) {
-        return parseConditionCompareGlobalStat(p, inverted);
+        return parseConditionCompareGlobalVar(p, inverted);
     } else if (eatKw('hasPermission')) {
         return parseConditionRequirePermission(p, inverted);
     } else if (eatKw('inRegion')) {
@@ -87,13 +88,6 @@ function parseConditionRecovering<T extends IrCondition['type']>(
     p.parseRecovering(['comma', { kind: 'close_delim', delim: 'parenthesis' }], () => {
         parser(condition);
     });
-    for (const key in CONDITION_SEMANTIC_DESCRIPTORS[condition.type]) {
-        // @ts-ignore
-        if (condition[key] === undefined) {
-            // @ts-ignore
-            condition[key] = { value: undefined, span: p.token.span };
-        }
-    }
     condition.span = span(start, p.prev.span.end);
     return condition;
 }
@@ -106,19 +100,25 @@ function parseConditionRequireGroup(p: Parser, inverted: Inverted): IrCondition 
     });
 }
 
-function parseConditionCompareStat(p: Parser, inverted: Inverted): IrCondition {
-    return parseConditionRecovering(p, 'COMPARE_STAT', inverted, (condition) => {
-        condition.stat = p.spanned(parseStatName);
+function parseConditionCompareVar(p: Parser, inverted: Inverted): IrCondition {
+    return parseConditionRecovering(p, 'COMPARE_VAR', inverted, (condition) => {
+        condition.holder = p.spanned(() => ({ type: 'player' }) as VarHolder);
+        condition.var = p.spanned(parseVarName);
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseValue);
+        if (p.check("eol")) return; // shorthand
+        condition.fallback = p.spanned(parseValue);
     });
 }
 
-function parseConditionCompareGlobalStat(p: Parser, inverted: Inverted): IrCondition {
-    return parseConditionRecovering(p, 'COMPARE_GLOBAL_STAT', inverted, (condition) => {
-        condition.stat = p.spanned(parseStatName);
+function parseConditionCompareGlobalVar(p: Parser, inverted: Inverted): IrCondition {
+    return parseConditionRecovering(p, 'COMPARE_VAR', inverted, (condition) => {
+        condition.holder = p.spanned(() => ({ type: 'global' }) as VarHolder);
+        condition.var = p.spanned(parseVarName);
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseValue);
+        if (p.check("eol")) return; // shorthand
+        condition.fallback = p.spanned(parseValue);
     });
 }
 
@@ -161,21 +161,21 @@ function parseConditionRequirePotionEffect(p: Parser, inverted: Inverted): IrCon
 function parseConditionCompareHealth(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, 'COMPARE_HEALTH', inverted, (condition) => {
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseNumericValue);
     });
 }
 
 function parseConditionCompareMaxHealth(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, 'COMPARE_MAX_HEALTH', inverted, (condition) => {
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseNumericValue);
     });
 }
 
 function parseConditionCompareHunger(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, 'COMPARE_HUNGER', inverted, (condition) => {
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseNumericValue);
     });
 }
 
@@ -189,7 +189,7 @@ function parseConditionComparePlaceholder(p: Parser, inverted: Inverted): IrCond
     return parseConditionRecovering(p, 'COMPARE_PLACEHOLDER', inverted, (condition) => {
         condition.placeholder = p.spanned(parseNumericalPlaceholder);
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseNumericValue);
     });
 }
 
@@ -200,17 +200,19 @@ function parseConditionRequireTeam(p: Parser, inverted: Inverted): IrCondition {
 }
 
 function parseConditionCompareTeamStat(p: Parser, inverted: Inverted): IrCondition {
-    return parseConditionRecovering(p, 'COMPARE_TEAM_STAT', inverted, (condition) => {
-        condition.stat = p.spanned(parseStatName);
-        condition.team = p.spanned(parseStatName);
+    return parseConditionRecovering(p, 'COMPARE_VAR', inverted, (condition) => {
+        condition.var = p.spanned(parseVarName);
+        condition.holder = p.spanned(() => ({ type: 'team', team: p.parseName() }) as VarHolder);
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseValue);
+        if (p.check("eol")) return; // shorthand
+        condition.fallback = p.spanned(parseValue);
     });
 }
 
 function parseConditionCompareDamage(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, 'COMPARE_DAMAGE', inverted, (condition) => {
         condition.op = p.spanned(parseComparison);
-        condition.amount = p.spanned(parseAmount);
+        condition.amount = p.spanned(parseNumericValue);
     });
 }

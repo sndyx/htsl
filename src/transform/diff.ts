@@ -1,5 +1,4 @@
 import type { Element, IrElement } from '../ir';
-import type { PartialElement } from '../../../housing-common/src/types/partial';
 
 export type Diff<T extends Element> = DiffInsert<T> | DiffDelete<T> | DiffModify<T>;
 

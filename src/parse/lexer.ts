@@ -1,6 +1,5 @@
-import { span } from '../span.js';
-import { token, type Token } from './token.js';
-import { error } from '../diagnostic.js';
+import { span } from '../span';
+import { token, type Token } from './token';
 
 export class Lexer {
     src: string;
