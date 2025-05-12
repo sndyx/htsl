@@ -1,23 +1,23 @@
-import { editor, IDisposable, languages, MarkerSeverity } from "monaco-editor";
-import * as htsl from "htsl/src";
-import * as common from "htsl-editor-common/src";
+import { editor, IDisposable, languages, MarkerSeverity } from 'monaco-editor';
+import * as htsl from 'htsl/src';
+import * as common from 'htsl-editor-common/src';
 
 // --- inlay hints ---
 
 export class InlayHintsAdapter implements languages.InlayHintsProvider {
     public provideInlayHints(
-        model: editor.ITextModel,
+        model: editor.ITextModel
         // range: Span,
         // token: CancellationToken
     ): languages.ProviderResult<languages.InlayHintList> {
         if (model.isDisposed()) return null;
 
         const htslHints = common.provideInlayHints(model.getValue());
-        const hints: languages.InlayHint[] = htslHints.map(hint => {
+        const hints: languages.InlayHint[] = htslHints.map((hint) => {
             return {
                 kind: languages.InlayHintKind.Parameter,
                 position: model.getPositionAt(hint.span.start),
-                label: hint.label + ":"
+                label: hint.label + ':',
             };
         });
 
@@ -33,7 +33,7 @@ export class DiagnosticsAdapter {
 
     constructor() {
         const onModelAdded = (model: editor.ITextModel) => {
-            if (model.getLanguageId() !== "htsl") return;
+            if (model.getLanguageId() !== 'htsl') return;
 
             let handle: number;
             const changeSubscription = model.onDidChangeContent(() => {
@@ -45,7 +45,7 @@ export class DiagnosticsAdapter {
                 if (model.isAttachedToEditor()) {
                     this.validate(model);
                 } else {
-                    editor.setModelMarkers(model, "htsl", []);
+                    editor.setModelMarkers(model, 'htsl', []);
                 }
             });
 
@@ -54,25 +54,25 @@ export class DiagnosticsAdapter {
                     changeSubscription.dispose();
                     visibleSubscription.dispose();
                     clearTimeout(handle);
-                }
-            }
+                },
+            };
 
             this.validate(model);
-        }
+        };
 
         const onModelRemoved = (model: editor.ITextModel) => {
-            editor.setModelMarkers(model, "htsl", []);
+            editor.setModelMarkers(model, 'htsl', []);
             const key = model.uri.toString();
             if (this.listeners[key]) {
                 this.listeners[key].dispose();
                 delete this.listeners[key];
             }
-        }
+        };
 
         this.disposables.push(editor.onDidCreateModel(onModelAdded));
         this.disposables.push(editor.onWillDisposeModel(onModelRemoved));
         this.disposables.push(
-            editor.onDidChangeModelLanguage(event => {
+            editor.onDidChangeModelLanguage((event) => {
                 onModelRemoved(event.model);
                 onModelAdded(event.model);
             })
@@ -82,23 +82,23 @@ export class DiagnosticsAdapter {
                 for (const model of editor.getModels()) {
                     onModelRemoved(model);
                 }
-            }
+            },
         });
 
         editor.getModels().forEach(onModelAdded);
     }
 
     public dispose() {
-        this.disposables.forEach(d => d && d.dispose());
+        this.disposables.forEach((d) => d && d.dispose());
         this.disposables = [];
     }
 
     private validate(model: editor.ITextModel) {
         const htslDiagnostics = htsl.diagnostics(model.getValue());
 
-        const markers = htslDiagnostics.map(diagnostic => {
+        const markers = htslDiagnostics.map((diagnostic) => {
             const start = model.getPositionAt(diagnostic.span.start);
-            const end = model.getPositionAt(diagnostic.span.end)
+            const end = model.getPositionAt(diagnostic.span.end);
 
             return {
                 message: diagnostic.message,
@@ -106,17 +106,19 @@ export class DiagnosticsAdapter {
                 startLineNumber: start.lineNumber,
                 startColumn: start.column,
                 endLineNumber: end.lineNumber,
-                endColumn: end.column
+                endColumn: end.column,
             };
         });
 
-        editor.setModelMarkers(model, "owner", markers);
+        editor.setModelMarkers(model, 'owner', markers);
     }
 
-    private htslDiagnosticLevelToMarkerSeverity(severity: htsl.DiagnosticLevel): MarkerSeverity {
-        if (severity === "error") {
+    private htslDiagnosticLevelToMarkerSeverity(
+        severity: htsl.DiagnosticLevel
+    ): MarkerSeverity {
+        if (severity === 'error') {
             return MarkerSeverity.Error;
-        } else if (severity === "warning") {
+        } else if (severity === 'warning') {
             return MarkerSeverity.Warning;
         }
 

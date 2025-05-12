@@ -1,8 +1,8 @@
-import type { Span } from "../span";
+import type { Span } from '../span';
 
 export type TextEdit = {
-    span: Span,
-    text: string
+    span: Span;
+    text: string;
 };
 
 export function edit(span: Span, text: string) {

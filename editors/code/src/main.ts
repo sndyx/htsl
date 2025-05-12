@@ -1,17 +1,19 @@
-import * as languageFeatures from "./languageFeatures";
-import { Disposable, languages } from "vscode";
+import * as languageFeatures from './languageFeatures';
+import { Disposable, languages } from 'vscode';
 
 const disposables: Disposable[] = [];
 const providers: Disposable[] = [];
 
-export function activate(
+export function activate() {
     // context: ExtensionContext
-) {
     function registerProviders() {
         disposeAll(disposables);
 
         providers.push(
-            languages.registerInlayHintsProvider("htsl", new languageFeatures.InlayHintsAdapter())
+            languages.registerInlayHintsProvider(
+                'htsl',
+                new languageFeatures.InlayHintsAdapter()
+            )
         );
 
         providers.push(new languageFeatures.DiagnosticsAdapter());
