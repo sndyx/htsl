@@ -1,27 +1,25 @@
-import type { Element, IrElement } from "../ir";
-import type { PartialElement } from "../../../housing-common/src/types/partial";
+import type { Element, IrElement } from '../ir';
+import type { PartialElement } from '../../../housing-common/src/types/partial';
 
 export type Diff<T extends Element> = DiffInsert<T> | DiffDelete<T> | DiffModify<T>;
 
 type DiffInsert<T extends Element> = {
-    type: "insert",
-    to: T
-}
-
-type DiffDelete<T extends Element> = {
-    type: "delete",
-    from: IrElement<T>
-}
-
-type DiffModify<T extends Element> = {
-    type: "modify",
-    from: IrElement<T>,
-    to: T
+    type: 'insert';
+    to: T;
 };
 
-export function diff<T extends Element>(
-    a: IrElement<T>[], b: T[]
-): Diff<T>[] {
+type DiffDelete<T extends Element> = {
+    type: 'delete';
+    from: IrElement<T>;
+};
+
+type DiffModify<T extends Element> = {
+    type: 'modify';
+    from: IrElement<T>;
+    to: T;
+};
+
+export function diff<T extends Element>(a: IrElement<T>[], b: T[]): Diff<T>[] {
     const seq: Diff<T>[] = [];
     const { trace, offset } = shortestEdit(a, b);
     let x = a.length;
@@ -42,7 +40,7 @@ export function diff<T extends Element>(
 
         while (x > prevX && y > prevY) {
             seq.unshift({
-                type: "modify",
+                type: 'modify',
                 from: a[x - 1],
                 to: b[y - 1],
             });
@@ -52,9 +50,9 @@ export function diff<T extends Element>(
 
         if (d > 0) {
             if (x === prevX) {
-                seq.unshift({ type: "insert", to: b[prevY] });
+                seq.unshift({ type: 'insert', to: b[prevY] });
             } else {
-                seq.unshift({ type: "delete", from: a[prevX] });
+                seq.unshift({ type: 'delete', from: a[prevX] });
             }
         }
 
@@ -66,7 +64,8 @@ export function diff<T extends Element>(
 }
 
 function shortestEdit<T extends Element>(
-    a: IrElement<T>[], b: T[]
+    a: IrElement<T>[],
+    b: T[]
 ): { trace: number[][]; offset: number } {
     const n = a.length;
     const m = b.length;
@@ -103,5 +102,5 @@ function shortestEdit<T extends Element>(
         }
     }
 
-    throw new Error("No diff path found");
+    throw new Error('No diff path found');
 }

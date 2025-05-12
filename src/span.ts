@@ -1,6 +1,6 @@
 export type Span = {
-    start: number,
-    end: number
+    start: number;
+    end: number;
 };
 
 export function span(start: number, end: number) {

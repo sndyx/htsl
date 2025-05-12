@@ -1,22 +1,22 @@
-import * as vscode from "vscode";
-import * as htsl from "htsl/src";
-import * as common from "htsl-editor-common/src";
+import * as vscode from 'vscode';
+import * as htsl from 'htsl/src';
+import * as common from 'htsl-editor-common/src';
 
 // --- inlay hints ---
 
 export class InlayHintsAdapter implements vscode.InlayHintsProvider {
     public provideInlayHints(
-        document: vscode.TextDocument,
+        document: vscode.TextDocument
         // range: vscode.Span,
         // token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.InlayHint[]> {
         const htslHints = common.provideInlayHints(document.getText());
 
-        return htslHints.map(hint => {
+        return htslHints.map((hint) => {
             return {
                 kind: vscode.InlayHintKind.Parameter,
                 position: document.positionAt(hint.span.start),
-                label: hint.label + ":"
+                label: hint.label + ':',
             };
         });
     }
@@ -27,11 +27,12 @@ export class InlayHintsAdapter implements vscode.InlayHintsProvider {
 export class DiagnosticsAdapter {
     private disposables: vscode.Disposable[] = [];
     private listeners: { [uri: string]: vscode.Disposable } = Object.create(null);
-    private diagnosticCollection: vscode.DiagnosticCollection = vscode.languages.createDiagnosticCollection("htsl");
+    private diagnosticCollection: vscode.DiagnosticCollection =
+        vscode.languages.createDiagnosticCollection('htsl');
 
     constructor() {
         const onModelAdded = (document: vscode.TextDocument) => {
-            if (document.languageId !== "htsl") return;
+            if (document.languageId !== 'htsl') return;
 
             let handle: NodeJS.Timeout;
             const changeSubscription = vscode.workspace.onDidChangeTextDocument((e) => {
@@ -41,20 +42,22 @@ export class DiagnosticsAdapter {
                 }
             });
 
-            const visibleSubscription = vscode.window.onDidChangeVisibleTextEditors((editors) => {
-                if (editors.some((editor) => editor.document === document)) {
-                    this.validate(document);
-                } else {
-                    this.diagnosticCollection.set(document.uri, []);
+            const visibleSubscription = vscode.window.onDidChangeVisibleTextEditors(
+                (editors) => {
+                    if (editors.some((editor) => editor.document === document)) {
+                        this.validate(document);
+                    } else {
+                        this.diagnosticCollection.set(document.uri, []);
+                    }
                 }
-            });
+            );
 
             this.listeners[document.uri.toString()] = {
                 dispose() {
                     changeSubscription.dispose();
                     visibleSubscription.dispose();
                     clearTimeout(handle);
-                }
+                },
             };
 
             this.validate(document);
@@ -81,14 +84,14 @@ export class DiagnosticsAdapter {
     }
 
     public dispose() {
-        this.disposables.forEach(d => d.dispose());
+        this.disposables.forEach((d) => d.dispose());
         this.disposables = [];
     }
 
     private validate(document: vscode.TextDocument) {
         const htslDiagnostics = htsl.diagnostics(document.getText());
 
-        const markers = htslDiagnostics.map(diagnostic => {
+        const markers = htslDiagnostics.map((diagnostic) => {
             const start = document.positionAt(diagnostic.span!!.start);
             const end = document.positionAt(diagnostic.span!!.end);
 
@@ -102,8 +105,10 @@ export class DiagnosticsAdapter {
         this.diagnosticCollection.set(document.uri, markers);
     }
 
-    private htslDiagnosticLevelToMarkerSeverity(severity: string): vscode.DiagnosticSeverity {
-        severity.split(""); // placeholder for logic, adjust if necessary
+    private htslDiagnosticLevelToMarkerSeverity(
+        severity: string
+    ): vscode.DiagnosticSeverity {
+        severity.split(''); // placeholder for logic, adjust if necessary
         return vscode.DiagnosticSeverity.Error;
     }
 }

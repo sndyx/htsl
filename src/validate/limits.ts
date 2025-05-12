@@ -1,17 +1,15 @@
-import { error } from "../diagnostic";
-import { ACTIONS } from "../helpers";
-import type { IrAction, ParseResult } from "../ir";
+import { error } from '../diagnostic';
+import { ACTIONS } from '../helpers';
+import type { IrAction, ParseResult } from '../ir';
 
-export function checkLimits(
-    result: ParseResult
-) {
+export function checkLimits(result: ParseResult) {
     for (const holder of result.holders) {
         checkActionLimits(result, holder.actions.value ?? []);
     }
 }
 
 const ACTION_LIMITS: {
-    [key in IrAction["type"]]: number
+    [key in IrAction['type']]: number;
 } = {
     FUNCTION: 10,
     CONDITIONAL: 15,
@@ -49,13 +47,10 @@ const ACTION_LIMITS: {
     SET_VELOCITY: 5,
     LAUNCH: 5,
     EXIT: 1,
-    CANCEL_EVENT: 1
-}
+    CANCEL_EVENT: 1,
+};
 
-function checkActionLimits(
-    result: ParseResult,
-    actions: IrAction[]
-) {
+function checkActionLimits(result: ParseResult, actions: IrAction[]) {
     const limits = structuredClone(ACTION_LIMITS);
 
     for (const action of actions) {
@@ -68,10 +63,10 @@ function checkActionLimits(
     }
 
     for (const action of actions) {
-        if (action.type === "CONDITIONAL") {
+        if (action.type === 'CONDITIONAL') {
             checkActionLimits(result, action.ifActions?.value ?? []);
             checkActionLimits(result, action.elseActions?.value ?? []);
-        } else if (action.type === "RANDOM") {
+        } else if (action.type === 'RANDOM') {
             checkActionLimits(result, action.actions?.value ?? []);
         }
     }

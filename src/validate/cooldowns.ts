@@ -1,13 +1,11 @@
-import type { IrAction, ParseResult } from "../ir";
-import { warn } from "../diagnostic";
+import type { IrAction, ParseResult } from '../ir';
+import { warn } from '../diagnostic';
 
 type Cooldowns = {
-    [key: string]: { global: boolean }
+    [key: string]: { global: boolean };
 };
 
-export function checkCooldowns(
-    result: ParseResult
-) {
+export function checkCooldowns(result: ParseResult) {
     for (const holder of result.holders) {
         checkCooldownsForActions(result, holder.actions.value ?? [], {});
     }
@@ -19,31 +17,31 @@ function checkCooldownsForActions(
     cooldowns: Cooldowns
 ) {
     for (const action of actions) {
-        if (action.type === "CONDITIONAL") {
-            checkCooldownsForActions(
-                result, action.ifActions.value ?? [], { ...cooldowns }
-            );
-            checkCooldownsForActions(
-                result, action.elseActions.value ?? [], { ...cooldowns }
-            );
-        } else if (action.type === "RANDOM") {
+        if (action.type === 'CONDITIONAL') {
+            checkCooldownsForActions(result, action.ifActions.value ?? [], {
+                ...cooldowns,
+            });
+            checkCooldownsForActions(result, action.elseActions.value ?? [], {
+                ...cooldowns,
+            });
+        } else if (action.type === 'RANDOM') {
             for (const subAction of action.actions.value ?? []) {
                 checkCooldownsForActions(result, [subAction], { ...cooldowns });
             }
-        } else if (action.type === "FUNCTION") {
+        } else if (action.type === 'FUNCTION') {
             if (!action.function.value) continue;
 
             const name = action.function.value;
 
             if (
-                name in cooldowns // function is on cooldown
+                name in cooldowns && // function is on cooldown
                 // and this one is not global while the previous one was not
-                && !(!cooldowns[name].global && (action.global.value ?? true))
+                !(!cooldowns[name].global && (action.global.value ?? true))
             ) {
-                result.diagnostics.push(warn("Function will never run", action.span));
+                result.diagnostics.push(warn('Function will never run', action.span));
             } else {
                 cooldowns[name] = {
-                    global: action.global.value ?? false
+                    global: action.global.value ?? false,
                 };
             }
         }
@@ -54,25 +52,23 @@ function checkCooldownsForActions(
     }
 }
 
-function doesActionPause(
-    action: IrAction
-): boolean {
-    if (action.type === "PAUSE") return true;
+function doesActionPause(action: IrAction): boolean {
+    if (action.type === 'PAUSE') return true;
 
-    if (action.type === "RANDOM") {
+    if (action.type === 'RANDOM') {
         for (const subAction of action.actions.value ?? []) {
-            if (subAction.type === "PAUSE") return true;
+            if (subAction.type === 'PAUSE') return true;
         }
         return false;
     }
 
     // we count the highest initial pause amount in the ifActions or elseActions
-    if (action.type === "CONDITIONAL") {
+    if (action.type === 'CONDITIONAL') {
         for (const ifAction of action.ifActions.value ?? []) {
-            if (ifAction.type === "PAUSE") return true;
+            if (ifAction.type === 'PAUSE') return true;
         }
         for (const elseAction of action.elseActions.value ?? []) {
-            if (elseAction.type === "PAUSE") return true;
+            if (elseAction.type === 'PAUSE') return true;
         }
         return false;
     }
