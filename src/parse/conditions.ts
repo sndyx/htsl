@@ -1,7 +1,7 @@
 import type { Parser } from './parser';
 import type { IrCondition } from '../ir';
 import { error } from '../diagnostic';
-import { type Span, span } from '../span';
+import { Span } from '../span';
 import {
     parseNumericValue,
     parseComparison,
@@ -12,7 +12,6 @@ import {
     parsePotionEffect,
     parseVarName, parseValue,
 } from './arguments';
-import { CONDITION_SEMANTIC_DESCRIPTORS } from '../semantics';
 import { parseNumericalPlaceholder } from './placeholders';
 import type { ConditionKw } from '../helpers';
 import type { VarHolder } from 'housing-common/src/types';
@@ -82,20 +81,26 @@ function parseConditionRecovering<T extends IrCondition['type']>(
     parser: (condition: IrCondition & { type: T }) => void
 ): IrCondition & { type: T } {
     const start = p.prev.span.start;
-    const condition = { type, inverted, kwSpan: p.prev.span } as IrCondition & {
-        type: T;
-    };
+    const condition = {
+        type, inverted, kwSpan: p.prev.span,
+        span: Span.single(-1) // placeholder
+    } as IrCondition & { type: T };
+
     p.parseRecovering(['comma', { kind: 'close_delim', delim: 'parenthesis' }], () => {
         parser(condition);
     });
-    condition.span = span(start, p.prev.span.end);
+    condition.span = new Span(start, p.prev.span.end);
     return condition;
+}
+
+function checkEnd(p: Parser): boolean {
+    return p.check('comma') || p.check({ kind: 'close_delim', delim: 'parenthesis' });
 }
 
 function parseConditionRequireGroup(p: Parser, inverted: Inverted): IrCondition {
     return parseConditionRecovering(p, 'REQUIRE_GROUP', inverted, (condition) => {
         condition.group = p.spanned(p.parseName);
-        if (p.check('eol')) return;
+        if (checkEnd(p)) return;
         condition.includeHigherGroups = p.spanned(p.parseBoolean);
     });
 }
@@ -106,7 +111,7 @@ function parseConditionCompareVar(p: Parser, inverted: Inverted): IrCondition {
         condition.var = p.spanned(parseVarName);
         condition.op = p.spanned(parseComparison);
         condition.amount = p.spanned(parseValue);
-        if (p.check("eol")) return; // shorthand
+        if (checkEnd(p)) return; // shorthand
         condition.fallback = p.spanned(parseValue);
     });
 }
@@ -117,7 +122,7 @@ function parseConditionCompareGlobalVar(p: Parser, inverted: Inverted): IrCondit
         condition.var = p.spanned(parseVarName);
         condition.op = p.spanned(parseComparison);
         condition.amount = p.spanned(parseValue);
-        if (p.check("eol")) return; // shorthand
+        if (checkEnd(p)) return; // shorthand
         condition.fallback = p.spanned(parseValue);
     });
 }
@@ -205,7 +210,7 @@ function parseConditionCompareTeamStat(p: Parser, inverted: Inverted): IrConditi
         condition.holder = p.spanned(() => ({ type: 'team', team: p.parseName() }) as VarHolder);
         condition.op = p.spanned(parseComparison);
         condition.amount = p.spanned(parseValue);
-        if (p.check("eol")) return; // shorthand
+        if (checkEnd(p)) return; // shorthand
         condition.fallback = p.spanned(parseValue);
     });
 }

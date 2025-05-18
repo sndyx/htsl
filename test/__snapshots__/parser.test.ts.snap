@@ -5,7 +5,7 @@ exports[`Parser > error exit outside conditional 1`] = `
   {
     "level": "error",
     "message": "Exit action can only be used in conditionals",
-    "span": {
+    "span": Span {
       "end": 4,
       "start": 0,
     },
@@ -18,7 +18,7 @@ exports[`Parser > error invalid stat actions 1`] = `
   {
     "level": "error",
     "message": "Expected stat name",
-    "span": {
+    "span": Span {
       "end": 6,
       "start": 5,
     },
@@ -26,7 +26,7 @@ exports[`Parser > error invalid stat actions 1`] = `
   {
     "level": "error",
     "message": "Expected amount",
-    "span": {
+    "span": Span {
       "end": 27,
       "start": 18,
     },
@@ -34,7 +34,7 @@ exports[`Parser > error invalid stat actions 1`] = `
   {
     "level": "error",
     "message": "Expected operation",
-    "span": {
+    "span": Span {
       "end": 36,
       "start": 35,
     },
@@ -42,7 +42,7 @@ exports[`Parser > error invalid stat actions 1`] = `
   {
     "level": "error",
     "message": "Expected stat name",
-    "span": {
+    "span": Span {
       "end": 41,
       "start": 41,
     },
@@ -55,7 +55,7 @@ exports[`Parser > error invalid stat names 1`] = `
   {
     "level": "error",
     "message": "Stat name exceeds 16-character limit",
-    "span": {
+    "span": Span {
       "end": 23,
       "start": 5,
     },
@@ -63,7 +63,7 @@ exports[`Parser > error invalid stat names 1`] = `
   {
     "level": "error",
     "message": "Stat name cannot be empty",
-    "span": {
+    "span": Span {
       "end": 35,
       "start": 33,
     },
@@ -71,7 +71,7 @@ exports[`Parser > error invalid stat names 1`] = `
   {
     "level": "error",
     "message": "Stat name cannot contain spaces",
-    "span": {
+    "span": Span {
       "end": 58,
       "start": 46,
     },
@@ -84,7 +84,7 @@ exports[`Parser > error limits surpassed 1`] = `
   {
     "level": "error",
     "message": "Limit of 5 random actions exceeded",
-    "span": {
+    "span": Span {
       "end": 60,
       "start": 51,
     },
@@ -97,7 +97,7 @@ exports[`Parser > error nested conditionals 1`] = `
   {
     "level": "error",
     "message": "Cannot use a conditional inside of a conditional",
-    "span": {
+    "span": Span {
       "end": 14,
       "start": 12,
     },
@@ -110,7 +110,7 @@ exports[`Parser > error number above integer limit 1`] = `
   {
     "level": "error",
     "message": "Number exceeds 64-bit integer limit",
-    "span": {
+    "span": Span {
       "end": 40,
       "start": 9,
     },
@@ -120,98 +120,42 @@ exports[`Parser > error number above integer limit 1`] = `
 
 exports[`Parser > parse conditionals 1`] = `
 {
-  "diagnostics": [
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 59,
-        "start": 58,
-      },
-    },
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 123,
-        "start": 122,
-      },
-    },
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 137,
-        "start": 136,
-      },
-    },
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 162,
-        "start": 161,
-      },
-    },
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 176,
-        "start": 175,
-      },
-    },
-    {
-      "level": "error",
-      "message": "Expected amount",
-      "span": {
-        "end": 198,
-        "start": 197,
-      },
-    },
-  ],
+  "diagnostics": [],
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 278,
           "start": 0,
         },
         "value": [
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 5,
                 "start": 3,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 26,
-                "start": 26,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 25,
                 "start": 6,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 16,
                     "start": 12,
                   },
                   "message": {
-                    "span": {
+                    "span": Span {
                       "end": 23,
                       "start": 17,
                     },
                     "value": "true",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 23,
                     "start": 12,
                   },
@@ -219,18 +163,18 @@ exports[`Parser > parse conditionals 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 2,
               "start": 0,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 2,
                 "start": 3,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 26,
               "start": 0,
             },
@@ -238,7 +182,7 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 31,
                 "start": 32,
               },
@@ -246,31 +190,31 @@ exports[`Parser > parse conditionals 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 31,
               "start": 27,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 35,
                 "start": 34,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 38,
               "start": 27,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 38,
                 "start": 36,
               },
               "value": 10n,
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 33,
                 "start": 32,
               },
@@ -279,21 +223,21 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 59,
                 "start": 47,
               },
               "value": [
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 58,
                       "start": 57,
                     },
                     "value": 5n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 52,
                       "start": 53,
                     },
@@ -302,30 +246,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 48,
                       "start": 48,
                     },
                     "value": false,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 52,
                     "start": 48,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 56,
                       "start": 55,
                     },
                     "value": "greater_than",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 58,
                     "start": 48,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 54,
                       "start": 53,
                     },
@@ -335,24 +279,24 @@ exports[`Parser > parse conditionals 1`] = `
               ],
             },
             "elseActions": {
-              "span": {
+              "span": Span {
                 "end": 105,
-                "start": 80,
+                "start": 85,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 95,
                     "start": 91,
                   },
                   "message": {
-                    "span": {
+                    "span": Span {
                       "end": 103,
                       "start": 96,
                     },
                     "value": "false",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 103,
                     "start": 91,
                   },
@@ -361,24 +305,24 @@ exports[`Parser > parse conditionals 1`] = `
               ],
             },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 79,
                 "start": 60,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 70,
                     "start": 66,
                   },
                   "message": {
-                    "span": {
+                    "span": Span {
                       "end": 77,
                       "start": 71,
                     },
                     "value": "true",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 77,
                     "start": 66,
                   },
@@ -386,18 +330,18 @@ exports[`Parser > parse conditionals 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 42,
               "start": 40,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 46,
                 "start": 43,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 105,
               "start": 40,
             },
@@ -405,21 +349,21 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 137,
                 "start": 110,
               },
               "value": [
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 122,
                       "start": 121,
                     },
                     "value": 5n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 115,
                       "start": 116,
                     },
@@ -428,30 +372,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 111,
                       "start": 111,
                     },
                     "value": false,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 115,
                     "start": 111,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 120,
                       "start": 118,
                     },
                     "value": "equals",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 122,
                     "start": 111,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 117,
                       "start": 116,
                     },
@@ -460,14 +404,14 @@ exports[`Parser > parse conditionals 1`] = `
                 },
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 136,
                       "start": 134,
                     },
                     "value": 10n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 128,
                       "start": 129,
                     },
@@ -476,30 +420,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 123,
                       "start": 124,
                     },
                     "value": false,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 128,
                     "start": 124,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 133,
                       "start": 131,
                     },
                     "value": "equals",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 136,
                     "start": 124,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 130,
                       "start": 129,
                     },
@@ -508,32 +452,25 @@ exports[`Parser > parse conditionals 1`] = `
                 },
               ],
             },
-            "elseActions": {
-              "span": {
-                "end": 143,
-                "start": 143,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 142,
                 "start": 138,
               },
               "value": [],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 109,
               "start": 107,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 109,
                 "start": 110,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 143,
               "start": 107,
             },
@@ -541,21 +478,21 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 176,
                 "start": 147,
               },
               "value": [
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 161,
                       "start": 159,
                     },
                     "value": 10n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 153,
                       "start": 154,
                     },
@@ -564,30 +501,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 149,
                       "start": 148,
                     },
                     "value": true,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 153,
                     "start": 149,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 158,
                       "start": 156,
                     },
                     "value": "equals",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 161,
                     "start": 149,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 155,
                       "start": 154,
                     },
@@ -596,14 +533,14 @@ exports[`Parser > parse conditionals 1`] = `
                 },
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 175,
                       "start": 174,
                     },
                     "value": 5n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 168,
                       "start": 169,
                     },
@@ -612,30 +549,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 164,
                       "start": 163,
                     },
                     "value": true,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 168,
                     "start": 164,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 173,
                       "start": 171,
                     },
                     "value": "equals",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 175,
                     "start": 164,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 170,
                       "start": 169,
                     },
@@ -644,32 +581,25 @@ exports[`Parser > parse conditionals 1`] = `
                 },
               ],
             },
-            "elseActions": {
-              "span": {
-                "end": 182,
-                "start": 182,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 181,
                 "start": 177,
               },
               "value": [],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 146,
               "start": 144,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 146,
                 "start": 147,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 182,
               "start": 144,
             },
@@ -677,21 +607,21 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 198,
                 "start": 186,
               },
               "value": [
                 {
                   "amount": {
-                    "span": {
+                    "span": Span {
                       "end": 197,
                       "start": 196,
                     },
                     "value": 5n,
                   },
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 191,
                       "start": 192,
                     },
@@ -700,30 +630,30 @@ exports[`Parser > parse conditionals 1`] = `
                     },
                   },
                   "inverted": {
-                    "span": {
+                    "span": Span {
                       "end": 187,
                       "start": 187,
                     },
                     "value": false,
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 191,
                     "start": 187,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 195,
                       "start": 194,
                     },
                     "value": "less_than",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 197,
                     "start": 187,
                   },
                   "type": "COMPARE_VAR",
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 193,
                       "start": 192,
                     },
@@ -733,24 +663,24 @@ exports[`Parser > parse conditionals 1`] = `
               ],
             },
             "elseActions": {
-              "span": {
+              "span": Span {
                 "end": 236,
-                "start": 215,
+                "start": 220,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 226,
                     "start": 222,
                   },
                   "message": {
-                    "span": {
+                    "span": Span {
                       "end": 234,
                       "start": 227,
                     },
                     "value": "false",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 234,
                     "start": 222,
                   },
@@ -759,24 +689,24 @@ exports[`Parser > parse conditionals 1`] = `
               ],
             },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 214,
                 "start": 199,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 205,
                     "start": 201,
                   },
                   "message": {
-                    "span": {
+                    "span": Span {
                       "end": 212,
                       "start": 206,
                     },
                     "value": "true",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 212,
                     "start": 201,
                   },
@@ -784,18 +714,18 @@ exports[`Parser > parse conditionals 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 185,
               "start": 183,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 185,
                 "start": 186,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 236,
               "start": 183,
             },
@@ -803,38 +733,31 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 246,
                 "start": 244,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 250,
-                "start": 250,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 249,
                 "start": 247,
               },
               "value": [],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 240,
               "start": 238,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 243,
                 "start": 241,
               },
               "value": true,
             },
-            "span": {
+            "span": Span {
               "end": 250,
               "start": 238,
             },
@@ -842,38 +765,31 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 260,
                 "start": 258,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 264,
-                "start": 264,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 263,
                 "start": 261,
               },
               "value": [],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 252,
               "start": 250,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 257,
                 "start": 253,
               },
               "value": true,
             },
-            "span": {
+            "span": Span {
               "end": 264,
               "start": 250,
             },
@@ -881,38 +797,31 @@ exports[`Parser > parse conditionals 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 275,
                 "start": 273,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 278,
-                "start": 278,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 278,
                 "start": 276,
               },
               "value": [],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 266,
               "start": 264,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 272,
                 "start": 267,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 278,
               "start": 264,
             },
@@ -920,11 +829,11 @@ exports[`Parser > parse conditionals 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 278,
         "start": 0,
       },
@@ -936,27 +845,18 @@ exports[`Parser > parse conditionals 1`] = `
 
 exports[`Parser > parse global stats 1`] = `
 {
-  "diagnostics": [
-    {
-      "level": "error",
-      "message": "expected true/false value",
-      "span": {
-        "end": 76,
-        "start": 76,
-      },
-    },
-  ],
+  "diagnostics": [],
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 76,
           "start": 0,
         },
         "value": [
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 10,
                 "start": 11,
               },
@@ -964,31 +864,31 @@ exports[`Parser > parse global stats 1`] = `
                 "type": "global",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 10,
               "start": 0,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 14,
                 "start": 13,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 16,
               "start": 0,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 16,
                 "start": 15,
               },
               "value": 5n,
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 12,
                 "start": 11,
               },
@@ -997,7 +897,7 @@ exports[`Parser > parse global stats 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 27,
                 "start": 28,
               },
@@ -1005,31 +905,31 @@ exports[`Parser > parse global stats 1`] = `
                 "type": "global",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 27,
               "start": 17,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 31,
                 "start": 30,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 44,
               "start": 17,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 44,
                 "start": 32,
               },
               "value": "%stat.global/x%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 29,
                 "start": 28,
               },
@@ -1038,7 +938,7 @@ exports[`Parser > parse global stats 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 55,
                 "start": 56,
               },
@@ -1046,31 +946,31 @@ exports[`Parser > parse global stats 1`] = `
                 "type": "global",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 55,
               "start": 45,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 59,
                 "start": 58,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 76,
               "start": 45,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 76,
                 "start": 60,
               },
               "value": "%stat.global/y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 57,
                 "start": 56,
               },
@@ -1079,11 +979,11 @@ exports[`Parser > parse global stats 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 76,
         "start": 0,
       },
@@ -1099,22 +999,22 @@ exports[`Parser > parse omitted fields 1`] = `
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 138,
           "start": 0,
         },
         "value": [
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 5,
               "start": 0,
             },
-            "span": {
+            "span": Span {
               "end": 14,
               "start": 0,
             },
             "title": {
-              "span": {
+              "span": Span {
                 "end": 14,
                 "start": 6,
               },
@@ -1123,23 +1023,23 @@ exports[`Parser > parse omitted fields 1`] = `
             "type": "TITLE",
           },
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 20,
               "start": 15,
             },
-            "span": {
+            "span": Span {
               "end": 54,
               "start": 15,
             },
             "subtitle": {
-              "span": {
+              "span": Span {
                 "end": 54,
                 "start": 37,
               },
               "value": "Goodbye, world!",
             },
             "title": {
-              "span": {
+              "span": Span {
                 "end": 36,
                 "start": 21,
               },
@@ -1149,43 +1049,43 @@ exports[`Parser > parse omitted fields 1`] = `
           },
           {
             "fadein": {
-              "span": {
+              "span": Span {
                 "end": 81,
                 "start": 80,
               },
               "value": 1,
             },
             "fadeout": {
-              "span": {
+              "span": Span {
                 "end": 85,
                 "start": 84,
               },
               "value": 1,
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 60,
               "start": 55,
             },
-            "span": {
+            "span": Span {
               "end": 85,
               "start": 55,
             },
             "stay": {
-              "span": {
+              "span": Span {
                 "end": 83,
                 "start": 82,
               },
               "value": 5,
             },
             "subtitle": {
-              "span": {
+              "span": Span {
                 "end": 79,
                 "start": 69,
               },
               "value": "Subtitle",
             },
             "title": {
-              "span": {
+              "span": Span {
                 "end": 68,
                 "start": 61,
               },
@@ -1195,24 +1095,17 @@ exports[`Parser > parse omitted fields 1`] = `
           },
           {
             "function": {
-              "span": {
+              "span": Span {
                 "end": 111,
                 "start": 96,
               },
               "value": "MyFunction :)",
             },
-            "global": {
-              "span": {
-                "end": 111,
-                "start": 111,
-              },
-              "value": null,
-            },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 95,
               "start": 87,
             },
-            "span": {
+            "span": Span {
               "end": 111,
               "start": 87,
             },
@@ -1220,24 +1113,24 @@ exports[`Parser > parse omitted fields 1`] = `
           },
           {
             "function": {
-              "span": {
+              "span": Span {
                 "end": 133,
                 "start": 121,
               },
               "value": "MyFunction",
             },
             "global": {
-              "span": {
+              "span": Span {
                 "end": 138,
                 "start": 134,
               },
               "value": true,
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 120,
               "start": 112,
             },
-            "span": {
+            "span": Span {
               "end": 138,
               "start": 112,
             },
@@ -1245,11 +1138,11 @@ exports[`Parser > parse omitted fields 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 138,
         "start": 0,
       },
@@ -1265,14 +1158,14 @@ exports[`Parser > parse placeholders 1`] = `
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 666,
           "start": 0,
         },
         "value": [
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 4,
                 "start": 5,
               },
@@ -1280,31 +1173,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 4,
               "start": 0,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 8,
                 "start": 7,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 22,
               "start": 0,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 22,
                 "start": 9,
               },
               "value": "%player.ping%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 6,
                 "start": 5,
               },
@@ -1313,7 +1206,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 27,
                 "start": 28,
               },
@@ -1321,31 +1214,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 27,
               "start": 23,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 31,
                 "start": 30,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 47,
               "start": 23,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 47,
                 "start": 32,
               },
               "value": "%player.health%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 29,
                 "start": 28,
               },
@@ -1354,7 +1247,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 52,
                 "start": 53,
               },
@@ -1362,31 +1255,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 52,
               "start": 48,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 56,
                 "start": 55,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 75,
               "start": 48,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 75,
                 "start": 57,
               },
               "value": "%player.maxhealth%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 54,
                 "start": 53,
               },
@@ -1395,7 +1288,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 80,
                 "start": 81,
               },
@@ -1403,31 +1296,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 80,
               "start": 76,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 84,
                 "start": 83,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 100,
               "start": 76,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 100,
                 "start": 85,
               },
               "value": "%player.hunger%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 82,
                 "start": 81,
               },
@@ -1436,7 +1329,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 105,
                 "start": 106,
               },
@@ -1444,31 +1337,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 105,
               "start": 101,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 109,
                 "start": 108,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 129,
               "start": 101,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 129,
                 "start": 110,
               },
               "value": "%player.experience%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 107,
                 "start": 106,
               },
@@ -1477,7 +1370,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 134,
                 "start": 135,
               },
@@ -1485,31 +1378,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 134,
               "start": 130,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 138,
                 "start": 137,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 153,
               "start": 130,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 153,
                 "start": 139,
               },
               "value": "%player.level%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 136,
                 "start": 135,
               },
@@ -1518,7 +1411,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 158,
                 "start": 159,
               },
@@ -1526,31 +1419,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 158,
               "start": 154,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 162,
                 "start": 161,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 180,
               "start": 154,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 180,
                 "start": 163,
               },
               "value": "%player.protocol%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 160,
                 "start": 159,
               },
@@ -1559,7 +1452,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 185,
                 "start": 186,
               },
@@ -1567,31 +1460,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 185,
               "start": 181,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 189,
                 "start": 188,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 209,
               "start": 181,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 209,
                 "start": 190,
               },
               "value": "%player.location.x%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 187,
                 "start": 186,
               },
@@ -1600,7 +1493,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 214,
                 "start": 215,
               },
@@ -1608,31 +1501,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 214,
               "start": 210,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 218,
                 "start": 217,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 238,
               "start": 210,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 238,
                 "start": 219,
               },
               "value": "%player.location.y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 216,
                 "start": 215,
               },
@@ -1641,7 +1534,7 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 243,
                 "start": 244,
               },
@@ -1649,31 +1542,31 @@ exports[`Parser > parse placeholders 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 243,
               "start": 239,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 247,
                 "start": 246,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 267,
               "start": 239,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 267,
                 "start": 248,
               },
               "value": "%player.location.z%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 245,
                 "start": 244,
               },
@@ -1682,28 +1575,21 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 274,
                 "start": 272,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 593,
-                "start": 593,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 592,
                 "start": 275,
               },
               "value": [
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 285,
                       "start": 286,
                     },
@@ -1711,31 +1597,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 285,
                     "start": 281,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 289,
                       "start": 288,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 313,
                     "start": 281,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 313,
                       "start": 290,
                     },
                     "value": "%player.location.pitch%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 287,
                       "start": 286,
                     },
@@ -1744,7 +1630,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 322,
                       "start": 323,
                     },
@@ -1752,31 +1638,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 322,
                     "start": 318,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 326,
                       "start": 325,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 348,
                     "start": 318,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 348,
                       "start": 327,
                     },
                     "value": "%player.location.yaw%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 324,
                       "start": 323,
                     },
@@ -1785,7 +1671,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 357,
                       "start": 358,
                     },
@@ -1793,31 +1679,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 357,
                     "start": 353,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 361,
                       "start": 360,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 385,
                     "start": 353,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 385,
                       "start": 362,
                     },
                     "value": "%player.group.priority%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 359,
                       "start": 358,
                     },
@@ -1826,7 +1712,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 394,
                       "start": 395,
                     },
@@ -1834,31 +1720,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 394,
                     "start": 390,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 398,
                       "start": 397,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 421,
                     "start": 390,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 421,
                       "start": 399,
                     },
                     "value": "%player.parkour.ticks%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 396,
                       "start": 395,
                     },
@@ -1867,7 +1753,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 430,
                       "start": 431,
                     },
@@ -1875,31 +1761,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 430,
                     "start": 426,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 434,
                       "start": 433,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 449,
                     "start": 426,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 449,
                       "start": 435,
                     },
                     "value": "%house.guests%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 432,
                       "start": 431,
                     },
@@ -1908,7 +1794,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 458,
                       "start": 459,
                     },
@@ -1916,31 +1802,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 458,
                     "start": 454,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 462,
                       "start": 461,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 478,
                     "start": 454,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 478,
                       "start": 463,
                     },
                     "value": "%house.cookies%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 460,
                       "start": 459,
                     },
@@ -1949,7 +1835,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 487,
                       "start": 488,
                     },
@@ -1957,31 +1843,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 487,
                     "start": 483,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 491,
                       "start": 490,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 507,
                     "start": 483,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 507,
                       "start": 492,
                     },
                     "value": "%house.players%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 489,
                       "start": 488,
                     },
@@ -1990,7 +1876,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 516,
                       "start": 517,
                     },
@@ -1998,31 +1884,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 516,
                     "start": 512,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 520,
                       "start": 519,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 532,
                     "start": 512,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 532,
                       "start": 521,
                     },
                     "value": "%date.unix%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 518,
                       "start": 517,
                     },
@@ -2031,7 +1917,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 541,
                       "start": 542,
                     },
@@ -2039,31 +1925,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 541,
                     "start": 537,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 545,
                       "start": 544,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 561,
                     "start": 537,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 561,
                       "start": 546,
                     },
                     "value": "%stat.player/x%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 543,
                       "start": 542,
                     },
@@ -2072,7 +1958,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 570,
                       "start": 571,
                     },
@@ -2080,31 +1966,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 570,
                     "start": 566,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 574,
                       "start": 573,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 590,
                     "start": 566,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 590,
                       "start": 575,
                     },
                     "value": "%stat.global/x%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 572,
                       "start": 571,
                     },
@@ -2113,18 +1999,18 @@ exports[`Parser > parse placeholders 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 271,
               "start": 269,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 271,
                 "start": 272,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 593,
               "start": 269,
             },
@@ -2132,28 +2018,21 @@ exports[`Parser > parse placeholders 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 599,
                 "start": 597,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 666,
-                "start": 666,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 666,
                 "start": 600,
               },
               "value": [
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 610,
                       "start": 611,
                     },
@@ -2161,31 +2040,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 610,
                     "start": 606,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 614,
                       "start": 613,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 633,
                     "start": 606,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 633,
                       "start": 615,
                     },
                     "value": "%stat.team/x team%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 612,
                       "start": 611,
                     },
@@ -2194,7 +2073,7 @@ exports[`Parser > parse placeholders 1`] = `
                 },
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 642,
                       "start": 643,
                     },
@@ -2202,31 +2081,31 @@ exports[`Parser > parse placeholders 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 642,
                     "start": 638,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 646,
                       "start": 645,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 664,
                     "start": 638,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 664,
                       "start": 647,
                     },
                     "value": "%random.int/1 10%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 644,
                       "start": 643,
                     },
@@ -2235,18 +2114,18 @@ exports[`Parser > parse placeholders 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 596,
               "start": 594,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 596,
                 "start": 597,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 666,
               "start": 594,
             },
@@ -2254,11 +2133,11 @@ exports[`Parser > parse placeholders 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 666,
         "start": 0,
       },
@@ -2270,27 +2149,18 @@ exports[`Parser > parse placeholders 1`] = `
 
 exports[`Parser > parse player stats 1`] = `
 {
-  "diagnostics": [
-    {
-      "level": "error",
-      "message": "expected true/false value",
-      "span": {
-        "end": 52,
-        "start": 52,
-      },
-    },
-  ],
+  "diagnostics": [],
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 52,
           "start": 0,
         },
         "value": [
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 4,
                 "start": 5,
               },
@@ -2298,31 +2168,31 @@ exports[`Parser > parse player stats 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 4,
               "start": 0,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 8,
                 "start": 7,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 10,
               "start": 0,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 10,
                 "start": 9,
               },
               "value": 5n,
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 6,
                 "start": 5,
               },
@@ -2331,7 +2201,7 @@ exports[`Parser > parse player stats 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 15,
                 "start": 16,
               },
@@ -2339,31 +2209,31 @@ exports[`Parser > parse player stats 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 15,
               "start": 11,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 19,
                 "start": 18,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 26,
               "start": 11,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 26,
                 "start": 20,
               },
               "value": "%stat.player/x%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 17,
                 "start": 16,
               },
@@ -2372,7 +2242,7 @@ exports[`Parser > parse player stats 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 31,
                 "start": 32,
               },
@@ -2380,31 +2250,31 @@ exports[`Parser > parse player stats 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 31,
               "start": 27,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 35,
                 "start": 34,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 52,
               "start": 27,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 52,
                 "start": 36,
               },
               "value": "%stat.player/y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 33,
                 "start": 32,
               },
@@ -2413,11 +2283,11 @@ exports[`Parser > parse player stats 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 52,
         "start": 0,
       },
@@ -2433,14 +2303,14 @@ exports[`Parser > parse shorthands 1`] = `
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 209,
           "start": 0,
         },
         "value": [
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 4,
                 "start": 5,
               },
@@ -2448,31 +2318,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 4,
               "start": 0,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 8,
                 "start": 7,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 15,
               "start": 0,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 15,
                 "start": 9,
               },
               "value": "%stat.player/y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 6,
                 "start": 5,
               },
@@ -2481,7 +2351,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 20,
                 "start": 21,
               },
@@ -2489,31 +2359,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 20,
               "start": 16,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 24,
                 "start": 23,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 37,
               "start": 16,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 37,
                 "start": 25,
               },
               "value": "%stat.global/y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 22,
                 "start": 21,
               },
@@ -2522,7 +2392,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 42,
                 "start": 43,
               },
@@ -2530,31 +2400,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 42,
               "start": 38,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 46,
                 "start": 45,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 62,
               "start": 38,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 62,
                 "start": 47,
               },
               "value": "%stat.team/y team%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 44,
                 "start": 43,
               },
@@ -2563,7 +2433,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 67,
                 "start": 68,
               },
@@ -2571,31 +2441,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 67,
               "start": 63,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 71,
                 "start": 70,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 87,
               "start": 63,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 87,
                 "start": 72,
               },
               "value": "%random.int/1 100%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 69,
                 "start": 68,
               },
@@ -2604,7 +2474,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 92,
                 "start": 93,
               },
@@ -2612,31 +2482,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 92,
               "start": 88,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 96,
                 "start": 95,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 103,
               "start": 88,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 103,
                 "start": 97,
               },
               "value": "%player.health%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 94,
                 "start": 93,
               },
@@ -2645,7 +2515,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 108,
                 "start": 109,
               },
@@ -2653,31 +2523,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 108,
               "start": 104,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 112,
                 "start": 111,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 122,
               "start": 104,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 122,
                 "start": 113,
               },
               "value": "%player.maxHealth%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 110,
                 "start": 109,
               },
@@ -2686,7 +2556,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 127,
                 "start": 128,
               },
@@ -2694,31 +2564,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 127,
               "start": 123,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 131,
                 "start": 130,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 138,
               "start": 123,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 138,
                 "start": 132,
               },
               "value": "%player.hunger%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 129,
                 "start": 128,
               },
@@ -2727,7 +2597,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 143,
                 "start": 144,
               },
@@ -2735,31 +2605,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 143,
               "start": 139,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 147,
                 "start": 146,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 152,
               "start": 139,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 152,
                 "start": 148,
               },
               "value": "%player.location.x%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 145,
                 "start": 144,
               },
@@ -2768,7 +2638,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 157,
                 "start": 158,
               },
@@ -2776,31 +2646,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 157,
               "start": 153,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 161,
                 "start": 160,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 166,
               "start": 153,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 166,
                 "start": 162,
               },
               "value": "%player.location.y%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 159,
                 "start": 158,
               },
@@ -2809,7 +2679,7 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "holder": {
-              "span": {
+              "span": Span {
                 "end": 171,
                 "start": 172,
               },
@@ -2817,31 +2687,31 @@ exports[`Parser > parse shorthands 1`] = `
                 "type": "player",
               },
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 171,
               "start": 167,
             },
             "op": {
-              "span": {
+              "span": Span {
                 "end": 175,
                 "start": 174,
               },
               "value": "set",
             },
-            "span": {
+            "span": Span {
               "end": 180,
               "start": 167,
             },
             "type": "CHANGE_VAR",
             "value": {
-              "span": {
+              "span": Span {
                 "end": 180,
                 "start": 176,
               },
               "value": "%player.location.z%",
             },
             "var": {
-              "span": {
+              "span": Span {
                 "end": 173,
                 "start": 172,
               },
@@ -2850,28 +2720,21 @@ exports[`Parser > parse shorthands 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 187,
                 "start": 185,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 209,
-                "start": 209,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 209,
                 "start": 188,
               },
               "value": [
                 {
                   "holder": {
-                    "span": {
+                    "span": Span {
                       "end": 198,
                       "start": 199,
                     },
@@ -2879,31 +2742,31 @@ exports[`Parser > parse shorthands 1`] = `
                       "type": "player",
                     },
                   },
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 198,
                     "start": 194,
                   },
                   "op": {
-                    "span": {
+                    "span": Span {
                       "end": 202,
                       "start": 201,
                     },
                     "value": "set",
                   },
-                  "span": {
+                  "span": Span {
                     "end": 207,
                     "start": 194,
                   },
                   "type": "CHANGE_VAR",
                   "value": {
-                    "span": {
+                    "span": Span {
                       "end": 207,
                       "start": 203,
                     },
                     "value": "%date.unix%",
                   },
                   "var": {
-                    "span": {
+                    "span": Span {
                       "end": 200,
                       "start": 199,
                     },
@@ -2912,18 +2775,18 @@ exports[`Parser > parse shorthands 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 184,
               "start": 182,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 184,
                 "start": 185,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 209,
               "start": 182,
             },
@@ -2931,11 +2794,11 @@ exports[`Parser > parse shorthands 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 209,
         "start": 0,
       },
@@ -2951,18 +2814,18 @@ exports[`Parser > parse teleport 1`] = `
   "holders": [
     {
       "actions": {
-        "span": {
+        "span": Span {
           "end": 299,
           "start": 0,
         },
         "value": [
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 2,
               "start": 0,
             },
             "location": {
-              "span": {
+              "span": Span {
                 "end": 26,
                 "start": 3,
               },
@@ -2971,19 +2834,19 @@ exports[`Parser > parse teleport 1`] = `
                 "value": "1 1 1",
               },
             },
-            "span": {
+            "span": Span {
               "end": 26,
               "start": 0,
             },
             "type": "TELEPORT",
           },
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 29,
               "start": 27,
             },
             "location": {
-              "span": {
+              "span": Span {
                 "end": 58,
                 "start": 30,
               },
@@ -2992,19 +2855,19 @@ exports[`Parser > parse teleport 1`] = `
                 "value": "-1 1.1 1.1",
               },
             },
-            "span": {
+            "span": Span {
               "end": 58,
               "start": 27,
             },
             "type": "TELEPORT",
           },
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 61,
               "start": 59,
             },
             "location": {
-              "span": {
+              "span": Span {
                 "end": 85,
                 "start": 62,
               },
@@ -3013,19 +2876,19 @@ exports[`Parser > parse teleport 1`] = `
                 "value": "1 1 1",
               },
             },
-            "span": {
+            "span": Span {
               "end": 85,
               "start": 59,
             },
             "type": "TELEPORT",
           },
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 89,
               "start": 87,
             },
             "location": {
-              "span": {
+              "span": Span {
                 "end": 113,
                 "start": 90,
               },
@@ -3034,19 +2897,19 @@ exports[`Parser > parse teleport 1`] = `
                 "value": "^ ^ ^",
               },
             },
-            "span": {
+            "span": Span {
               "end": 113,
               "start": 87,
             },
             "type": "TELEPORT",
           },
           {
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 116,
               "start": 114,
             },
             "location": {
-              "span": {
+              "span": Span {
                 "end": 142,
                 "start": 117,
               },
@@ -3055,7 +2918,7 @@ exports[`Parser > parse teleport 1`] = `
                 "value": "^10 ^ ^",
               },
             },
-            "span": {
+            "span": Span {
               "end": 142,
               "start": 114,
             },
@@ -3063,32 +2926,25 @@ exports[`Parser > parse teleport 1`] = `
           },
           {
             "conditions": {
-              "span": {
+              "span": Span {
                 "end": 149,
                 "start": 147,
               },
               "value": [],
             },
-            "elseActions": {
-              "span": {
-                "end": 299,
-                "start": 299,
-              },
-              "value": null,
-            },
             "ifActions": {
-              "span": {
+              "span": Span {
                 "end": 299,
                 "start": 150,
               },
               "value": [
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 158,
                     "start": 156,
                   },
                   "location": {
-                    "span": {
+                    "span": Span {
                       "end": 185,
                       "start": 159,
                     },
@@ -3097,19 +2953,19 @@ exports[`Parser > parse teleport 1`] = `
                       "value": "~1 ~ 1",
                     },
                   },
-                  "span": {
+                  "span": Span {
                     "end": 185,
                     "start": 156,
                   },
                   "type": "TELEPORT",
                 },
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 192,
                     "start": 190,
                   },
                   "location": {
-                    "span": {
+                    "span": Span {
                       "end": 218,
                       "start": 193,
                     },
@@ -3118,19 +2974,19 @@ exports[`Parser > parse teleport 1`] = `
                       "value": "~ ~ ~",
                     },
                   },
-                  "span": {
+                  "span": Span {
                     "end": 218,
                     "start": 190,
                   },
                   "type": "TELEPORT",
                 },
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 226,
                     "start": 224,
                   },
                   "location": {
-                    "span": {
+                    "span": Span {
                       "end": 253,
                       "start": 227,
                     },
@@ -3139,19 +2995,19 @@ exports[`Parser > parse teleport 1`] = `
                       "value": "1 1 1",
                     },
                   },
-                  "span": {
+                  "span": Span {
                     "end": 253,
                     "start": 224,
                   },
                   "type": "TELEPORT",
                 },
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 260,
                     "start": 258,
                   },
                   "location": {
-                    "span": {
+                    "span": Span {
                       "end": 272,
                       "start": 261,
                     },
@@ -3159,19 +3015,19 @@ exports[`Parser > parse teleport 1`] = `
                       "type": "location_spawn",
                     },
                   },
-                  "span": {
+                  "span": Span {
                     "end": 272,
                     "start": 258,
                   },
                   "type": "TELEPORT",
                 },
                 {
-                  "kwSpan": {
+                  "kwSpan": Span {
                     "end": 279,
                     "start": 277,
                   },
                   "location": {
-                    "span": {
+                    "span": Span {
                       "end": 297,
                       "start": 280,
                     },
@@ -3179,7 +3035,7 @@ exports[`Parser > parse teleport 1`] = `
                       "type": "location_invokers",
                     },
                   },
-                  "span": {
+                  "span": Span {
                     "end": 297,
                     "start": 277,
                   },
@@ -3187,18 +3043,18 @@ exports[`Parser > parse teleport 1`] = `
                 },
               ],
             },
-            "kwSpan": {
+            "kwSpan": Span {
               "end": 146,
               "start": 144,
             },
             "matchAny": {
-              "span": {
+              "span": Span {
                 "end": 146,
                 "start": 147,
               },
               "value": false,
             },
-            "span": {
+            "span": Span {
               "end": 299,
               "start": 144,
             },
@@ -3206,11 +3062,11 @@ exports[`Parser > parse teleport 1`] = `
           },
         ],
       },
-      "kwSpan": {
+      "kwSpan": Span {
         "end": 0,
         "start": 0,
       },
-      "span": {
+      "span": Span {
         "end": 299,
         "start": 0,
       },

@@ -1,5 +1,5 @@
 import { error } from '../diagnostic';
-import { ACTIONS } from '../helpers';
+import { ACTIONS_TO_KWS } from '../helpers';
 import type { IrAction, ParseResult } from '../ir';
 
 export function checkLimits(result: ParseResult) {
@@ -53,7 +53,7 @@ function checkActionLimits(result: ParseResult, actions: IrAction[]) {
 
     for (const action of actions) {
         if (limits[action.type] <= 0) {
-            const message = `Limit of ${ACTION_LIMITS[action.type]} ${ACTIONS[action.type]} actions exceeded`;
+            const message = `Limit of ${ACTION_LIMITS[action.type]} ${ACTIONS_TO_KWS[action.type]} actions exceeded`;
             result.diagnostics.push(error(message, action.span));
         }
 

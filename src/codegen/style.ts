@@ -5,20 +5,18 @@ export type WrittenStyle = {
 
 export type CodeStyle = {
     tab: string;
+    lineLength: number;
     binOpStyle: 'symbolic' | WrittenStyle;
     cmpOpStyle: 'symbolic' | WrittenStyle;
-    statStyle: 'placeholder' | 'shorthand';
-    placeholderStyle: 'normal' | 'quoted';
-    lineLength: number;
-    explicitConditionalAnd: boolean;
+    placeholderStyle: 'shorthand' | 'normal' | 'quoted';
+    useCommonShorthands: boolean;
 };
 
 export const DEFAULT_CODE_STYLE: CodeStyle = {
     tab: '    ',
+    lineLength: 80,
     binOpStyle: 'symbolic',
     cmpOpStyle: 'symbolic',
-    statStyle: 'shorthand',
-    placeholderStyle: 'normal',
-    lineLength: 80,
-    explicitConditionalAnd: false,
+    placeholderStyle: 'shorthand',
+    useCommonShorthands: true,
 };

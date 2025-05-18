@@ -2,62 +2,45 @@ import type {
     Action,
     ActionHolder,
     Condition,
-} from 'housing-common/src/types';
-import type { Span } from './span';
-import type { Diagnostic } from './diagnostic';
+} from 'housing-common';
+import { Span } from './span';
+import { Diagnostic } from './diagnostic';
 
-type Wrap<T> = {
-    value: T extends Action
-        ? IrAction
-        : T extends Condition
-          ? IrCondition
-          : T extends (infer U)[]
-            ? WrapArray<U>
-            : T;
-    span: Span;
-};
+type SpanElement<T> =
+    T extends Action ? IrAction :
+        T extends Condition ? IrCondition :
+            T;
 
-type WrapArray<U> = U extends Action
-    ? IrAction[]
-    : U extends Condition
-      ? IrCondition[]
-      : U extends (infer V)[]
-        ? WrapArray<V>[]
-        : U[];
+type SpanArray<U> =
+    { value: SpanElement<U>[], span: Span };
+
+export type Spanned<T> =
+    T extends (infer U)[]
+    ? SpanArray<U>
+    : { value: SpanElement<T>, span: Span };
+
 
 export type Element = { type: string };
 
-export type IrElement<T extends Element> = {
+export type Ir<T extends Element> = {
     type: T['type'];
-    kwSpan: Span;
     span: Span;
+    kwSpan: Span;
 } & {
-    [K in keyof T]: K extends 'type' ? T[K] : Wrap<T[K]> | undefined;
+    [K in keyof T]: K extends 'type' ? T[K] : Spanned<Omit<T[K], 'undefined'>> | undefined;
 };
 
-export type IrAction = IrElement<Action>;
-export type IrCondition = IrElement<Condition>;
-export type IrActionHolder = IrElement<ActionHolder>;
+export type IrAction = Ir<Action>;
+export type IrCondition = Ir<Condition>;
+export type IrActionHolder = Ir<ActionHolder>;
 
 export type ParseResult = {
     holders: IrActionHolder[];
     diagnostics: Diagnostic[];
 };
 
-function unwrapValue(value: any): any {
-    if (value === null || value === undefined) return value;
-    if (Array.isArray(value)) {
-        return value.map(unwrapValue);
-    }
-    if (typeof value === 'object') {
-        if ('value' in value && 'span' in value) {
-            return unwrapValue(value.value);
-        }
-        if ('type' in value && 'kwSpan' in value && 'span' in value) {
-            return unwrapTransform(value);
-        }
-    }
-    return value;
+export function unwrapIr<T extends Element>(element: Ir<T>): T {
+    return unwrapTransform(element);
 }
 
 function unwrapTransform(ir: any): any {
@@ -70,8 +53,20 @@ function unwrapTransform(ir: any): any {
     return result;
 }
 
-export function unwrapIr<T extends Element>(element: IrElement<T>): T {
-    return unwrapTransform(element);
+function unwrapValue(value: any): any {
+    if (value === null || value === undefined) return value;
+    if (Array.isArray(value)) {
+        return value.map(unwrapValue);
+    }
+    if (typeof value === 'object') {
+        if ('type' in value && 'kwSpan' in value && 'span' in value) {
+            return unwrapTransform(value);
+        }
+        if ('value' in value && 'span' in value) {
+            return unwrapValue(value.value);
+        }
+    }
+    return value;
 }
 
 export function irKeys(value: any) {

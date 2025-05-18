@@ -48,6 +48,7 @@ export const ACTION_KWS = [
     'teamvar',
 ] as const;
 
+export type ActionKey = Action["type"];
 export type ActionKw = (typeof ACTION_KWS)[number];
 
 export const CONDITION_KWS = [
@@ -80,9 +81,10 @@ export const CONDITION_KWS = [
     'teamvar',
 ] as const;
 
+export type ConditionKey = Condition["type"];
 export type ConditionKw = (typeof CONDITION_KWS)[number];
 
-export const ACTIONS: {
+export const ACTIONS_TO_KWS: {
     [key in Action['type']]: ActionKw;
 } = {
     ACTION_BAR: 'actionBar',
@@ -122,7 +124,7 @@ export const ACTIONS: {
     TITLE: 'title',
 };
 
-export const CONDITIONS: {
+export const CONDITIONS_TO_KWS: {
     [key in Condition['type']]: ConditionKw;
 } = {
     COMPARE_DAMAGE: 'damageAmount',

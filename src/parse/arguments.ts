@@ -26,7 +26,7 @@ import {
     POTION_EFFECTS,
     SOUNDS,
 } from 'housing-common/src/helpers';
-import { type Span, span } from '../span';
+import { Span } from '../span';
 import { SHORTHANDS } from '../helpers';
 
 export function parseLocation(p: Parser): Location {
@@ -344,7 +344,7 @@ export function parseCoordinates(p: Parser) {
     });
 
     if (components.length < 3) {
-        addDiagnostic('Expected 3 components', span(sp.start, sp.end));
+        addDiagnostic('Expected 3 components', new Span(sp.start, sp.end));
         return '';
     }
 

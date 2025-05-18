@@ -2,7 +2,7 @@ import type { Parser } from './parser';
 import type { IrAction } from '../ir';
 import { error } from '../diagnostic';
 import { parseCondition } from './conditions';
-import { span } from '../span';
+import { Span } from '../span';
 import {
     parseNumericValue,
     parseEnchantment,
@@ -97,6 +97,12 @@ export function parseAction(p: Parser): IrAction {
         return { type: 'EXIT', kwSpan: p.prev.span, span: p.prev.span };
     } else if (eatKw('cancelEvent')) {
         return { type: 'CANCEL_EVENT', kwSpan: p.prev.span, span: p.prev.span };
+    } else if (eatKw('var')) {
+        return parseActionChangeVar(p);
+    } else if (eatKw('globalvar')) {
+        return parseActionChangeGlobalVar(p);
+    } else if (eatKw('teamvar')) {
+        return parseActionChangeTeamVar(p);
     }
 
     if (p.check('ident')) {
@@ -113,11 +119,15 @@ function parseActionRecovering<T extends IrAction['type']>(
     parser: (action: IrAction & { type: T }) => void
 ): IrAction & { type: T } {
     const start = p.prev.span.start;
-    const action = { type, kwSpan: p.prev.span } as IrAction & { type: T };
+    const action = {
+        type,
+        kwSpan: p.prev.span,
+        span: Span.single(-1) // placeholder
+    } as IrAction & { type: T };
     p.parseRecovering(['eol'], () => {
         parser(action);
     });
-    action.span = span(start, p.prev.span.end);
+    action.span = new Span(start, p.prev.span.end);
     return action;
 }
 
@@ -162,7 +172,7 @@ function parseActionConditional(p: Parser): IrAction {
 function parseActionSetGroup(p: Parser): IrAction {
     return parseActionRecovering(p, 'SET_GROUP', (action) => {
         action.group = p.spanned(p.parseString);
-        if (p.check('eol')) return;
+        if (p.checkEol()) return;
         action.demotionProtection = p.spanned(p.parseBoolean);
     });
 }
@@ -170,9 +180,9 @@ function parseActionSetGroup(p: Parser): IrAction {
 function parseActionTitle(p: Parser): IrAction {
     return parseActionRecovering(p, 'TITLE', (action) => {
         action.title = p.spanned(p.parseString);
-        if (p.check('eol')) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.subtitle = p.spanned(p.parseString);
-        if (p.check('eol')) return; // shorthand
+        if (p.checkEol()) return; // shorthand
 
         action.fadein = p.spanned(() => p.parseBoundedNumber(0, 5));
         action.stay = p.spanned(() => p.parseBoundedNumber(0, 10));
@@ -220,7 +230,7 @@ function parseActionApplyPotionEffect(p: Parser): IrAction {
         action.duration = p.spanned(() => p.parseBoundedNumber(1, 2592000));
         action.level = p.spanned(() => p.parseBoundedNumber(1, 10));
         action.override = p.spanned(p.parseBoolean);
-        if (p.check("eol")) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.showIcon = p.spanned(p.parseBoolean);
     });
 }
@@ -243,7 +253,7 @@ function parseActionChangeVar(p: Parser): IrAction {
         action.var = p.spanned(parseVarName);
         action.op = p.spanned(parseOperation);
         action.value = p.spanned(parseValue);
-        if (p.check('eol')) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.unset = p.spanned(p.parseBoolean);
     });
 }
@@ -254,7 +264,7 @@ function parseActionChangeGlobalVar(p: Parser): IrAction {
         action.var = p.spanned(parseVarName);
         action.op = p.spanned(parseOperation);
         action.value = p.spanned(parseValue);
-        if (p.check('eol')) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.unset = p.spanned(p.parseBoolean);
     });
 }
@@ -315,7 +325,7 @@ function parseActionRandom(p: Parser): IrAction {
 function parseActionFunction(p: Parser): IrAction {
     return parseActionRecovering(p, 'FUNCTION', (action) => {
         action.function = p.spanned(p.parseName);
-        if (p.check("eol")) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.global = p.spanned(p.parseBoolean);
     });
 }
@@ -351,7 +361,7 @@ function parseActionChangeTeamVar(p: Parser): IrAction {
         action.holder = p.spanned(() => ({ type: 'team', team: p.parseName() }) as VarHolder);
         action.op = p.spanned(parseOperation);
         action.value = p.spanned(parseValue);
-        if (p.check('eol')) return; // shorthand
+        if (p.checkEol()) return; // shorthand
         action.unset = p.spanned(p.parseBoolean);
     });
 }
